@@ -1,0 +1,27 @@
+C:\Users\makati\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\bin\Debug\COTS Sales And Inventory System.exe.config
+C:\Users\makati\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\bin\Debug\COTS Sales And Inventory System.exe
+C:\Users\makati\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\bin\Debug\COTS Sales And Inventory System.pdb
+C:\Users\makati\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS Sales And Inventory System.csprojResolveAssemblyReference.cache
+C:\Users\makati\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.Properties.Resources.resources
+C:\Users\makati\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS Sales And Inventory System.csproj.GenerateResource.Cache
+C:\Users\makati\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS Sales And Inventory System.exe
+C:\Users\makati\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS Sales And Inventory System.pdb
+C:\Users\makati\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.frmAddUser.resources
+C:\Users\makati\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.frmAdmin.resources
+C:\Users\makati\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.Logon.resources
+C:\Users\makati\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.ForgotPass.resources
+C:\Users\makati\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.Main.resources
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\bin\Debug\COTS Sales And Inventory System.exe.config
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS Sales And Inventory System.exe
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS Sales And Inventory System.pdb
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\bin\Debug\COTS Sales And Inventory System.exe
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\bin\Debug\COTS Sales And Inventory System.pdb
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS Sales And Inventory System.csprojResolveAssemblyReference.cache
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.frmAddUser.resources
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.frmAdmin.resources
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.ForgotPass.resources
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.Logon.resources
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.Main.resources
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.Properties.Resources.resources
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS Sales And Inventory System.csproj.GenerateResource.Cache
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.Themes.resources
