@@ -11,9 +11,9 @@ namespace COTS_Sales_And_Inventory_System
 {
     public class DatabaseConnection
     {
-        public DataSet databaseRecord = new DataSet();
-        private MySqlConnection connection;
-        private String server, userID, password,conString;
+        public static DataSet databaseRecord = new DataSet();
+        private static MySqlConnection connection;
+        private static String server, userID, password,conString;
 
         private void ConnectToDatabase()
         {
@@ -36,12 +36,12 @@ namespace COTS_Sales_And_Inventory_System
             connection.Close();
         }
 
-        private MySqlDataAdapter CreateDataAddapter(string query)
+        private static MySqlDataAdapter CreateDataAddapter(string query)
         {
             return new MySqlDataAdapter(query, connection);
         }
 
-        private string CreateSelectStatement(string tableName)
+        private static string CreateSelectStatement(string tableName)
         {
             string query = "Select * from " + tableName + ";";
             return query;
@@ -88,20 +88,21 @@ namespace COTS_Sales_And_Inventory_System
             password = Properties.Settings.Default.MysqlPass;
         }
 
-        public void UploadChanges()
+        public static void UploadChanges()
         {
             UpdateEachTable();
         }
 
-        private void UpdateEachTable()
+        private static void UpdateEachTable()
         {
-            
+            connection.Open();
             foreach (var tableName in databaseRecord.Tables)
             {
                 var query = CreateSelectStatement(tableName.ToString());
                 var dadapt = CreateDataAddapter(query);
                 dadapt.Update(databaseRecord.Tables[tableName.ToString()]);
             }
+            connection.Close();
         }
     }
 }
