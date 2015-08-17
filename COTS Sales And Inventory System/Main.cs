@@ -24,7 +24,8 @@ namespace COTS_Sales_And_Inventory_System
 
         private void Main_Load(object sender, EventArgs e)
         {
-            LoadData();
+            var x = Task.Run(() => { LoadData(); });
+
         }
 
         private void LoadData()
@@ -81,7 +82,8 @@ namespace COTS_Sales_And_Inventory_System
         {
             var catPK= GetCategoryCurrentCount();
             var catName = comboBox1.Text;
-            if (DatabaseConnection.databaseRecord.Tables["category"].Columns.Contains(catName))
+            var found = DatabaseConnection.databaseRecord.Tables["category"].Select("CategoryName = '" + catName + "'");
+            if (found.Length>0)
             {
                 MessageBox.Show(@"Category Exist this category will not be created", @"Category Exist");
             }
@@ -133,9 +135,13 @@ namespace COTS_Sales_And_Inventory_System
         {
             var delCat = comboBox1.SelectedItem;
             var found= DatabaseConnection.databaseRecord.Tables["category"].Select("CategoryName = '"+delCat+"'");
-            found[0].Delete();
+            for (int x = 0; x < found.Length; x++)
+            {
+                found[x].Delete();
+            }
             DatabaseConnection.UploadChanges();
             MessageBox.Show(@"Delete Successful");
+            comboBox1.Text = "";
             FillCategory();
         }
     }
