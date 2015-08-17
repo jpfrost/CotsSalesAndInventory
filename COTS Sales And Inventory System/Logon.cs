@@ -47,12 +47,8 @@ namespace COTS_Sales_And_Inventory_System
 
         private void Logon_Load(object sender, EventArgs e)
         {
-            LoadDatabase();
+            var dataCon = new DatabaseConnection();
         }
 
-        private void LoadDatabase()
-        {
-            
-        }
     }
 }

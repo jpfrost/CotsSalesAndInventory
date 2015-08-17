@@ -25,7 +25,7 @@ namespace COTS_Sales_And_Inventory_System.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
         public string MysqlServer {
             get {
                 return ((string)(this["MysqlServer"]));
@@ -37,7 +37,7 @@ namespace COTS_Sales_And_Inventory_System.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("root")]
         public string MysqlUser {
             get {
                 return ((string)(this["MysqlUser"]));
@@ -49,7 +49,7 @@ namespace COTS_Sales_And_Inventory_System.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("root")]
         public string MysqlPass {
             get {
                 return ((string)(this["MysqlPass"]));

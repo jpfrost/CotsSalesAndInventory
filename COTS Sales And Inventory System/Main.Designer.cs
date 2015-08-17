@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.mainTab = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label18 = new System.Windows.Forms.Label();
@@ -51,6 +52,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label19 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -90,8 +93,10 @@
             this.configToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
+            this.dataGridView3 = new System.Windows.Forms.DataGridView();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
             this.mainTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
@@ -103,6 +108,8 @@
             this.tabPage4.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // mainTab
@@ -121,6 +128,9 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label21);
+            this.tabPage1.Controls.Add(this.label20);
+            this.tabPage1.Controls.Add(this.dataGridView3);
             this.tabPage1.Controls.Add(this.label18);
             this.tabPage1.Controls.Add(this.textBox6);
             this.tabPage1.Controls.Add(this.textBox5);
@@ -332,9 +342,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(32, 122);
+            this.dataGridView2.Location = new System.Drawing.Point(488, 137);
             this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(585, 150);
+            this.dataGridView2.Size = new System.Drawing.Size(129, 135);
             this.dataGridView2.TabIndex = 0;
             // 
             // tabPage2
@@ -360,6 +370,24 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Inventory";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(555, 109);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(75, 23);
+            this.button8.TabIndex = 13;
+            this.button8.Text = "Delete";
+            this.button8.UseVisualStyleBackColor = true;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(241, 109);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 12;
+            this.button7.Text = "Delete";
+            this.button7.UseVisualStyleBackColor = true;
             // 
             // comboBox2
             // 
@@ -617,7 +645,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(602, 358);
+            this.tabPage5.Size = new System.Drawing.Size(601, 357);
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "Inventory";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -725,23 +753,33 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.aboutToolStripMenuItem.Text = "About";
             // 
-            // button7
+            // dataGridView3
             // 
-            this.button7.Location = new System.Drawing.Point(241, 109);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 12;
-            this.button7.Text = "Delete";
-            this.button7.UseVisualStyleBackColor = true;
+            this.dataGridView3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView3.Location = new System.Drawing.Point(32, 137);
+            this.dataGridView3.Name = "dataGridView3";
+            this.dataGridView3.Size = new System.Drawing.Size(446, 135);
+            this.dataGridView3.TabIndex = 21;
             // 
-            // button8
+            // label20
             // 
-            this.button8.Location = new System.Drawing.Point(555, 109);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 23);
-            this.button8.TabIndex = 13;
-            this.button8.Text = "Delete";
-            this.button8.UseVisualStyleBackColor = true;
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(29, 121);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(54, 13);
+            this.label20.TabIndex = 22;
+            this.label20.Text = "Inventory:";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(485, 121);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(36, 13);
+            this.label21.TabIndex = 23;
+            this.label21.Text = "Sales:";
             // 
             // Main
             // 
@@ -775,6 +813,8 @@
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -846,5 +886,9 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.DataGridView dataGridView3;
+        private System.Windows.Forms.BindingSource bindingSource1;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label20;
     }
 }

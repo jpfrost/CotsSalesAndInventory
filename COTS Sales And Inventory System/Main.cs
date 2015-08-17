@@ -24,7 +24,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void Main_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         
