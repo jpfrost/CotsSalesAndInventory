@@ -100,7 +100,9 @@ namespace COTS_Sales_And_Inventory_System
             {
                 var query = CreateSelectStatement(tableName.ToString());
                 var dadapt = CreateDataAddapter(query);
+                var comBuild = new MySqlCommandBuilder(dadapt);
                 dadapt.Update(databaseRecord.Tables[tableName.ToString()]);
+                
             }
             connection.Close();
         }
