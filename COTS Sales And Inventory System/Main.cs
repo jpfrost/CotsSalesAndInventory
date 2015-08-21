@@ -81,16 +81,16 @@ namespace COTS_Sales_And_Inventory_System
 
         private void AddCategory()
         {
-            var catPk= GetCurrentCount("category","CategoryID");
+            var catPk = GetCurrentCount("category", "CategoryID");
             var catName = comboBox1.Text;
-            var found = FindRow("category","categoryName = '"+catName+"'");
-            if (found.Length>0)
+            var found = FindRow("category", "categoryName = '" + catName + "'");
+            if (found.Length > 0)
             {
                 MessageBox.Show(@"Category Exist this category will not be created", @"Category Exist");
             }
             else
             {
-                InsertNewCategory(catPk,catName);
+                InsertNewCategory(catPk, catName);
             }
         }
 
@@ -117,7 +117,7 @@ namespace COTS_Sales_And_Inventory_System
             comboBox2.Items.Clear();
         }
 
-        private int GetCurrentCount(string tableName,string columbName)
+        private int GetCurrentCount(string tableName, string columbName)
         {
             var value = 0;
             if (DatabaseConnection.databaseRecord.Tables[tableName].Rows.Count == 0)
@@ -134,7 +134,7 @@ namespace COTS_Sales_And_Inventory_System
                     }
                 }
             }
-            return value+1;
+            return value + 1;
 
         }
 
@@ -142,12 +142,12 @@ namespace COTS_Sales_And_Inventory_System
         {
             var del = comboBox1.SelectedItem;
             var found = FindRow("category", "categoryName ='" + del + "'");
-            DeleteComboBox(comboBox1,found);
+            DeleteComboBox(comboBox1, found);
         }
 
-        private void DeleteComboBox(ComboBox cb,DataRow[] found)
+        private void DeleteComboBox(ComboBox cb, DataRow[] found)
         {
-            
+
             foreach (DataRow rows in found)
             {
                 rows.Delete();
@@ -176,7 +176,7 @@ namespace COTS_Sales_And_Inventory_System
             {
                 InsertNewDistro(distroID, distroName);
             }
-            
+
         }
 
         private void InsertNewDistro(int distroid, string distroname)
@@ -194,10 +194,37 @@ namespace COTS_Sales_And_Inventory_System
         {
             var del = comboBox2.SelectedItem;
             var found = FindRow("distributor", "DistroName ='" + del + "'");
-            DeleteComboBox(comboBox2,found);
+            DeleteComboBox(comboBox2, found);
             RefreshData();
         }
 
-        
+        private void ShowHideInventory(object sender, EventArgs e)
+        {
+            if (mainTab.SelectedIndex == 1 || mainTab.SelectedIndex == 0)
+            {
+                ShowInventoryGrid();
+            }
+            else
+            {
+                HideInventoryGrid();
+            }
+        }
+
+        private void HideInventoryGrid()
+        {
+            if (!label11.Visible && !dataGridView1.Visible) return;
+            label11.Visible = false;
+            dataGridView1.Visible = false;
+        }
+
+        private void ShowInventoryGrid()
+        {
+            if (label11.Visible && dataGridView1.Visible) return;
+            label11.Visible = true;
+            dataGridView1.Visible = true;
+        }
     }
-}
+
+    
+    }
+

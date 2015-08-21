@@ -12,7 +12,7 @@ namespace COTS_Sales_And_Inventory_System
     public class DatabaseConnection
     {
         public static DataSet databaseRecord = new DataSet();
-        private static MySqlConnection connection;
+        public static MySqlConnection connection;
         private static String server, userID, password,conString;
 
         private void ConnectToDatabase()
@@ -98,13 +98,17 @@ namespace COTS_Sales_And_Inventory_System
             connection.Open();
             foreach (var tableName in databaseRecord.Tables)
             {
-                var query = CreateSelectStatement(tableName.ToString());
-                var dadapt = CreateDataAddapter(query);
-                var comBuild = new MySqlCommandBuilder(dadapt);
-                dadapt.Update(databaseRecord.Tables[tableName.ToString()]);
-                
+                UpdateTable(tableName);
             }
             connection.Close();
+        }
+
+        public static void UpdateTable(object tableName)
+        {
+            var query = CreateSelectStatement(tableName.ToString());
+            var dadapt = CreateDataAddapter(query);
+            var comBuild = new MySqlCommandBuilder(dadapt);
+            dadapt.Update(databaseRecord.Tables[tableName.ToString()]);
         }
     }
 }
