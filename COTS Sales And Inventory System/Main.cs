@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace COTS_Sales_And_Inventory_System
 {
@@ -30,7 +31,17 @@ namespace COTS_Sales_And_Inventory_System
         private void LoadData()
         {
             LoadInventory();
+            SearchboxHints(textBox7,"Search");
         }
+
+        private void SearchboxHints(TextBox textBox, string message)
+        {
+            textBox.ForeColor = SystemColors.GrayText;
+            textBox.Text = message;
+            
+        }
+
+       
 
         private void LoadInventory()
         {
@@ -42,6 +53,7 @@ namespace COTS_Sales_And_Inventory_System
             ClearCategory();
             FillCategoryListBox();
             FillCategoryComboBox();
+            
         }
 
         private void FillCategoryComboBox()
@@ -222,6 +234,24 @@ namespace COTS_Sales_And_Inventory_System
             if (label11.Visible && dataGridView1.Visible) return;
             label11.Visible = true;
             dataGridView1.Visible = true;
+        }
+
+        private void TxtboxSearchEnter(object sender, EventArgs e)
+        {
+            if (((TextBox) sender).Text.Equals(@"Search"))
+            {
+                ((TextBox) sender).ForeColor = SystemColors.WindowText;
+                ((TextBox) sender).Text = "";
+            }
+        }
+
+        private void TxtboxSearchLeave(object sender, EventArgs e)
+        {
+            if (!((TextBox) sender).Text.Equals(@"Search"))
+            {
+                ((TextBox) sender).ForeColor = SystemColors.GrayText;
+                ((TextBox) sender).Text = @"Search";
+            }
         }
     }
 
