@@ -253,6 +253,11 @@ namespace COTS_Sales_And_Inventory_System
                 ((TextBox) sender).Text = @"Search";
             }
         }
+
+        private void KillApplication(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 
     

@@ -47,7 +47,6 @@
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.label21 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -103,6 +102,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label11 = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.mainTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -118,6 +118,7 @@
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // mainTab
@@ -139,6 +140,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.numericUpDown1);
             this.tabPage1.Controls.Add(this.groupBox6);
             this.tabPage1.Controls.Add(this.textBox4);
             this.tabPage1.Controls.Add(this.label14);
@@ -147,7 +149,6 @@
             this.tabPage1.Controls.Add(this.comboBox4);
             this.tabPage1.Controls.Add(this.label21);
             this.tabPage1.Controls.Add(this.label18);
-            this.tabPage1.Controls.Add(this.textBox6);
             this.tabPage1.Controls.Add(this.textBox3);
             this.tabPage1.Controls.Add(this.label16);
             this.tabPage1.Controls.Add(this.label15);
@@ -321,13 +322,6 @@
             this.label18.TabIndex = 20;
             this.label18.Text = "Cashier";
             // 
-            // textBox6
-            // 
-            this.textBox6.Location = new System.Drawing.Point(310, 87);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(87, 20);
-            this.textBox6.TabIndex = 19;
-            // 
             // textBox3
             // 
             this.textBox3.Location = new System.Drawing.Point(93, 34);
@@ -350,9 +344,9 @@
             this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(9, 61);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(78, 13);
+            this.label15.Size = new System.Drawing.Size(75, 13);
             this.label15.TabIndex = 10;
-            this.label15.Text = "Product Name:";
+            this.label15.Text = "Product Code:";
             // 
             // label12
             // 
@@ -848,6 +842,13 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(310, 89);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(87, 20);
+            this.numericUpDown1.TabIndex = 32;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -865,6 +866,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sales and Inventory System";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.KillApplication);
             this.Load += new System.EventHandler(this.Main_Load);
             this.mainTab.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -887,6 +889,7 @@
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -918,7 +921,6 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.DataGridView dataGridView2;
-        private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage4;
@@ -968,5 +970,6 @@
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.DataGridView dataGridView3;
         private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
     }
 }

@@ -47,7 +47,14 @@ namespace COTS_Sales_And_Inventory_System
 
         private void Logon_Load(object sender, EventArgs e)
         {
-            var dataCon = new DatabaseConnection();
+            try
+            {
+                var dataCon = new DatabaseConnection();
+            }
+            catch
+            {
+                MessageBox.Show("Could not connect to database...");
+            }
         }
 
     }
