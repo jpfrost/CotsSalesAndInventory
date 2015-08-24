@@ -36,6 +36,16 @@ namespace COTS_Sales_And_Inventory_System
             connection.Close();
         }
 
+        public static DataTable GetCustomTable(string query,string tableName)
+        {
+            connection.Open();
+            var dadapt = CreateDataAddapter(query);
+            var dt = new DataTable(tableName);
+            dadapt.Fill(dt);
+            connection.Close();
+            return dt;
+        }
+
         private static MySqlDataAdapter CreateDataAddapter(string query)
         {
             return new MySqlDataAdapter(query, connection);
@@ -105,10 +115,18 @@ namespace COTS_Sales_And_Inventory_System
 
         public static void UpdateTable(object tableName)
         {
-            var query = CreateSelectStatement(tableName.ToString());
-            var dadapt = CreateDataAddapter(query);
-            var comBuild = new MySqlCommandBuilder(dadapt);
-            dadapt.Update(databaseRecord.Tables[tableName.ToString()]);
+
+            try
+            {
+                var query = CreateSelectStatement(tableName.ToString());
+                var dadapt = CreateDataAddapter(query);
+                var comBuild = new MySqlCommandBuilder(dadapt);
+                dadapt.Update(databaseRecord.Tables[tableName.ToString()]);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 }

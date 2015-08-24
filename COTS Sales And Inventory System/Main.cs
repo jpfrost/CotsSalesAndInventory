@@ -53,7 +53,20 @@ namespace COTS_Sales_And_Inventory_System
             ClearCategory();
             FillCategoryListBox();
             FillCategoryComboBox();
-            
+            LoadFromDatabase();
+        }
+
+        private void LoadFromDatabase()
+        {
+            BeginInvoke(new Action(FillInventory));
+        }
+
+        private void FillInventory()
+        {
+            var dt = DatabaseConnection.GetCustomTable("select Item_Name as 'Product', Size, Price, Quantity, CategoryName as 'Category' from items inner join size on items.ItemID=size.ItemID inner join category on items.CategoryID=category.CategoryID;"
+                ,"SizeAndItemTable");
+            dataGridView1.DataSource = dt;
+            dataGridView1.Refresh();
         }
 
         private void FillCategoryComboBox()
@@ -179,6 +192,8 @@ namespace COTS_Sales_And_Inventory_System
         {
             var distroID = GetCurrentCount("distributor", "DistroID");
             var distroName = comboBox2.Text;
+            var distroEmail = textBox9.Text;
+            var distroNumber = textBox10.Text;
             var found = FindRow("distributor", "DistroName = '" + distroName + "'");
             if (found.Length > 0)
             {
@@ -186,21 +201,24 @@ namespace COTS_Sales_And_Inventory_System
             }
             else
             {
-                InsertNewDistro(distroID, distroName);
+                InsertNewDistro(distroID, distroName,distroEmail,distroNumber);
             }
 
         }
 
-        private void InsertNewDistro(int distroid, string distroname)
+        private void InsertNewDistro(int distroId, string distroName, string distroEmail, string distroNumber)
         {
             var newDistro = DatabaseConnection.databaseRecord.Tables["distributor"].NewRow();
-            newDistro[0] = distroid;
-            newDistro[1] = distroname;
+            newDistro[0] = distroId;
+            newDistro[1] = distroName;
+            newDistro[2] = distroEmail;
+            newDistro[3] = distroNumber;
             DatabaseConnection.databaseRecord.Tables["distributor"].Rows.Add(newDistro);
             DatabaseConnection.UploadChanges();
             MessageBox.Show(@"New distributor added...");
             RefreshData();
         }
+
 
         private void button8_Click(object sender, EventArgs e)
         {
@@ -257,6 +275,81 @@ namespace COTS_Sales_And_Inventory_System
         private void KillApplication(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label22_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label23_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void bindingSource1_CurrentChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                GetDistrosInformation(); 
+                
+            }
+            catch(Exception aException)
+            {
+
+            }
+
+            
+            
+            
+        }
+
+        private void GetDistrosInformation()
+        {
+            var found = FindRow("distributor", "DistroName ='" + comboBox2.SelectedItem + "'");
+            textBox10.Text = found[0][3].ToString();
+            textBox9.Text = found[0][2].ToString();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var Items = new Items(this);
+            Items.ShowDialog();
+        }
+
+        private void textBox7_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 
