@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace COTS_Sales_And_Inventory_System
 {
-    public partial class frmAddUser : Form
+    public partial class FrmAddUser : Form
     {
-        public frmAddUser()
+        public FrmAddUser()
         {
             InitializeComponent();
         }

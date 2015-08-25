@@ -30,13 +30,13 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtUser = new System.Windows.Forms.TextBox();
-            this.txtPass = new System.Windows.Forms.TextBox();
             this.lnkForget = new System.Windows.Forms.LinkLabel();
             this.btnLogin = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.cueTextBox1 = new CueTextBox();
+            this.cueTextBox2 = new CueTextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,7 +46,7 @@
             this.label1.Location = new System.Drawing.Point(12, 33);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(0, 13);
-            this.label1.TabIndex = 0;
+            this.label1.TabIndex = 6;
             // 
             // label2
             // 
@@ -54,25 +54,7 @@
             this.label2.Location = new System.Drawing.Point(12, 68);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(0, 13);
-            this.label2.TabIndex = 1;
-            // 
-            // txtUser
-            // 
-            this.txtUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUser.Location = new System.Drawing.Point(61, 140);
-            this.txtUser.Name = "txtUser";
-            this.txtUser.Size = new System.Drawing.Size(274, 47);
-            this.txtUser.TabIndex = 2;
-            this.txtUser.TextChanged += new System.EventHandler(this.txtUser_TextChanged);
-            // 
-            // txtPass
-            // 
-            this.txtPass.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPass.Location = new System.Drawing.Point(61, 209);
-            this.txtPass.Name = "txtPass";
-            this.txtPass.Size = new System.Drawing.Size(274, 47);
-            this.txtPass.TabIndex = 3;
-            this.txtPass.UseSystemPasswordChar = true;
+            this.label2.TabIndex = 4;
             // 
             // lnkForget
             // 
@@ -80,7 +62,7 @@
             this.lnkForget.Location = new System.Drawing.Point(149, 271);
             this.lnkForget.Name = "lnkForget";
             this.lnkForget.Size = new System.Drawing.Size(92, 13);
-            this.lnkForget.TabIndex = 4;
+            this.lnkForget.TabIndex = 3;
             this.lnkForget.TabStop = true;
             this.lnkForget.Text = "Forgot Password?";
             this.lnkForget.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkForget_LinkClicked);
@@ -93,7 +75,7 @@
             this.btnLogin.Location = new System.Drawing.Point(61, 306);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(274, 55);
-            this.btnLogin.TabIndex = 5;
+            this.btnLogin.TabIndex = 2;
             this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = false;
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
@@ -133,6 +115,27 @@
             this.label4.Text = "Login";
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
+            // cueTextBox1
+            // 
+            this.cueTextBox1.Cue = "Username";
+            this.cueTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F);
+            this.cueTextBox1.Location = new System.Drawing.Point(61, 148);
+            this.cueTextBox1.Name = "cueTextBox1";
+            this.cueTextBox1.Size = new System.Drawing.Size(274, 47);
+            this.cueTextBox1.TabIndex = 0;
+            this.cueTextBox1.Click += new System.EventHandler(this.btnLogin_Click);
+            // 
+            // cueTextBox2
+            // 
+            this.cueTextBox2.Cue = "Password";
+            this.cueTextBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F);
+            this.cueTextBox2.Location = new System.Drawing.Point(61, 201);
+            this.cueTextBox2.Name = "cueTextBox2";
+            this.cueTextBox2.PasswordChar = '*';
+            this.cueTextBox2.Size = new System.Drawing.Size(274, 47);
+            this.cueTextBox2.TabIndex = 1;
+            this.cueTextBox2.Click += new System.EventHandler(this.btnLogin_Click);
+            // 
             // Logon
             // 
             this.AcceptButton = this.btnLogin;
@@ -140,12 +143,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(393, 446);
+            this.Controls.Add(this.cueTextBox2);
+            this.Controls.Add(this.cueTextBox1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.lnkForget);
-            this.Controls.Add(this.txtPass);
-            this.Controls.Add(this.txtUser);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -168,12 +171,12 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtUser;
-        private System.Windows.Forms.TextBox txtPass;
         private System.Windows.Forms.LinkLabel lnkForget;
         private System.Windows.Forms.Button btnLogin;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label4;
+        private CueTextBox cueTextBox1;
+        private CueTextBox cueTextBox2;
     }
 }

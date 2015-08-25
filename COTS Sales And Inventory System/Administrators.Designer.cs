@@ -1,6 +1,6 @@
 ﻿namespace COTS_Sales_And_Inventory_System
 {
-    partial class frmAdmin
+    partial class FrmAdmin
     {
         /// <summary>
         /// Required designer variable.
@@ -117,7 +117,7 @@
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.dataAdmins);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Name = "frmAdmin";
+            this.Name = "FrmAdmin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sales And Inventory System";
             ((System.ComponentModel.ISupportInitialize)(this.dataAdmins)).EndInit();

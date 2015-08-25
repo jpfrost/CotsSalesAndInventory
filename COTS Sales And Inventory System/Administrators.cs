@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace COTS_Sales_And_Inventory_System
 {
-    public partial class frmAdmin : Form
+    public partial class FrmAdmin : Form
     {
-        public frmAdmin()
+        public FrmAdmin()
         {
             InitializeComponent();
         }

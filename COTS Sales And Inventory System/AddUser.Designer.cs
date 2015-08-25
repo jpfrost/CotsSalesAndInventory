@@ -1,6 +1,6 @@
 ﻿namespace COTS_Sales_And_Inventory_System
 {
-    partial class frmAddUser
+    partial class FrmAddUser
     {
         /// <summary>
         /// Required designer variable.
@@ -158,7 +158,7 @@
             this.Controls.Add(this.txtRepass);
             this.Controls.Add(this.txtUserName);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "frmAddUser";
+            this.Name = "FrmAddUser";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sales And Inventory System";
             this.Load += new System.EventHandler(this.frmAddUser_Load);

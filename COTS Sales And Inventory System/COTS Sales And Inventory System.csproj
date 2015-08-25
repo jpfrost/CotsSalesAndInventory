@@ -57,6 +57,9 @@
     <Compile Include="Administrators.Designer.cs">
       <DependentUpon>Administrators.cs</DependentUpon>
     </Compile>
+    <Compile Include="CueTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DatabaseConnection.cs" />
     <Compile Include="ForgotPass.cs">
       <SubType>Form</SubType>

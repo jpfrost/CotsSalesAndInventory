@@ -31,17 +31,9 @@ namespace COTS_Sales_And_Inventory_System
         private void LoadData()
         {
             LoadInventory();
-            SearchboxHints(textBox7,"Search");
-        }
-
-        private void SearchboxHints(TextBox textBox, string message)
-        {
-            textBox.ForeColor = SystemColors.GrayText;
-            textBox.Text = message;
             
         }
 
-       
 
         private void LoadInventory()
         {
@@ -75,11 +67,18 @@ namespace COTS_Sales_And_Inventory_System
             {
                 comboBox1.Items.Add(catName);
             }
-            foreach (DataRow rows in DatabaseConnection.databaseRecord.Tables["distributor"].Rows)
+            foreach (DataRow rows in DatabaseConnection.DatabaseRecord.Tables["distributor"].Rows)
             {
-                if (!comboBox2.Items.Contains(rows["distroName"]))
+                try
                 {
-                    comboBox2.Items.Add(rows["distroName"]);
+                    if (!comboBox2.Items.Contains(rows["distroName"]))
+                    {
+                        comboBox2.Items.Add(rows["distroName"]);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
                 }
             }
 
@@ -88,7 +87,7 @@ namespace COTS_Sales_And_Inventory_System
         private void FillCategoryListBox()
         {
             listBox1.BeginUpdate();
-            foreach (DataRow rows in DatabaseConnection.databaseRecord.Tables["category"].Rows)
+            foreach (DataRow rows in DatabaseConnection.DatabaseRecord.Tables["category"].Rows)
             {
                 if (!listBox1.Items.Contains(rows["categoryName"].ToString()))
                 {
@@ -121,15 +120,15 @@ namespace COTS_Sales_And_Inventory_System
 
         private DataRow[] FindRow(string tablename, string query)
         {
-            return DatabaseConnection.databaseRecord.Tables[tablename].Select(query);
+            return DatabaseConnection.DatabaseRecord.Tables[tablename].Select(query);
         }
 
         private void InsertNewCategory(int catPk, string catName)
         {
-            var newCategory = DatabaseConnection.databaseRecord.Tables["category"].NewRow();
+            var newCategory = DatabaseConnection.DatabaseRecord.Tables["category"].NewRow();
             newCategory[0] = catPk;
             newCategory[1] = catName;
-            DatabaseConnection.databaseRecord.Tables["category"].Rows.Add(newCategory);
+            DatabaseConnection.DatabaseRecord.Tables["category"].Rows.Add(newCategory);
             DatabaseConnection.UploadChanges();
             RefreshData();
             MessageBox.Show(@"Category Added");
@@ -145,13 +144,13 @@ namespace COTS_Sales_And_Inventory_System
         private int GetCurrentCount(string tableName, string columbName)
         {
             var value = 0;
-            if (DatabaseConnection.databaseRecord.Tables[tableName].Rows.Count == 0)
+            if (DatabaseConnection.DatabaseRecord.Tables[tableName].Rows.Count == 0)
             {
                 return 1;
             }
             else
             {
-                foreach (DataRow rows in DatabaseConnection.databaseRecord.Tables[tableName].Rows)
+                foreach (DataRow rows in DatabaseConnection.DatabaseRecord.Tables[tableName].Rows)
                 {
                     if (value < (int) rows[columbName])
                     {
@@ -190,30 +189,30 @@ namespace COTS_Sales_And_Inventory_System
 
         private void AddDistributor()
         {
-            var distroID = GetCurrentCount("distributor", "DistroID");
+            var distroId = GetCurrentCount("distributor", "DistroID");
             var distroName = comboBox2.Text;
             var distroEmail = textBox9.Text;
             var distroNumber = textBox10.Text;
             var found = FindRow("distributor", "DistroName = '" + distroName + "'");
             if (found.Length > 0)
             {
-                MessageBox.Show(@"Category Exist this category will not be created", @"Category Exist");
+                MessageBox.Show(@"Distro Exist this distributor will not be created", @"Distributor Exist");
             }
             else
             {
-                InsertNewDistro(distroID, distroName,distroEmail,distroNumber);
+                InsertNewDistro(distroId, distroName,distroEmail,distroNumber);
             }
 
         }
 
         private void InsertNewDistro(int distroId, string distroName, string distroEmail, string distroNumber)
         {
-            var newDistro = DatabaseConnection.databaseRecord.Tables["distributor"].NewRow();
+            var newDistro = DatabaseConnection.DatabaseRecord.Tables["distributor"].NewRow();
             newDistro[0] = distroId;
             newDistro[1] = distroName;
             newDistro[2] = distroEmail;
             newDistro[3] = distroNumber;
-            DatabaseConnection.databaseRecord.Tables["distributor"].Rows.Add(newDistro);
+            DatabaseConnection.DatabaseRecord.Tables["distributor"].Rows.Add(newDistro);
             DatabaseConnection.UploadChanges();
             MessageBox.Show(@"New distributor added...");
             RefreshData();
@@ -343,8 +342,8 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var Items = new Items(this);
-            Items.ShowDialog();
+            var items = new Items(this);
+            items.ShowDialog();
         }
 
         private void textBox7_TextChanged(object sender, EventArgs e)

@@ -37,7 +37,6 @@
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
             this.label27 = new System.Windows.Forms.Label();
-            this.textBox8 = new System.Windows.Forms.TextBox();
             this.label23 = new System.Windows.Forms.Label();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.label24 = new System.Windows.Forms.Label();
@@ -46,7 +45,6 @@
             this.label22 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -67,8 +65,14 @@
             this.receiptQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.receiptTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.cueTextBox2 = new CueTextBox();
+            this.cueTextBox1 = new CueTextBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.button10 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
@@ -77,18 +81,10 @@
             this.button9 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.textBox10 = new System.Windows.Forms.TextBox();
-            this.label25 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.label26 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -104,10 +100,9 @@
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.button5 = new System.Windows.Forms.Button();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.cueTextBox3 = new CueTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
-            this.LastName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.FirstName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Email = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PhoneNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -128,6 +123,8 @@
             this.label11 = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.cueTextBox4 = new CueTextBox();
+            this.textBox5 = new System.Windows.Forms.TextBox();
             this.mainTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -204,10 +201,10 @@
             // groupBox6
             // 
             this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox6.Controls.Add(this.cueTextBox4);
             this.groupBox6.Controls.Add(this.textBox11);
             this.groupBox6.Controls.Add(this.comboBox5);
             this.groupBox6.Controls.Add(this.label27);
-            this.groupBox6.Controls.Add(this.textBox8);
             this.groupBox6.Controls.Add(this.label23);
             this.groupBox6.Controls.Add(this.textBox6);
             this.groupBox6.Controls.Add(this.label24);
@@ -252,13 +249,6 @@
             this.label27.Size = new System.Drawing.Size(87, 13);
             this.label27.TabIndex = 35;
             this.label27.Text = "Payment type:";
-            // 
-            // textBox8
-            // 
-            this.textBox8.Location = new System.Drawing.Point(200, 237);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(155, 20);
-            this.textBox8.TabIndex = 34;
             // 
             // label23
             // 
@@ -346,16 +336,6 @@
             this.label17.Size = new System.Drawing.Size(83, 13);
             this.label17.TabIndex = 21;
             this.label17.Text = "Sales Comment:";
-            // 
-            // textBox5
-            // 
-            this.textBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox5.Location = new System.Drawing.Point(20, 312);
-            this.textBox5.Multiline = true;
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(349, 52);
-            this.textBox5.TabIndex = 20;
-            this.textBox5.TextChanged += new System.EventHandler(this.textBox5_TextChanged);
             // 
             // label10
             // 
@@ -531,18 +511,14 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.tabPage2.Controls.Add(this.cueTextBox2);
+            this.tabPage2.Controls.Add(this.cueTextBox1);
             this.tabPage2.Controls.Add(this.pictureBox2);
             this.tabPage2.Controls.Add(this.groupBox8);
             this.tabPage2.Controls.Add(this.groupBox7);
             this.tabPage2.Controls.Add(this.pictureBox1);
-            this.tabPage2.Controls.Add(this.textBox9);
-            this.tabPage2.Controls.Add(this.textBox10);
-            this.tabPage2.Controls.Add(this.label25);
             this.tabPage2.Controls.Add(this.groupBox1);
-            this.tabPage2.Controls.Add(this.label26);
             this.tabPage2.Controls.Add(this.listBox1);
-            this.tabPage2.Controls.Add(this.textBox2);
-            this.tabPage2.Controls.Add(this.textBox1);
             this.tabPage2.Controls.Add(this.label4);
             this.tabPage2.Controls.Add(this.label2);
             this.tabPage2.Controls.Add(this.label1);
@@ -552,6 +528,22 @@
             this.tabPage2.Size = new System.Drawing.Size(860, 612);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Inventory";
+            // 
+            // cueTextBox2
+            // 
+            this.cueTextBox2.Cue = "Search Product Name Here";
+            this.cueTextBox2.Location = new System.Drawing.Point(113, 82);
+            this.cueTextBox2.Name = "cueTextBox2";
+            this.cueTextBox2.Size = new System.Drawing.Size(212, 20);
+            this.cueTextBox2.TabIndex = 25;
+            // 
+            // cueTextBox1
+            // 
+            this.cueTextBox1.Cue = "Search Product Code Here";
+            this.cueTextBox1.Location = new System.Drawing.Point(113, 52);
+            this.cueTextBox1.Name = "cueTextBox1";
+            this.cueTextBox1.Size = new System.Drawing.Size(212, 20);
+            this.cueTextBox1.TabIndex = 24;
             // 
             // pictureBox2
             // 
@@ -564,15 +556,51 @@
             // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.textBox9);
+            this.groupBox8.Controls.Add(this.textBox10);
+            this.groupBox8.Controls.Add(this.label25);
+            this.groupBox8.Controls.Add(this.label26);
             this.groupBox8.Controls.Add(this.comboBox2);
             this.groupBox8.Controls.Add(this.button10);
             this.groupBox8.Controls.Add(this.button8);
-            this.groupBox8.Location = new System.Drawing.Point(318, 388);
+            this.groupBox8.Location = new System.Drawing.Point(149, 388);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(200, 225);
+            this.groupBox8.Size = new System.Drawing.Size(369, 225);
             this.groupBox8.TabIndex = 22;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Supplier";
+            // 
+            // textBox9
+            // 
+            this.textBox9.Location = new System.Drawing.Point(192, 135);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(171, 20);
+            this.textBox9.TabIndex = 23;
+            // 
+            // textBox10
+            // 
+            this.textBox10.Location = new System.Drawing.Point(192, 71);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(171, 20);
+            this.textBox10.TabIndex = 22;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(189, 107);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(83, 13);
+            this.label25.TabIndex = 21;
+            this.label25.Text = "Supplier\'s Email:";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(189, 34);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(95, 13);
+            this.label26.TabIndex = 20;
+            this.label26.Text = "Supplier\'s Number:";
             // 
             // comboBox2
             // 
@@ -659,72 +687,27 @@
             this.pictureBox1.TabIndex = 20;
             this.pictureBox1.TabStop = false;
             // 
-            // textBox9
-            // 
-            this.textBox9.Location = new System.Drawing.Point(488, 82);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(196, 20);
-            this.textBox9.TabIndex = 19;
-            // 
-            // textBox10
-            // 
-            this.textBox10.Location = new System.Drawing.Point(488, 52);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(196, 20);
-            this.textBox10.TabIndex = 18;
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(371, 85);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(83, 13);
-            this.label25.TabIndex = 17;
-            this.label25.Text = "Supplier\'s Email:";
-            // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button4);
             this.groupBox1.Controls.Add(this.button3);
-            this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Location = new System.Drawing.Point(134, 144);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(163, 465);
+            this.groupBox1.Size = new System.Drawing.Size(163, 220);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Item";
             // 
-            // button4
-            // 
-            this.button4.BackColor = System.Drawing.Color.Tomato;
-            this.button4.Location = new System.Drawing.Point(15, 370);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(128, 56);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "Delete";
-            this.button4.UseVisualStyleBackColor = false;
-            // 
             // button3
             // 
             this.button3.BackColor = System.Drawing.Color.Tomato;
-            this.button3.Location = new System.Drawing.Point(15, 261);
+            this.button3.Location = new System.Drawing.Point(15, 126);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(128, 56);
             this.button3.TabIndex = 2;
             this.button3.Text = "Edit";
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.Tomato;
-            this.button2.Location = new System.Drawing.Point(15, 154);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(128, 56);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Save";
-            this.button2.UseVisualStyleBackColor = false;
             // 
             // button1
             // 
@@ -737,15 +720,6 @@
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(371, 55);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(95, 13);
-            this.label26.TabIndex = 16;
-            this.label26.Text = "Supplier\'s Number:";
-            // 
             // listBox1
             // 
             this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -755,20 +729,6 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(110, 459);
             this.listBox1.TabIndex = 9;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(113, 82);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(196, 20);
-            this.textBox2.TabIndex = 6;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(113, 52);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(196, 20);
-            this.textBox1.TabIndex = 5;
             // 
             // label4
             // 
@@ -933,22 +893,20 @@
             // groupBox9
             // 
             this.groupBox9.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.groupBox9.Controls.Add(this.textBox7);
+            this.groupBox9.Controls.Add(this.cueTextBox3);
             this.groupBox9.Location = new System.Drawing.Point(32, 60);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(516, 39);
             this.groupBox9.TabIndex = 3;
             this.groupBox9.TabStop = false;
             // 
-            // textBox7
+            // cueTextBox3
             // 
-            this.textBox7.Location = new System.Drawing.Point(397, 11);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(113, 20);
-            this.textBox7.TabIndex = 1;
-            this.textBox7.TextChanged += new System.EventHandler(this.textBox7_TextChanged);
-            this.textBox7.Enter += new System.EventHandler(this.TxtboxSearchEnter);
-            this.textBox7.Leave += new System.EventHandler(this.TxtboxSearchLeave);
+            this.cueTextBox3.Cue = "Search Customer";
+            this.cueTextBox3.Location = new System.Drawing.Point(396, 13);
+            this.cueTextBox3.Name = "cueTextBox3";
+            this.cueTextBox3.Size = new System.Drawing.Size(114, 20);
+            this.cueTextBox3.TabIndex = 0;
             // 
             // label3
             // 
@@ -965,7 +923,6 @@
             this.dataGridView3.BackgroundColor = System.Drawing.SystemColors.Window;
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView3.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.LastName,
             this.FirstName,
             this.Email,
             this.PhoneNum});
@@ -975,14 +932,9 @@
             this.dataGridView3.TabIndex = 0;
             this.dataGridView3.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView3_CellContentClick);
             // 
-            // LastName
-            // 
-            this.LastName.HeaderText = "LastName";
-            this.LastName.Name = "LastName";
-            // 
             // FirstName
             // 
-            this.FirstName.HeaderText = "FirstName";
+            this.FirstName.HeaderText = "Customer Name";
             this.FirstName.Name = "FirstName";
             // 
             // Email
@@ -1135,6 +1087,24 @@
             // 
             this.bindingSource1.CurrentChanged += new System.EventHandler(this.bindingSource1_CurrentChanged);
             // 
+            // cueTextBox4
+            // 
+            this.cueTextBox4.Cue = "(Optional)";
+            this.cueTextBox4.Location = new System.Drawing.Point(200, 234);
+            this.cueTextBox4.Name = "cueTextBox4";
+            this.cueTextBox4.Size = new System.Drawing.Size(155, 20);
+            this.cueTextBox4.TabIndex = 38;
+            // 
+            // textBox5
+            // 
+            this.textBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox5.Location = new System.Drawing.Point(20, 312);
+            this.textBox5.Multiline = true;
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(349, 52);
+            this.textBox5.TabIndex = 20;
+            this.textBox5.TextChanged += new System.EventHandler(this.textBox5_TextChanged);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1167,6 +1137,7 @@
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -1236,16 +1207,13 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.DataGridView dataGridView3;
-        private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.DataGridViewTextBoxColumn receiptItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn receiptPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn receiptQuantity;
         private System.Windows.Forms.DataGridViewTextBoxColumn receiptTotal;
-        private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.Label label24;
@@ -1265,29 +1233,29 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.TextBox textBox9;
-        private System.Windows.Forms.TextBox textBox10;
-        private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.Label label26;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LastName;
+        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label26;
+        private CueTextBox cueTextBox2;
+        private CueTextBox cueTextBox1;
+        private CueTextBox cueTextBox3;
         private System.Windows.Forms.DataGridViewTextBoxColumn FirstName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Email;
         private System.Windows.Forms.DataGridViewTextBoxColumn PhoneNum;
-        private System.Windows.Forms.TextBox textBox11;
-        private System.Windows.Forms.Button button5;
+        private CueTextBox cueTextBox4;
+        private System.Windows.Forms.TextBox textBox5;
     }
 }
