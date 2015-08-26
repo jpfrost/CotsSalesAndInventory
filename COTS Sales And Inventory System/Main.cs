@@ -13,6 +13,10 @@ namespace COTS_Sales_And_Inventory_System
 {
     public partial class Main : Form
     {
+
+        private UserControl _items;
+
+
         public Main()
         {
             InitializeComponent();
@@ -26,6 +30,11 @@ namespace COTS_Sales_And_Inventory_System
         private void Main_Load(object sender, EventArgs e)
         {
             var x = Task.Run(() => { LoadData(); });
+            _items= new Items(this);
+            panel1.Controls.Add(_items);
+            _items.Hide();
+            dateTime.Start();
+            timerDataRefresh.Start();
         }
 
         private void LoadData()
@@ -35,7 +44,7 @@ namespace COTS_Sales_And_Inventory_System
         }
 
 
-        private void LoadInventory()
+        public void LoadInventory()
         {
             RefreshData();
         }
@@ -58,6 +67,7 @@ namespace COTS_Sales_And_Inventory_System
             var dt = DatabaseConnection.GetCustomTable("select Item_Name as 'Product', Size, Price, Quantity, CategoryName as 'Category' from items inner join size on items.ItemID=size.ItemID inner join category on items.CategoryID=category.CategoryID;"
                 ,"SizeAndItemTable");
             dataGridView1.DataSource = dt;
+            dataGridView1.Update();
             dataGridView1.Refresh();
         }
 
@@ -342,14 +352,39 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var items = new Items(this);
-            items.ShowDialog();
+            if (_items.Visible)
+            {
+                _items.Hide();
+            }
+            else
+            {
+                _items.Show();
+            }
+
         }
 
         private void textBox7_TextChanged(object sender, EventArgs e)
         {
 
         }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void dateTime_Tick(object sender, EventArgs e)
+        {
+            var dateNow = DateTime.Now;
+            lblTime.Text = dateNow.ToString();
+
+        }
+
+        private void timerDataRefresh_Tick(object sender, EventArgs e)
+        {
+            LoadFromDatabase();
+        }
+
     }
 
     

@@ -30,18 +30,17 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.cueTextBox4 = new CueTextBox();
             this.cueTextBox3 = new CueTextBox();
             this.cueTextBox2 = new CueTextBox();
             this.cueTextBox1 = new CueTextBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,6 +54,7 @@
             this.groupBox1.Size = new System.Drawing.Size(345, 124);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // label1
             // 
@@ -66,17 +66,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Item Management";
             // 
-            // button2
-            // 
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(252, 408);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 11;
-            this.button2.Text = "Exit";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
@@ -84,6 +73,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(149, 21);
             this.comboBox1.TabIndex = 2;
+            this.comboBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardValidInputs);
             // 
             // comboBox2
             // 
@@ -92,6 +82,7 @@
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(149, 21);
             this.comboBox2.TabIndex = 3;
+            this.comboBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardValidInputs);
             // 
             // comboBox3
             // 
@@ -100,12 +91,13 @@
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(149, 21);
             this.comboBox3.TabIndex = 6;
+            this.comboBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardValidInputs);
             // 
             // button5
             // 
             this.button5.Location = new System.Drawing.Point(171, 222);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(156, 23);
+            this.button5.Size = new System.Drawing.Size(134, 23);
             this.button5.TabIndex = 10;
             this.button5.Text = "Delete Product Size";
             this.button5.UseVisualStyleBackColor = true;
@@ -115,47 +107,11 @@
             // 
             this.button6.Location = new System.Drawing.Point(171, 195);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(156, 23);
+            this.button6.Size = new System.Drawing.Size(134, 23);
             this.button6.TabIndex = 9;
             this.button6.Text = "Add Product Size";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // cueTextBox4
-            // 
-            this.cueTextBox4.Cue = "Price";
-            this.cueTextBox4.Location = new System.Drawing.Point(12, 248);
-            this.cueTextBox4.Name = "cueTextBox4";
-            this.cueTextBox4.Size = new System.Drawing.Size(149, 20);
-            this.cueTextBox4.TabIndex = 5;
-            // 
-            // cueTextBox3
-            // 
-            this.cueTextBox3.Cue = "Quantity";
-            this.cueTextBox3.Location = new System.Drawing.Point(12, 224);
-            this.cueTextBox3.Name = "cueTextBox3";
-            this.cueTextBox3.Size = new System.Drawing.Size(149, 20);
-            this.cueTextBox3.TabIndex = 4;
-            // 
-            // cueTextBox2
-            // 
-            this.cueTextBox2.Cue = "Product Name";
-            this.cueTextBox2.Location = new System.Drawing.Point(12, 144);
-            this.cueTextBox2.Name = "cueTextBox2";
-            this.cueTextBox2.Size = new System.Drawing.Size(149, 20);
-            this.cueTextBox2.TabIndex = 1;
-            this.cueTextBox2.TextChanged += new System.EventHandler(this.cueTextBox2_TextChanged);
-            this.cueTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProductNameKeyDownEnter);
-            this.cueTextBox2.Leave += new System.EventHandler(this.cueTextBox2_Leave);
-            // 
-            // cueTextBox1
-            // 
-            this.cueTextBox1.Cue = "Product Code";
-            this.cueTextBox1.Location = new System.Drawing.Point(12, 118);
-            this.cueTextBox1.Name = "cueTextBox1";
-            this.cueTextBox1.Size = new System.Drawing.Size(149, 20);
-            this.cueTextBox1.TabIndex = 0;
-            this.cueTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProductIdKeyDownEnter);
             // 
             // button3
             // 
@@ -176,13 +132,51 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // cueTextBox4
+            // 
+            this.cueTextBox4.Cue = "Price";
+            this.cueTextBox4.Location = new System.Drawing.Point(12, 248);
+            this.cueTextBox4.Name = "cueTextBox4";
+            this.cueTextBox4.Size = new System.Drawing.Size(149, 20);
+            this.cueTextBox4.TabIndex = 5;
+            this.cueTextBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardValidInputs);
+            // 
+            // cueTextBox3
+            // 
+            this.cueTextBox3.Cue = "Quantity";
+            this.cueTextBox3.Location = new System.Drawing.Point(12, 224);
+            this.cueTextBox3.Name = "cueTextBox3";
+            this.cueTextBox3.Size = new System.Drawing.Size(149, 20);
+            this.cueTextBox3.TabIndex = 4;
+            this.cueTextBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardValidInputs);
+            // 
+            // cueTextBox2
+            // 
+            this.cueTextBox2.Cue = "Product Name";
+            this.cueTextBox2.Location = new System.Drawing.Point(12, 144);
+            this.cueTextBox2.Name = "cueTextBox2";
+            this.cueTextBox2.Size = new System.Drawing.Size(149, 20);
+            this.cueTextBox2.TabIndex = 1;
+            this.cueTextBox2.TextChanged += new System.EventHandler(this.cueTextBox2_TextChanged);
+            this.cueTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProductNameKeyDownEnter);
+            this.cueTextBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardValidInputs);
+            this.cueTextBox2.Leave += new System.EventHandler(this.cueTextBox2_Leave);
+            // 
+            // cueTextBox1
+            // 
+            this.cueTextBox1.Cue = "Product Code";
+            this.cueTextBox1.Location = new System.Drawing.Point(12, 118);
+            this.cueTextBox1.Name = "cueTextBox1";
+            this.cueTextBox1.Size = new System.Drawing.Size(149, 20);
+            this.cueTextBox1.TabIndex = 0;
+            this.cueTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProductIdKeyDownEnter);
+            this.cueTextBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardValidInputs);
+            // 
             // Items
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.CancelButton = this.button2;
-            this.ClientSize = new System.Drawing.Size(339, 443);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.cueTextBox4);
@@ -194,13 +188,9 @@
             this.Controls.Add(this.comboBox3);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Items";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Items";
+            this.Size = new System.Drawing.Size(317, 443);
             this.Load += new System.EventHandler(this.Items_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -213,7 +203,6 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.ComboBox comboBox3;
