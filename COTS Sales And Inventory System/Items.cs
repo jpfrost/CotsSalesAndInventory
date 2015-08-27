@@ -8,32 +8,17 @@ namespace COTS_Sales_And_Inventory_System
 {
     public partial class Items : UserControl
     {
-        private Form _parentForm;
         private string _productCategory;
         private string _productCode;
         private string _productdistro;
-        private string _productName;
+        private static string _productName;
         private string _productPrice;
         private string _productQuantity;
         private string _productSize;
 
-        public Items(string productName, string productCategory, string productSize, string productCode,
-            string productPrice, string productQuantity, string productdistro, Form parentForm)
-        {
-            this._productName = productName;
-            this._productCategory = productCategory;
-            this._productSize = productSize;
-            this._productCode = productCode;
-            this._productPrice = productPrice;
-            this._productQuantity = productQuantity;
-            this._productdistro = productdistro;
-            this._parentForm = parentForm;
-            InitializeComponent();
-        }
 
-        public Items(Form parentForm)
+        public Items()
         {
-            _parentForm = parentForm;
             InitializeComponent();
             LoadAllComboBoxData();
         }
@@ -54,20 +39,6 @@ namespace COTS_Sales_And_Inventory_System
             }
         }
 
-        private void LoadDistro()
-        {
-            
-        }
-
-        private void LoadCategory()
-        {
-            
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-                Dispose();
-        }
 
         private void Items_Load(object sender, EventArgs e)
         {
@@ -122,10 +93,12 @@ namespace COTS_Sales_And_Inventory_System
                     row["Quantity"] = cueTextBox3.Text;
                     DatabaseConnection.UploadChanges();
                 }
+                MessageBox.Show("Item Edit Successful");
             }
             else
             {
                 CreateNewSize();
+                MessageBox.Show("Item  new Size Created");
             }
         }
 
@@ -175,7 +148,7 @@ namespace COTS_Sales_And_Inventory_System
             
         }
 
-        private void ClearInputs()
+        public void ClearInputs()
         {
             foreach (var control in Controls)
             {
@@ -240,13 +213,13 @@ namespace COTS_Sales_And_Inventory_System
             }
             newItem["itemID"] = newProdCode;
             newItem["item_Name"] = cueTextBox2.Text;
-            if (comboBox1.SelectedItem != null) newItem["CategoryID"] = FindCategoryID();
+            if (comboBox1.SelectedItem != null) newItem["CategoryID"] = FindCategoryId();
             DatabaseConnection.DatabaseRecord.Tables["items"].Rows.Add(newItem);
             DatabaseConnection.UploadChanges();
             
         }
 
-        private Int32 FindCategoryID()
+        private Int32 FindCategoryId()
         {
             var found = DatabaseConnection.DatabaseRecord.Tables["category"].Select("CategoryName ='"
                 +comboBox1.Text+"'");
@@ -256,32 +229,28 @@ namespace COTS_Sales_And_Inventory_System
 
         private void ProductNameKeyDownEnter(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode != Keys.Enter) return;
+            try
             {
-                try
-                {
-                    cueTextBox1.Text = (string)FindProductId()[0]["itemID"];
-                    LoadSize();
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception);
-                }
+                cueTextBox1.Text = (string)FindProductId()[0]["itemID"];
+                LoadSize();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
             }
         }
 
         private void ProductIdKeyDownEnter(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode != Keys.Enter) return;
+            if (FindProductName().Length > 0)
             {
-                if (FindProductName().Length>0)
-                {
-                    InsertProductName(FindProductName()[0]["item_Name"].ToString());
-                }
+                InsertProductName(FindProductName()[0]["item_Name"].ToString());
             }
         }
 
-        private void InsertProductName(string itemName)
+        public void InsertProductName(string itemName)
         {
             cueTextBox2.Text = itemName;
         }
@@ -318,11 +287,6 @@ namespace COTS_Sales_And_Inventory_System
             comboBox2.Refresh();
         }
 
-        private void cueTextBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void button5_Click(object sender, EventArgs e)
         {
             if (FindIfSizeExist())
@@ -350,7 +314,40 @@ namespace COTS_Sales_And_Inventory_System
 
         private void KeyboardValidInputs(object sender, KeyPressEventArgs e)
         {
-
+            if (Char.IsLetterOrDigit(e.KeyChar) || e.KeyChar == '\b')
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
         }
+
+        private void KeyboardOnlyDigits(object sender, KeyPressEventArgs e)
+        {
+            if (Char.IsDigit(e.KeyChar) || (e.KeyChar == '\b'))
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void KeyboardOnlyDecimals(object sender, KeyPressEventArgs e)
+        {
+
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == (char)Keys.Back || e.KeyChar == '.'))
+            { e.Handled = true; }
+            var txtDecimal = sender as TextBox;
+            if (txtDecimal != null && (e.KeyChar == '.' && txtDecimal.Text.Contains(".")))
+            {
+                e.Handled = true;
+            }
+        }
+
+        
     }
 }

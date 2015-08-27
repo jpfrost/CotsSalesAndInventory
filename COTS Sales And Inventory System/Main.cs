@@ -14,11 +14,14 @@ namespace COTS_Sales_And_Inventory_System
     public partial class Main : Form
     {
 
-        private UserControl _items;
+        
+        private readonly Form _loginForm;
+        Items _items = new Items();
 
 
-        public Main()
+        public Main(Form loginForm)
         {
+            _loginForm = loginForm;
             InitializeComponent();
         }
 
@@ -30,7 +33,6 @@ namespace COTS_Sales_And_Inventory_System
         private void Main_Load(object sender, EventArgs e)
         {
             var x = Task.Run(() => { LoadData(); });
-            _items= new Items(this);
             panel1.Controls.Add(_items);
             _items.Hide();
             dateTime.Start();
@@ -69,6 +71,7 @@ namespace COTS_Sales_And_Inventory_System
             dataGridView1.DataSource = dt;
             dataGridView1.Update();
             dataGridView1.Refresh();
+            AddAutoCompleteForSalesTextBox();
         }
 
         private void FillCategoryComboBox()
@@ -97,6 +100,7 @@ namespace COTS_Sales_And_Inventory_System
         private void FillCategoryListBox()
         {
             listBox1.BeginUpdate();
+            listBox1.Items.Add("All");
             foreach (DataRow rows in DatabaseConnection.DatabaseRecord.Tables["category"].Rows)
             {
                 if (!listBox1.Items.Contains(rows["categoryName"].ToString()))
@@ -111,6 +115,7 @@ namespace COTS_Sales_And_Inventory_System
         private void button9_Click(object sender, EventArgs e)
         {
             AddCategory();
+            LoadData();
         }
 
         private void AddCategory()
@@ -160,13 +165,7 @@ namespace COTS_Sales_And_Inventory_System
             }
             else
             {
-                foreach (DataRow rows in DatabaseConnection.DatabaseRecord.Tables[tableName].Rows)
-                {
-                    if (value < (int) rows[columbName])
-                    {
-                        value = (int) rows[columbName];
-                    }
-                }
+                value = (from DataRow rows in DatabaseConnection.DatabaseRecord.Tables[tableName].Rows select (int) rows[columbName]).Concat(new[] {value}).Max();
             }
             return value + 1;
 
@@ -303,7 +302,21 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button3_Click(object sender, EventArgs e)
         {
+            _items.InsertProductName(cueTextBox2.Text);
+            SetItemFormVisibility();
+        }
 
+        private void SetItemFormVisibility()
+        {
+            if (!_items.Visible)
+            {
+                _items.Show();
+            }
+            else
+            {
+                _items.Hide();
+                _items.ClearInputs();
+            }
         }
 
         private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -352,15 +365,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (_items.Visible)
-            {
-                _items.Hide();
-            }
-            else
-            {
-                _items.Show();
-            }
-
+            SetItemFormVisibility();
         }
 
         private void textBox7_TextChanged(object sender, EventArgs e)
@@ -383,8 +388,62 @@ namespace COTS_Sales_And_Inventory_System
         private void timerDataRefresh_Tick(object sender, EventArgs e)
         {
             LoadFromDatabase();
+            
+            FilterInvetoryByCategory();
+           
         }
 
+        private void AddAutoCompleteForSalesTextBox()
+        {
+            var autoCompleteCollectionProductName = new AutoCompleteStringCollection();
+            foreach (DataRow dr in DatabaseConnection.DatabaseRecord.Tables["items"].Rows)
+            {
+                autoCompleteCollectionProductName.Add(dr["Item_Name"].ToString());
+            }
+            textBox4.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            textBox4.AutoCompleteCustomSource = autoCompleteCollectionProductName;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            _loginForm.Show();
+            this.Dispose();
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FilterInvetoryByCategory();
+        }
+
+        private void FilterInvetoryByCategory()
+        {
+            if (!listBox1.SelectedItem.Equals("All"))
+            {
+                ((DataTable) dataGridView1.DataSource).DefaultView.RowFilter = ("Category ='"
+                 + listBox1.SelectedItem + "'");
+            }
+            else
+            {
+                ((DataTable) dataGridView1.DataSource).DefaultView.RowFilter = string.Empty;
+            }
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void KeyboardOnlyDecimals(object sender, KeyPressEventArgs e)
+        {
+
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == (char)Keys.Back || e.KeyChar == '.'))
+            { e.Handled = true; }
+            var txtDecimal = sender as TextBox;
+            if (txtDecimal != null && (e.KeyChar == '.' && txtDecimal.Text.Contains(".")))
+            {
+                e.Handled = true;
+            }
+        }
     }
 
     

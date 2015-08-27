@@ -13,6 +13,7 @@ namespace COTS_Sales_And_Inventory_System
 {
     public partial class Logon : Form
     {
+        DatabaseConnection dataCon = new DatabaseConnection();
         public Logon()
         {
             InitializeComponent();
@@ -28,7 +29,7 @@ namespace COTS_Sales_And_Inventory_System
             if (allowed)
             {
                 Hide();
-                Main main = new Main();
+                var main = new Main(this);
                 main.Show();
             }
         }
@@ -47,14 +48,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void Logon_Load(object sender, EventArgs e)
         {
-            try
-            {
-                var dataCon = new DatabaseConnection();
-            }
-            catch
-            {
-                MessageBox.Show("Could not connect to database...");
-            }
+            
         }
 
         private void txtUser_TextChanged(object sender, EventArgs e)

@@ -139,7 +139,7 @@
             this.cueTextBox4.Name = "cueTextBox4";
             this.cueTextBox4.Size = new System.Drawing.Size(149, 20);
             this.cueTextBox4.TabIndex = 5;
-            this.cueTextBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardValidInputs);
+            this.cueTextBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardOnlyDecimals);
             // 
             // cueTextBox3
             // 
@@ -148,7 +148,7 @@
             this.cueTextBox3.Name = "cueTextBox3";
             this.cueTextBox3.Size = new System.Drawing.Size(149, 20);
             this.cueTextBox3.TabIndex = 4;
-            this.cueTextBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardValidInputs);
+            this.cueTextBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardOnlyDigits);
             // 
             // cueTextBox2
             // 
@@ -157,7 +157,7 @@
             this.cueTextBox2.Name = "cueTextBox2";
             this.cueTextBox2.Size = new System.Drawing.Size(149, 20);
             this.cueTextBox2.TabIndex = 1;
-            this.cueTextBox2.TextChanged += new System.EventHandler(this.cueTextBox2_TextChanged);
+            this.cueTextBox2.TextChanged += new System.EventHandler(this.cueTextBox2_Leave);
             this.cueTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProductNameKeyDownEnter);
             this.cueTextBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardValidInputs);
             this.cueTextBox2.Leave += new System.EventHandler(this.cueTextBox2_Leave);
@@ -209,10 +209,10 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private CueTextBox cueTextBox1;
-        private CueTextBox cueTextBox2;
         private CueTextBox cueTextBox3;
         private CueTextBox cueTextBox4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
+        private CueTextBox cueTextBox2;
     }
 }

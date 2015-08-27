@@ -43,7 +43,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -61,10 +60,6 @@
             this.label15 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.receiptItem = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.receiptPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.receiptQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.receiptTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
@@ -104,7 +99,6 @@
             this.FirstName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Email = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PhoneNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -120,10 +114,16 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label11 = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.dateTime = new System.Windows.Forms.Timer(this.components);
             this.timerDataRefresh = new System.Windows.Forms.Timer(this.components);
             this.lblTime = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
+            this.receiptItem = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.recieptSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.receiptPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.receiptQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.receiptTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cueTextBox5 = new CueTextBox();
             this.cueTextBox4 = new CueTextBox();
             this.cueTextBox2 = new CueTextBox();
             this.cueTextBox1 = new CueTextBox();
@@ -147,7 +147,6 @@
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // mainTab
@@ -203,6 +202,7 @@
             // groupBox6
             // 
             this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox6.Controls.Add(this.cueTextBox5);
             this.groupBox6.Controls.Add(this.cueTextBox4);
             this.groupBox6.Controls.Add(this.textBox11);
             this.groupBox6.Controls.Add(this.comboBox5);
@@ -213,7 +213,6 @@
             this.groupBox6.Controls.Add(this.label6);
             this.groupBox6.Controls.Add(this.label5);
             this.groupBox6.Controls.Add(this.label22);
-            this.groupBox6.Controls.Add(this.label20);
             this.groupBox6.Controls.Add(this.label17);
             this.groupBox6.Controls.Add(this.textBox5);
             this.groupBox6.Controls.Add(this.label10);
@@ -233,10 +232,14 @@
             this.textBox11.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.textBox11.Size = new System.Drawing.Size(155, 29);
             this.textBox11.TabIndex = 37;
+            this.textBox11.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardOnlyDecimals);
             // 
             // comboBox5
             // 
             this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Items.AddRange(new object[] {
+            "Cash",
+            "Card"});
             this.comboBox5.Location = new System.Drawing.Point(200, 198);
             this.comboBox5.Name = "comboBox5";
             this.comboBox5.Size = new System.Drawing.Size(155, 21);
@@ -318,17 +321,6 @@
             this.label22.Text = "label22";
             this.label22.Click += new System.EventHandler(this.label22_Click);
             // 
-            // label20
-            // 
-            this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(255, 18);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(48, 13);
-            this.label20.TabIndex = 22;
-            this.label20.Text = "label20";
-            // 
             // label17
             // 
             this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -384,10 +376,12 @@
             // 
             // textBox4
             // 
+            this.textBox4.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.textBox4.Location = new System.Drawing.Point(94, 91);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(155, 20);
             this.textBox4.TabIndex = 30;
+            this.textBox4.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
             // 
             // label14
             // 
@@ -473,12 +467,14 @@
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(9, 41);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(53, 13);
+            this.label12.Size = new System.Drawing.Size(64, 13);
             this.label12.TabIndex = 8;
-            this.label12.Text = "Sales No:";
+            this.label12.Text = "Receipt No:";
             // 
             // dataGridView2
             // 
+            this.dataGridView2.AllowUserToAddRows = false;
+            this.dataGridView2.AllowUserToDeleteRows = false;
             this.dataGridView2.AllowUserToOrderColumns = true;
             this.dataGridView2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
@@ -487,38 +483,16 @@
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.receiptItem,
+            this.recieptSize,
             this.receiptPrice,
             this.receiptQuantity,
             this.receiptTotal});
             this.dataGridView2.Location = new System.Drawing.Point(10, 131);
             this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.ReadOnly = true;
             this.dataGridView2.RowHeadersVisible = false;
             this.dataGridView2.Size = new System.Drawing.Size(439, 273);
             this.dataGridView2.TabIndex = 0;
-            // 
-            // receiptItem
-            // 
-            this.receiptItem.HeaderText = "Item";
-            this.receiptItem.Name = "receiptItem";
-            this.receiptItem.ReadOnly = true;
-            // 
-            // receiptPrice
-            // 
-            this.receiptPrice.HeaderText = "Price";
-            this.receiptPrice.Name = "receiptPrice";
-            this.receiptPrice.ReadOnly = true;
-            // 
-            // receiptQuantity
-            // 
-            this.receiptQuantity.HeaderText = "Quantity";
-            this.receiptQuantity.Name = "receiptQuantity";
-            this.receiptQuantity.ReadOnly = true;
-            // 
-            // receiptTotal
-            // 
-            this.receiptTotal.HeaderText = "Total";
-            this.receiptTotal.Name = "receiptTotal";
-            this.receiptTotal.ReadOnly = true;
             // 
             // tabPage2
             // 
@@ -726,6 +700,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(110, 459);
             this.listBox1.TabIndex = 9;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -936,17 +911,6 @@
             this.PhoneNum.HeaderText = "PhoneNum";
             this.PhoneNum.Name = "PhoneNum";
             // 
-            // linkLabel1
-            // 
-            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(1284, 28);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(40, 13);
-            this.linkLabel1.TabIndex = 2;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Logout";
-            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1071,28 +1035,76 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // bindingSource1
-            // 
-            this.bindingSource1.CurrentChanged += new System.EventHandler(this.bindingSource1_CurrentChanged);
-            // 
             // dateTime
             // 
             this.dateTime.Tick += new System.EventHandler(this.dateTime_Tick);
             // 
             // timerDataRefresh
             // 
-            this.timerDataRefresh.Interval = 5000;
+            this.timerDataRefresh.Interval = 300000;
             this.timerDataRefresh.Tick += new System.EventHandler(this.timerDataRefresh_Tick);
             // 
             // lblTime
             // 
             this.lblTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTime.AutoSize = true;
-            this.lblTime.Location = new System.Drawing.Point(1183, 44);
+            this.lblTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTime.Location = new System.Drawing.Point(1038, 28);
             this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(35, 13);
+            this.lblTime.Size = new System.Drawing.Size(70, 25);
             this.lblTime.TabIndex = 7;
             this.lblTime.Text = "label8";
+            // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
+            this.button2.Location = new System.Drawing.Point(1284, 27);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(44, 56);
+            this.button2.TabIndex = 8;
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // receiptItem
+            // 
+            this.receiptItem.HeaderText = "Item";
+            this.receiptItem.Name = "receiptItem";
+            this.receiptItem.ReadOnly = true;
+            // 
+            // recieptSize
+            // 
+            this.recieptSize.HeaderText = "Size";
+            this.recieptSize.Name = "recieptSize";
+            this.recieptSize.ReadOnly = true;
+            // 
+            // receiptPrice
+            // 
+            this.receiptPrice.HeaderText = "Price";
+            this.receiptPrice.Name = "receiptPrice";
+            this.receiptPrice.ReadOnly = true;
+            // 
+            // receiptQuantity
+            // 
+            this.receiptQuantity.HeaderText = "Quantity";
+            this.receiptQuantity.Name = "receiptQuantity";
+            this.receiptQuantity.ReadOnly = true;
+            // 
+            // receiptTotal
+            // 
+            this.receiptTotal.HeaderText = "Total";
+            this.receiptTotal.Name = "receiptTotal";
+            this.receiptTotal.ReadOnly = true;
+            // 
+            // cueTextBox5
+            // 
+            this.cueTextBox5.Cue = "Enter Discount";
+            this.cueTextBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cueTextBox5.Location = new System.Drawing.Point(200, 11);
+            this.cueTextBox5.Name = "cueTextBox5";
+            this.cueTextBox5.Size = new System.Drawing.Size(155, 29);
+            this.cueTextBox5.TabIndex = 39;
+            this.cueTextBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardOnlyDecimals);
             // 
             // cueTextBox4
             // 
@@ -1134,12 +1146,12 @@
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1340, 736);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.lblTime);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.mainTab);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Main";
@@ -1175,7 +1187,6 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1186,7 +1197,6 @@
         private System.Windows.Forms.TabControl mainTab;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
@@ -1211,7 +1221,6 @@
         private System.Windows.Forms.ToolStripMenuItem configToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem accountsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.ComboBox comboBox4;
@@ -1230,17 +1239,12 @@
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.DataGridView dataGridView3;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn receiptItem;
-        private System.Windows.Forms.DataGridViewTextBoxColumn receiptPrice;
-        private System.Windows.Forms.DataGridViewTextBoxColumn receiptQuantity;
-        private System.Windows.Forms.DataGridViewTextBoxColumn receiptTotal;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label20;
         private System.Windows.Forms.ComboBox comboBox5;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TabPage tabPage2;
@@ -1281,5 +1285,12 @@
         private System.Windows.Forms.Timer dateTime;
         private System.Windows.Forms.Timer timerDataRefresh;
         private System.Windows.Forms.Label lblTime;
+        private System.Windows.Forms.Button button2;
+        private CueTextBox cueTextBox5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn receiptItem;
+        private System.Windows.Forms.DataGridViewTextBoxColumn recieptSize;
+        private System.Windows.Forms.DataGridViewTextBoxColumn receiptPrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn receiptQuantity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn receiptTotal;
     }
 }
