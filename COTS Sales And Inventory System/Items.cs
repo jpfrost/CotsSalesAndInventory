@@ -244,9 +244,14 @@ namespace COTS_Sales_And_Inventory_System
         private void ProductIdKeyDownEnter(object sender, KeyEventArgs e)
         {
             if (e.KeyCode != Keys.Enter) return;
-            if (FindProductName().Length > 0)
+            if (FindProductName().Length <= 0) return;
+            try
             {
-                InsertProductName(FindProductName()[0]["item_Name"].ToString());
+                LoadItemData();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
             }
         }
 
@@ -314,7 +319,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void KeyboardValidInputs(object sender, KeyPressEventArgs e)
         {
-            if (Char.IsLetterOrDigit(e.KeyChar) || e.KeyChar == '\b')
+            if (Char.IsLetterOrDigit(e.KeyChar) || e.KeyChar == '\b' || e.KeyChar == Convert.ToChar((" ")))
             {
                 e.Handled = false;
             }
@@ -348,6 +353,66 @@ namespace COTS_Sales_And_Inventory_System
             }
         }
 
-        
+        private void LoadItemData()
+        {
+            var itemData= FindItem();
+            var itemSize = FindSizes();
+            FillForm(itemData,itemSize);
+        }
+
+        private void FillForm(DataRow[] itemData, DataRow[] itemSize)
+        {
+            cueTextBox2.Text = itemData[0]["Item_Name"].ToString();
+            SelectCategory(itemData);
+            FillSizeSelection(itemSize);
+
+        }
+
+        private void FillSizeSelection(DataRow[] itemSize)
+        {
+            ClearSizeSelection();
+            foreach (DataRow rowData in itemSize)
+            {
+                comboBox2.Items.Add(rowData["Size"]);
+            }
+            comboBox2.SelectedIndex = 0;
+        }
+
+        private void ClearSizeSelection()
+        {
+            comboBox2.Items.Clear();
+        }
+
+        private void SelectCategory(DataRow[] itemData)
+        {
+            var found = DatabaseConnection.DatabaseRecord.Tables["category"].Select("categoryID ='"
+                +itemData[0]["categoryID"]+"'");
+            comboBox1.SelectedItem = found[0]["categoryName"];
+        }
+
+        private DataRow[] FindSizes()
+        {
+            return DatabaseConnection.DatabaseRecord.Tables["size"].Select("ItemID ='"
+                +cueTextBox1.Text+"'");
+        }
+
+        private DataRow[] FindItem()
+        {
+            return DatabaseConnection.DatabaseRecord.Tables["Items"].Select("ItemID ='"
+                +cueTextBox1.Text+"'");
+        }
+
+        private void LoadSizeData(object sender, EventArgs e)
+        {
+           var found= FindSizeId();
+            cueTextBox3.Text = found[0]["Quantity"].ToString();
+            cueTextBox4.Text = found[0]["Price"].ToString();
+        }
+
+        private DataRow[] FindSizeId()
+        {
+            return DatabaseConnection.DatabaseRecord.Tables["size"].Select("ItemID ='"
+                +cueTextBox1.Text+"' and Size ='" +comboBox2.SelectedItem+"'");
+        }
     }
 }

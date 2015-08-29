@@ -26,3 +26,4 @@ C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory S
 C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS Sales And Inventory System.csproj.GenerateResource.Cache
 C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.Themes.resources
 C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.Items.resources
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.AddItemForSale.resources

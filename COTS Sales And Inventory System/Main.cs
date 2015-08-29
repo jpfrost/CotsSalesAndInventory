@@ -444,6 +444,92 @@ namespace COTS_Sales_And_Inventory_System
                 e.Handled = true;
             }
         }
+
+        
+
+        private void DragPaste(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(String)))
+                e.Effect = DragDropEffects.Copy;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        private void DragnDrop(object sender, DragEventArgs e)
+        {
+            // The mouse locations are relative to the screen, so they must be 
+            // converted to client coordinates.
+            Point clientPoint = dataGridView2.PointToClient(new Point(e.X, e.Y));
+
+            // If the drag operation was a copy then add the row to the other control.
+            if (e.Effect == DragDropEffects.Copy)
+            {
+                string cellvalue = e.Data.GetData(typeof(string)) as string;
+                var hittest = dataGridView2.HitTest(clientPoint.X, clientPoint.Y);
+                if (hittest.ColumnIndex != -1
+                    && hittest.RowIndex != -1)
+                    dataGridView2[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
+
+            }
+        }
+       
+
+        
+
+        private void MouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            dataGridView1.DoDragDrop(dataGridView1.CurrentCell.Value.ToString(), DragDropEffects.Copy);
+        }
+
+        private void DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = e.Data.GetDataPresent(DataFormats.Text) ? DragDropEffects.Copy : DragDropEffects.None;
+        }
+
+        private void DragDrop(object sender, DragEventArgs e)
+        {
+            textBox4.Text = e.Data.GetData(DataFormats.Text) as string;
+        }
+
+        
+
+        private void cueTextBox6_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                try
+                {
+                    FindProductName();
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                }
+            }
+        }
+
+        private void FindProductName()
+        {
+            var found = DatabaseConnection.DatabaseRecord.Tables["items"].Select("ItemID ='"
+                +cueTextBox6.Text+"'");
+            textBox4.Text= found[0]["Item_Name"].ToString();
+        }
+
+        private void ClearCueBox(object sender, EventArgs e)
+        {
+            ((TextBox) sender).Text = "";
+        }
+
+        private void DragAddItemPromt(object sender, DragEventArgs e)
+        {
+            AddSaleItem(e.Data.GetData(DataFormats.Text) as string);
+        }
+
+        private void AddSaleItem(string s)
+        {
+            var addItem = new AddItemForSale(s);
+            addItem.Show();
+        }
     }
 
     
