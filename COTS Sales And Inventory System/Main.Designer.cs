@@ -35,6 +35,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.mainTab = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.cueTextBox6 = new CueTextBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -60,10 +62,8 @@
             this.label13 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.receiptItem = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.recieptSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -131,6 +131,8 @@
             this.timerDataRefresh = new System.Windows.Forms.Timer(this.components);
             this.lblTime = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
             this.mainTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -174,6 +176,10 @@
             // 
             this.tabPage1.AllowDrop = true;
             this.tabPage1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.tabPage1.Controls.Add(this.button11);
+            this.tabPage1.Controls.Add(this.button4);
+            this.tabPage1.Controls.Add(this.textBox1);
+            this.tabPage1.Controls.Add(this.label8);
             this.tabPage1.Controls.Add(this.cueTextBox6);
             this.tabPage1.Controls.Add(this.numericUpDown1);
             this.tabPage1.Controls.Add(this.groupBox6);
@@ -183,10 +189,8 @@
             this.tabPage1.Controls.Add(this.label13);
             this.tabPage1.Controls.Add(this.label21);
             this.tabPage1.Controls.Add(this.label18);
-            this.tabPage1.Controls.Add(this.textBox3);
             this.tabPage1.Controls.Add(this.label16);
             this.tabPage1.Controls.Add(this.label15);
-            this.tabPage1.Controls.Add(this.label12);
             this.tabPage1.Controls.Add(this.dataGridView2);
             this.tabPage1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
@@ -196,10 +200,27 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Sales";
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(337, 34);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(87, 20);
+            this.textBox1.TabIndex = 35;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(297, 37);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(34, 13);
+            this.label8.TabIndex = 34;
+            this.label8.Text = "Price:";
+            // 
             // cueTextBox6
             // 
             this.cueTextBox6.Cue = "Use Barcode Here";
-            this.cueTextBox6.Location = new System.Drawing.Point(94, 65);
+            this.cueTextBox6.Location = new System.Drawing.Point(90, 34);
             this.cueTextBox6.Name = "cueTextBox6";
             this.cueTextBox6.Size = new System.Drawing.Size(155, 20);
             this.cueTextBox6.TabIndex = 33;
@@ -210,7 +231,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(337, 89);
+            this.numericUpDown1.Location = new System.Drawing.Point(337, 58);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(87, 20);
             this.numericUpDown1.TabIndex = 32;
@@ -412,18 +433,19 @@
             // 
             this.textBox4.AllowDrop = true;
             this.textBox4.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.textBox4.Location = new System.Drawing.Point(94, 91);
+            this.textBox4.Location = new System.Drawing.Point(90, 60);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(155, 20);
             this.textBox4.TabIndex = 30;
             this.textBox4.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
             this.textBox4.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDrop);
             this.textBox4.DragEnter += new System.Windows.Forms.DragEventHandler(this.DragEnter);
+            this.textBox4.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProductNameKeyDown);
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(9, 91);
+            this.label14.Location = new System.Drawing.Point(5, 60);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(78, 13);
             this.label14.TabIndex = 29;
@@ -432,15 +454,16 @@
             // comboBox3
             // 
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(337, 58);
+            this.comboBox3.Location = new System.Drawing.Point(90, 88);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(87, 21);
             this.comboBox3.TabIndex = 28;
+            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(284, 61);
+            this.label13.Location = new System.Drawing.Point(50, 91);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(30, 13);
             this.label13.TabIndex = 27;
@@ -465,18 +488,10 @@
             this.label18.TabIndex = 20;
             this.label18.Text = "Cashier";
             // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(93, 34);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(156, 20);
-            this.textBox3.TabIndex = 16;
-            // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(282, 91);
+            this.label16.Location = new System.Drawing.Point(282, 60);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(49, 13);
             this.label16.TabIndex = 12;
@@ -485,20 +500,11 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(9, 68);
+            this.label15.Location = new System.Drawing.Point(5, 37);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(75, 13);
             this.label15.TabIndex = 10;
             this.label15.Text = "Product Code:";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(9, 41);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(64, 13);
-            this.label12.TabIndex = 8;
-            this.label12.Text = "Receipt No:";
             // 
             // dataGridView2
             // 
@@ -1175,6 +1181,25 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(349, 86);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 36;
+            this.button4.Text = "Clear";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(268, 86);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(75, 23);
+            this.button11.TabIndex = 37;
+            this.button11.Text = "Add";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1191,12 +1216,14 @@
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.mainTab);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.KeyPreview = true;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sales and Inventory System";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.KillApplication);
             this.Load += new System.EventHandler(this.Main_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Main_KeyDown);
             this.mainTab.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -1238,8 +1265,6 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Button button6;
@@ -1329,5 +1354,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn receiptQuantity;
         private System.Windows.Forms.DataGridViewTextBoxColumn receiptTotal;
         private CueTextBox cueTextBox6;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button button4;
     }
 }

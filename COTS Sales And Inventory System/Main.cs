@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -430,7 +431,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void textBox4_TextChanged(object sender, EventArgs e)
         {
-
+            
         }
 
         private void KeyboardOnlyDecimals(object sender, KeyPressEventArgs e)
@@ -457,11 +458,10 @@ namespace COTS_Sales_And_Inventory_System
 
         private void DragnDrop(object sender, DragEventArgs e)
         {
-            // The mouse locations are relative to the screen, so they must be 
-            // converted to client coordinates.
+            
             Point clientPoint = dataGridView2.PointToClient(new Point(e.X, e.Y));
 
-            // If the drag operation was a copy then add the row to the other control.
+            
             if (e.Effect == DragDropEffects.Copy)
             {
                 string cellvalue = e.Data.GetData(typeof(string)) as string;
@@ -500,6 +500,8 @@ namespace COTS_Sales_And_Inventory_System
                 try
                 {
                     FindProductName();
+                    LoadProductInfo();
+                    
                 }
                 catch (Exception exception)
                 {
@@ -513,6 +515,7 @@ namespace COTS_Sales_And_Inventory_System
             var found = DatabaseConnection.DatabaseRecord.Tables["items"].Select("ItemID ='"
                 +cueTextBox6.Text+"'");
             textBox4.Text= found[0]["Item_Name"].ToString();
+            cueTextBox6.Text = "";
         }
 
         private void ClearCueBox(object sender, EventArgs e)
@@ -530,8 +533,141 @@ namespace COTS_Sales_And_Inventory_System
             var addItem = new AddItemForSale(s);
             addItem.Show();
         }
-    }
 
-    
+        private string recordedInput;
+        private Stopwatch timer = new Stopwatch();
+
+        
+
+        private void ReadKeyInput()
+        {
+            timer.Stop();
+            BeginInvoke(new Action(InsertToProductCode));
+            
+        }
+
+        private void InsertToProductCode()
+        {
+            if (timer.ElapsedMilliseconds<=70)
+            {
+                cueTextBox6.Text = recordedInput;
+            }
+            recordedInput = "";
+            timer.Reset();
+            
+        }
+
+        private void Main_KeyDown(object sender, KeyEventArgs e)
+        {
+            timer.Start();
+            if (e.KeyCode==Keys.Enter)
+            {
+                var x = Task.Run(() => { ReadKeyInput(); });
+            }
+            else
+            {
+                var keyConvert = new KeysConverter();
+                recordedInput += keyConvert.ConvertToString(e.KeyCode);
+            }
+        }
+
+        private void ProductNameKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode==Keys.Enter)
+            {
+                LoadProductInfo();
+            }
+        }
+
+
+
+        private void LoadProductInfo()
+        {
+            
+            var tablename = "items";
+            var query = "Item_Name ='" + textBox4.Text + "'";
+            var foundItemData= FindData(tablename,query);
+            var itemID = foundItemData[0]["ItemID"].ToString();
+            var foundItemSize = FindData("size","itemID ='"+itemID+"'");
+            InsertSizeListSalesComboBox(foundItemSize);
+            
+
+        }
+
+        private void InsertSizeListSalesComboBox(DataRow[] foundItemData)
+        {
+            comboBox3.Items.Clear();
+            foreach (DataRow row in foundItemData)
+            {
+                comboBox3.Items.Add(row["Size"]);
+            }
+            comboBox3.SelectedIndex = 0;
+        }
+
+        private DataRow[] FindData(string tablename, string query)
+        {
+            return DatabaseConnection.DatabaseRecord.Tables[tablename].Select(query);
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            InsertPrice();
+        }
+
+        private void InsertPrice()
+        {
+            
+            var query =
+                "select Price from Size inner join Items on " +
+                "Size.ItemID=items.ItemID where Item_Name ='" +
+                textBox4.Text + "' and Size='" +
+                comboBox3.SelectedItem+"'";
+            var productPrice = DatabaseConnection.GetCustomTable(query,"productPrice");
+            textBox1.Text = productPrice.Rows[0][0].ToString();
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                AddItemToGridView();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+        }
+
+        private void AddItemToGridView()
+        {
+            var row = FindifProductExistForSale() ?? dataGridView2.Rows.Add();
+                dataGridView2.Rows[row].Cells[0].Value = textBox4.Text;
+                dataGridView2.Rows[row].Cells[1].Value = comboBox3.SelectedItem;
+                dataGridView2.Rows[row].Cells[2].Value = textBox1.Text;
+                dataGridView2.Rows[row].Cells[3].Value =Convert.ToInt32(dataGridView2.Rows[row].Cells[3].Value)
+            + Convert.ToInt32(numericUpDown1.Text);
+                dataGridView2.Rows[row].Cells[4].Value = CountTotal(dataGridView2.Rows[row]);
+            
+        }
+
+        private int? FindifProductExistForSale()
+        {
+            foreach (DataGridViewRow row in dataGridView2.Rows)
+            {
+                if (row.Cells[0].Value != null && row.Cells[0].Value.Equals(textBox4.Text))
+                {
+                    return row.Index;
+                }
+            }
+            return null;
+        }
+
+        private double CountTotal(DataGridViewRow Row)
+        {
+            var price = Convert.ToDouble(Row.Cells[2].Value);
+            var quantity = Convert.ToInt32(Row.Cells[3].Value);
+            return price*quantity;
+        }
+    }
     }
 
