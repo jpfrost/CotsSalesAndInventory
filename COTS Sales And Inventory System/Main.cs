@@ -512,10 +512,17 @@ namespace COTS_Sales_And_Inventory_System
 
         private void FindProductName()
         {
-            var found = DatabaseConnection.DatabaseRecord.Tables["items"].Select("ItemID ='"
-                +cueTextBox6.Text+"'");
-            textBox4.Text= found[0]["Item_Name"].ToString();
-            cueTextBox6.Text = "";
+            try
+            {
+                var found = DatabaseConnection.DatabaseRecord.Tables["items"].Select("ItemID ='"
+                                                                                     +cueTextBox6.Text+"'");
+                textBox4.Text= found[0]["Item_Name"].ToString();
+                cueTextBox6.Text = "";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         private void ClearCueBox(object sender, EventArgs e)
@@ -550,7 +557,17 @@ namespace COTS_Sales_And_Inventory_System
         {
             if (timer.ElapsedMilliseconds<=70)
             {
-                cueTextBox6.Text = recordedInput;
+                try
+                {
+                    cueTextBox6.Text = recordedInput;
+                    FindProductName();
+                    LoadProductInfo();
+                    AddItemToGridView();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
             recordedInput = "";
             timer.Reset();
@@ -583,13 +600,20 @@ namespace COTS_Sales_And_Inventory_System
 
         private void LoadProductInfo()
         {
-            
-            var tablename = "items";
-            var query = "Item_Name ='" + textBox4.Text + "'";
-            var foundItemData= FindData(tablename,query);
-            var itemID = foundItemData[0]["ItemID"].ToString();
-            var foundItemSize = FindData("size","itemID ='"+itemID+"'");
-            InsertSizeListSalesComboBox(foundItemSize);
+
+            try
+            {
+                var tablename = "items";
+                var query = "Item_Name ='" + textBox4.Text + "'";
+                var foundItemData= FindData(tablename,query);
+                var itemID = foundItemData[0]["ItemID"].ToString();
+                var foundItemSize = FindData("size","itemID ='"+itemID+"'");
+                InsertSizeListSalesComboBox(foundItemSize);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             
 
         }
@@ -654,7 +678,8 @@ namespace COTS_Sales_And_Inventory_System
         {
             foreach (DataGridViewRow row in dataGridView2.Rows)
             {
-                if (row.Cells[0].Value != null && row.Cells[0].Value.Equals(textBox4.Text))
+                if (row.Cells[0].Value != null && row.Cells[0].Value.Equals(textBox4.Text)
+                    && row.Cells[1].Value != null && row.Cells[1].Value.Equals(comboBox3.SelectedItem))
                 {
                     return row.Index;
                 }
@@ -667,6 +692,49 @@ namespace COTS_Sales_And_Inventory_System
             var price = Convert.ToDouble(Row.Cells[2].Value);
             var quantity = Convert.ToInt32(Row.Cells[3].Value);
             return price*quantity;
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.F1)
+            {
+                cueTextBox6.Focus();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void CountTotal(object sender, DataGridViewCellEventArgs e)
+        {
+            CountOverAllTotal();
+        }
+
+        private void CountOverAllTotal()
+        {
+            double total = 0;
+            foreach (DataGridViewRow row in dataGridView2.Rows)
+            {
+                total += Convert.ToDouble(row.Cells[4].Value);
+            }
+
+            textBox6.Text = total.ToString();
+        }
+
+        private void textBox11_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                CountChange();
+            }
+        }
+
+        private void CountChange()
+        {
+            double total, payment, change;
+            total = Convert.ToDouble(textBox6.Text);
+            payment = Convert.ToDouble(textBox11.Text);
+            change = payment - total;
+            textBox2.Text = change.ToString();
         }
     }
     }
