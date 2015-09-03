@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BarcodeLib">
+      <HintPath>..\..\..\..\..\Downloads\barcode_bin\BarcodeLib.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -57,6 +60,12 @@
     <Compile Include="AddUser.Designer.cs">
       <DependentUpon>AddUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Add_Orders.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Add_Orders.Designer.cs">
+      <DependentUpon>Add_Orders.cs</DependentUpon>
+    </Compile>
     <Compile Include="Administrators.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,7 +83,7 @@
       <DependentUpon>ForgotPass.cs</DependentUpon>
     </Compile>
     <Compile Include="Items.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Items.Designer.cs">
       <DependentUpon>Items.cs</DependentUpon>
@@ -91,6 +100,12 @@
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="Manage_Orders.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Manage_Orders.Designer.cs">
+      <DependentUpon>Manage_Orders.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Themes.cs">
@@ -104,6 +119,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddUser.resx">
       <DependentUpon>AddUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Add_Orders.resx">
+      <DependentUpon>Add_Orders.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Administrators.resx">
       <DependentUpon>Administrators.cs</DependentUpon>
@@ -119,6 +137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Manage_Orders.resx">
+      <DependentUpon>Manage_Orders.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

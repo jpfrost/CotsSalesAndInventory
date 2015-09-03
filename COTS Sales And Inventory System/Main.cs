@@ -389,9 +389,6 @@ namespace COTS_Sales_And_Inventory_System
         private void timerDataRefresh_Tick(object sender, EventArgs e)
         {
             LoadFromDatabase();
-            
-            FilterInvetoryByCategory();
-           
         }
 
         private void AddAutoCompleteForSalesTextBox()
@@ -501,6 +498,7 @@ namespace COTS_Sales_And_Inventory_System
                 {
                     FindProductName();
                     LoadProductInfo();
+                    /*textBox4.Clear();*/
                     
                 }
                 catch (Exception exception)
@@ -555,7 +553,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void InsertToProductCode()
         {
-            if (timer.ElapsedMilliseconds<=70)
+            if (timer.ElapsedMilliseconds<=70 && !textBox4.Text.Equals(""))
             {
                 try
                 {
@@ -563,6 +561,9 @@ namespace COTS_Sales_And_Inventory_System
                     FindProductName();
                     LoadProductInfo();
                     AddItemToGridView();
+                    /*textBox4.Clear();
+                    comboBox3.Items.Clear();*/
+
                 }
                 catch (Exception e)
                 {
@@ -654,7 +655,10 @@ namespace COTS_Sales_And_Inventory_System
         {
             try
             {
-                AddItemToGridView();
+                if (!textBox4.Text.Equals(""))
+                {
+                    AddItemToGridView();
+                }
             }
             catch (Exception exception)
             {
@@ -701,6 +705,10 @@ namespace COTS_Sales_And_Inventory_System
                 cueTextBox6.Focus();
                 return true;
             }
+            else if (keyData == Keys.F5)
+            {
+                LoadFromDatabase();
+            }
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
@@ -735,6 +743,129 @@ namespace COTS_Sales_And_Inventory_System
             payment = Convert.ToDouble(textBox11.Text);
             change = payment - total;
             textBox2.Text = change.ToString();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            SellItems();
+        }
+
+        private void SellItems()
+        {
+            RecordPurchasedItems();
+        }
+
+        private void RecordPurchasedItems()
+        {
+            int receiptID= CreateReceipt();
+            int dateID = CreateDateId();
+            var newReceiptRow= DatabaseConnection.DatabaseRecord.Tables["receiptID"].NewRow();
+            newReceiptRow["receiptID"] = receiptID;
+            newReceiptRow["dateID"] = dateID;
+            DatabaseConnection.DatabaseRecord.Tables["receiptID"].Rows.Add(newReceiptRow);
+            for (int index = 0; index < dataGridView2.Rows.Count-1; index++)
+            {
+                DataGridViewRow row = dataGridView2.Rows[index];
+                int salesId = CreateSalesID();
+                int sizeId = GetSizeID(row);
+                var newSales = DatabaseConnection.DatabaseRecord.Tables["sale"].NewRow();
+                newSales["saleID"] = salesId;
+                newSales["receiptID"] = receiptID;
+                newSales["count"] = Convert.ToInt32(row.Cells[3].Value);
+                newSales["SizeID"] = sizeId;
+                DatabaseConnection.DatabaseRecord.Tables["sale"].Rows.Add(newSales);
+                LessInSales(sizeId, Convert.ToInt32(row.Cells[3].Value));
+                DatabaseConnection.UploadChanges();
+            }
+            MessageBox.Show("transaction complete");
+            ClearSales();
+        }
+
+        private void ClearSales()
+        {
+            foreach (var control in tabPage1.Controls)
+            {
+                if (control is TextBox)
+                {
+                    ((TextBox)control).Clear();
+                }
+                if (control is ComboBox)
+                {
+                    ((ComboBox)control).Items.Clear();
+                }
+                if (control is CueTextBox)
+                {
+                    ((CueTextBox)control).Clear();
+                }
+                
+            }
+        }
+
+        private void LessInSales(int sizeId, int count)
+        {
+            var found = DatabaseConnection.DatabaseRecord.Tables["Size"].Select("SizeID ='"
+                +sizeId+"'");
+            var quantity = Convert.ToInt32(found[0]["quantity"].ToString());
+            quantity -= count;
+            found[0]["quantity"] = quantity.ToString();
+            DatabaseConnection.UploadChanges();
+        }
+
+        private int GetSizeID(DataGridViewRow row)
+        {
+            var found = DatabaseConnection.DatabaseRecord.Tables["items"].Select("Item_Name ='"
+                +row.Cells[0].Value+"'");
+            var itemID = found[0]["itemID"].ToString();
+            found = DatabaseConnection.DatabaseRecord.Tables["size"].Select("ItemID ='" +
+            itemID + "' and Size ='" + row.Cells[1].Value+"'");
+            return Convert.ToInt32(found[0]["SizeID"]);
+        }
+
+        private int CreateSalesID()
+        {
+            var x = GetCurrentCount("sale","saleID");
+            return x;
+        }
+
+        private int CreateDateId()
+        {
+            var x = GetCurrentCount("date","dateID");
+            var dateTable = DatabaseConnection.DatabaseRecord.Tables["date"].NewRow();
+            dateTable["DateID"] = x;
+            dateTable["Date"] = DateTime.Now;
+            DatabaseConnection.DatabaseRecord.Tables["date"].Rows.Add(dateTable);
+            DatabaseConnection.UploadChanges();
+            return x;
+        }
+
+        private int CreateReceipt()
+        {
+            var x = GetCurrentCount("receiptid","receiptid");
+            return x;
+        }
+
+        private void label24_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabPage2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DataGridDelete(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                dataGridView2.Rows.RemoveAt(e.RowIndex);
+            }
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            var manageOrder = new Manage_Orders();
+            manageOrder.Show();
         }
     }
     }

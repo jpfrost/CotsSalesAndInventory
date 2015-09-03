@@ -100,7 +100,7 @@
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(134, 23);
             this.button5.TabIndex = 10;
-            this.button5.Text = "Delete Product Size";
+            this.button5.Text = "Disable Product Size";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
@@ -120,7 +120,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(149, 23);
             this.button3.TabIndex = 8;
-            this.button3.Text = "Delete Item";
+            this.button3.Text = "Disable Product";
             this.button3.UseVisualStyleBackColor = true;
             // 
             // button4
