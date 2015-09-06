@@ -28,18 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.cueTextBox1 = new CueTextBox();
             this.Orders = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.orderProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.orderProductQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.orderDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.orderDistro = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.cueTextBox1 = new CueTextBox();
+            this.RefreshData = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -83,14 +85,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Orders Pending";
             // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(151, 61);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(98, 238);
-            this.listBox1.TabIndex = 4;
-            // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
@@ -110,14 +104,6 @@
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.Size = new System.Drawing.Size(347, 223);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // cueTextBox1
-            // 
-            this.cueTextBox1.Cue = "Search Orders Here";
-            this.cueTextBox1.Location = new System.Drawing.Point(151, 28);
-            this.cueTextBox1.Name = "cueTextBox1";
-            this.cueTextBox1.Size = new System.Drawing.Size(201, 20);
-            this.cueTextBox1.TabIndex = 5;
             // 
             // Orders
             // 
@@ -148,6 +134,27 @@
             this.orderDistro.HeaderText = "Distro";
             this.orderDistro.Name = "orderDistro";
             this.orderDistro.ReadOnly = true;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(151, 61);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(98, 238);
+            this.listBox1.TabIndex = 4;
+            // 
+            // cueTextBox1
+            // 
+            this.cueTextBox1.Cue = "Search Orders Here";
+            this.cueTextBox1.Location = new System.Drawing.Point(151, 28);
+            this.cueTextBox1.Name = "cueTextBox1";
+            this.cueTextBox1.Size = new System.Drawing.Size(201, 20);
+            this.cueTextBox1.TabIndex = 5;
+            // 
+            // RefreshData
+            // 
+            this.RefreshData.Interval = 10000;
+            this.RefreshData.Tick += new System.EventHandler(this.RefreshData_Tick);
             // 
             // Manage_Orders
             // 
@@ -189,5 +196,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn orderProductQty;
         private System.Windows.Forms.DataGridViewTextBoxColumn orderDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn orderDistro;
+        private System.Windows.Forms.Timer RefreshData;
     }
 }

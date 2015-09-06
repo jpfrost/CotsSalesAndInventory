@@ -827,7 +827,7 @@ namespace COTS_Sales_And_Inventory_System
             return x;
         }
 
-        private int CreateDateId()
+        public int CreateDateId()
         {
             var x = GetCurrentCount("date","dateID");
             var dateTable = DatabaseConnection.DatabaseRecord.Tables["date"].NewRow();
@@ -866,6 +866,16 @@ namespace COTS_Sales_And_Inventory_System
         {
             var manageOrder = new Manage_Orders();
             manageOrder.Show();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            SetItemFormVisibility();
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            SetItemFormVisibility();
         }
     }
     }

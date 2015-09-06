@@ -39,5 +39,21 @@ namespace COTS_Sales_And_Inventory_System
             var add_Order = new Add_Orders();
             add_Order.Show();
         }
+
+        private void RefreshData_Tick(object sender, EventArgs e)
+        {
+            RefreshGrid();
+            RefreshFilters();
+        }
+
+        private void RefreshFilters()
+        {
+            
+        }
+
+        private void RefreshGrid()
+        {
+            
+        }
     }
 }

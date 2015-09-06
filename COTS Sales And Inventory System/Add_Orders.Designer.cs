@@ -30,6 +30,11 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.orderProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.orderproductSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.orderProductQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.orderDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.orderDistro = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.cueTextBox3 = new CueTextBox();
             this.cueTextBox4 = new CueTextBox();
@@ -38,11 +43,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.orderProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderproductSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderProductQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderDistro = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -78,6 +78,36 @@
             this.dataGridView1.Size = new System.Drawing.Size(347, 223);
             this.dataGridView1.TabIndex = 0;
             // 
+            // orderProductName
+            // 
+            this.orderProductName.HeaderText = "Product Name";
+            this.orderProductName.Name = "orderProductName";
+            this.orderProductName.ReadOnly = true;
+            // 
+            // orderproductSize
+            // 
+            this.orderproductSize.HeaderText = "Product Size";
+            this.orderproductSize.Name = "orderproductSize";
+            this.orderproductSize.ReadOnly = true;
+            // 
+            // orderProductQty
+            // 
+            this.orderProductQty.HeaderText = "Quantity";
+            this.orderProductQty.Name = "orderProductQty";
+            this.orderProductQty.ReadOnly = true;
+            // 
+            // orderDate
+            // 
+            this.orderDate.HeaderText = "Date";
+            this.orderDate.Name = "orderDate";
+            this.orderDate.ReadOnly = true;
+            // 
+            // orderDistro
+            // 
+            this.orderDistro.HeaderText = "Distro";
+            this.orderDistro.Name = "orderDistro";
+            this.orderDistro.ReadOnly = true;
+            // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
@@ -101,6 +131,7 @@
             this.cueTextBox4.Name = "cueTextBox4";
             this.cueTextBox4.Size = new System.Drawing.Size(157, 20);
             this.cueTextBox4.TabIndex = 8;
+            this.cueTextBox4.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cueTextBox4_KeyDown);
             // 
             // button1
             // 
@@ -146,36 +177,6 @@
             this.numericUpDown1.Size = new System.Drawing.Size(156, 20);
             this.numericUpDown1.TabIndex = 14;
             // 
-            // orderProductName
-            // 
-            this.orderProductName.HeaderText = "Product Name";
-            this.orderProductName.Name = "orderProductName";
-            this.orderProductName.ReadOnly = true;
-            // 
-            // orderproductSize
-            // 
-            this.orderproductSize.HeaderText = "Product Size";
-            this.orderproductSize.Name = "orderproductSize";
-            this.orderproductSize.ReadOnly = true;
-            // 
-            // orderProductQty
-            // 
-            this.orderProductQty.HeaderText = "Quantity";
-            this.orderProductQty.Name = "orderProductQty";
-            this.orderProductQty.ReadOnly = true;
-            // 
-            // orderDate
-            // 
-            this.orderDate.HeaderText = "Date";
-            this.orderDate.Name = "orderDate";
-            this.orderDate.ReadOnly = true;
-            // 
-            // orderDistro
-            // 
-            this.orderDistro.HeaderText = "Distro";
-            this.orderDistro.Name = "orderDistro";
-            this.orderDistro.ReadOnly = true;
-            // 
             // Add_Orders
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -194,6 +195,7 @@
             this.Name = "Add_Orders";
             this.Text = "Add_Orders";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.Add_Orders_Load);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
