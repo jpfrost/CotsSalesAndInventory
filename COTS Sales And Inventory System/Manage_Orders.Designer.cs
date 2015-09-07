@@ -34,11 +34,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Orders = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderProductQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderDistro = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.cueTextBox1 = new CueTextBox();
             this.RefreshData = new System.Windows.Forms.Timer(this.components);
@@ -64,6 +59,7 @@
             this.button2.TabIndex = 1;
             this.button2.Text = "Receive Orders";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
@@ -91,12 +87,6 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToOrderColumns = true;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Orders,
-            this.orderProductName,
-            this.orderProductQty,
-            this.orderDate,
-            this.orderDistro});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(3, 16);
             this.dataGridView1.Name = "dataGridView1";
@@ -104,36 +94,6 @@
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.Size = new System.Drawing.Size(347, 223);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // Orders
-            // 
-            this.Orders.HeaderText = "Order ID";
-            this.Orders.Name = "Orders";
-            this.Orders.ReadOnly = true;
-            // 
-            // orderProductName
-            // 
-            this.orderProductName.HeaderText = "Product Name";
-            this.orderProductName.Name = "orderProductName";
-            this.orderProductName.ReadOnly = true;
-            // 
-            // orderProductQty
-            // 
-            this.orderProductQty.HeaderText = "Quantity";
-            this.orderProductQty.Name = "orderProductQty";
-            this.orderProductQty.ReadOnly = true;
-            // 
-            // orderDate
-            // 
-            this.orderDate.HeaderText = "Date";
-            this.orderDate.Name = "orderDate";
-            this.orderDate.ReadOnly = true;
-            // 
-            // orderDistro
-            // 
-            this.orderDistro.HeaderText = "Distro";
-            this.orderDistro.Name = "orderDistro";
-            this.orderDistro.ReadOnly = true;
             // 
             // listBox1
             // 
@@ -153,7 +113,8 @@
             // 
             // RefreshData
             // 
-            this.RefreshData.Interval = 10000;
+            this.RefreshData.Enabled = true;
+            this.RefreshData.Interval = 300000;
             this.RefreshData.Tick += new System.EventHandler(this.RefreshData_Tick);
             // 
             // Manage_Orders
@@ -191,11 +152,6 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ListBox listBox1;
         private CueTextBox cueTextBox1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Orders;
-        private System.Windows.Forms.DataGridViewTextBoxColumn orderProductName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn orderProductQty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn orderDate;
-        private System.Windows.Forms.DataGridViewTextBoxColumn orderDistro;
         private System.Windows.Forms.Timer RefreshData;
     }
 }
