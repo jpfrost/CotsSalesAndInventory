@@ -54,10 +54,17 @@ namespace COTS_Sales_And_Inventory_System
 
         private void RefreshData()
         {
-            ClearCategory();
-            FillCategoryListBox();
-            FillCategoryComboBox();
-            LoadFromDatabase();
+            try
+            {
+                ClearCategory();
+                FillCategoryListBox();
+                FillCategoryComboBox();
+                LoadFromDatabase();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         private void LoadFromDatabase()
