@@ -33,27 +33,13 @@ namespace COTS_Sales_And_Inventory_System
             for (var i = 0; i < dataGridView1.Rows.Count; i++)
             {
                 var OrderID = GetCurrentCount("orders", "OrderID");
-                var distroId = CheckifDistroExist(dataGridView1.Rows[i].Cells[3].Value.ToString());
+                var distroId = CheckifDistroExist(dataGridView1.Rows[i].Cells[4].Value.ToString());
                 CheckIfProductExist(dataGridView1.Rows[i].Cells[0].Value.ToString(),
                     dataGridView1.Rows[i].Cells[1].Value.ToString());
                 var sizeId = GetSizeID(dataGridView1.Rows[i].Cells[0].Value.ToString(),
                     dataGridView1.Rows[i].Cells[1].Value.ToString());
-                var orderQty = Convert.ToInt32(dataGridView1.Rows[i].Cells[2].Value);
-                CreateOrder(orderListID,dateID,OrderID,distroId,sizeId,orderQty);
+                
             }
-        }
-
-        private void CreateOrder(int orderListId, int dateId, int orderId, int distroId, int sizeId, int orderQty)
-        {
-            var newOrderlist= DatabaseConnection.DatabaseRecord.Tables["orders"].NewRow();
-            newOrderlist["orderid"] = orderId;
-            newOrderlist["dateID"] = dateId;
-            newOrderlist["distroID"] = distroId;
-            newOrderlist["idorderlist"] = orderListId;
-            newOrderlist["sizeId"] = sizeId;
-            newOrderlist["orderQty"] = orderQty;
-            DatabaseConnection.DatabaseRecord.Tables["orders"].Rows.Add(newOrderlist);
-            DatabaseConnection.UploadChanges();
         }
 
         private int GetSizeID(string productName, string size)
@@ -173,17 +159,18 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AddOrdertoGrid();
+            CreateOrder();
         }
 
-        public void AddOrdertoGrid()
+        public void CreateOrder()
         {
            
             var newOrder = FindifProductExistForSale() ?? dataGridView1.Rows.Add();
             dataGridView1.Rows[newOrder].Cells[0].Value = cueTextBox3.Text;
             dataGridView1.Rows[newOrder].Cells[1].Value = comboBox1.Text;
             dataGridView1.Rows[newOrder].Cells[2].Value = numericUpDown1.Text;
-            dataGridView1.Rows[newOrder].Cells[3].Value = comboBox2.Text;
+            dataGridView1.Rows[newOrder].Cells[3].Value = DateTime.Now.ToString("dd-MM-yyyy");
+            dataGridView1.Rows[newOrder].Cells[4].Value = comboBox2.Text;
             ClearFields();
 
         }

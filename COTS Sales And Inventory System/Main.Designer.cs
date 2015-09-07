@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.mainTab = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button12 = new System.Windows.Forms.Button();
@@ -1214,12 +1214,10 @@
             // 
             // dateTime
             // 
-            this.dateTime.Enabled = true;
             this.dateTime.Tick += new System.EventHandler(this.dateTime_Tick);
             // 
             // timerDataRefresh
             // 
-            this.timerDataRefresh.Enabled = true;
             this.timerDataRefresh.Interval = 30000;
             this.timerDataRefresh.Tick += new System.EventHandler(this.timerDataRefresh_Tick);
             // 
