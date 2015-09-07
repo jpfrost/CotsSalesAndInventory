@@ -55,5 +55,10 @@ namespace COTS_Sales_And_Inventory_System
         {
             
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
