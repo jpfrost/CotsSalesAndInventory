@@ -30,3 +30,8 @@ C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory S
 C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS Sales And Inventory System.csproj.GenerateResource.Cache
 C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS Sales And Inventory System.exe
 C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS Sales And Inventory System.pdb
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\Interop.PAGEOBJECTMODELLib.dll
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\Interop.PROMPTINGLib.dll
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\Interop.SAXSERIALIZELib.dll
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS Sales And Inventory System.csproj.ResolveComReference.cache
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.ReceiveOrder.resources
