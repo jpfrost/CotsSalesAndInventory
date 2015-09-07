@@ -36,14 +36,14 @@
             this.button3 = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.cueTextBox3 = new CueTextBox();
-            this.cueTextBox4 = new CueTextBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.orderProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.orderproductSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.orderProductQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.orderDistro = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.orderCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.cueTextBox3 = new CueTextBox();
+            this.cueTextBox4 = new CueTextBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -55,7 +55,7 @@
             this.groupBox1.Location = new System.Drawing.Point(180, 33);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(353, 242);
-            this.groupBox1.TabIndex = 8;
+            this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Orders";
             // 
@@ -68,9 +68,9 @@
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.orderProductName,
             this.orderproductSize,
-            this.orderCategory,
             this.orderProductQty,
-            this.orderDistro});
+            this.orderDistro,
+            this.orderCategory});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(3, 16);
             this.dataGridView1.Name = "dataGridView1";
@@ -85,14 +85,15 @@
             this.comboBox1.Location = new System.Drawing.Point(12, 128);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(157, 21);
-            this.comboBox1.TabIndex = 2;
+            this.comboBox1.TabIndex = 3;
+            this.comboBox1.Text = "Size";
             // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(12, 208);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 5;
+            this.button1.TabIndex = 6;
             this.button1.Text = "Add";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -102,7 +103,7 @@
             this.button2.Location = new System.Drawing.Point(94, 208);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 6;
+            this.button2.TabIndex = 7;
             this.button2.Text = "Remove";
             this.button2.UseVisualStyleBackColor = true;
             // 
@@ -111,7 +112,7 @@
             this.button3.Location = new System.Drawing.Point(94, 252);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 7;
+            this.button3.TabIndex = 8;
             this.button3.Text = "Close";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -122,7 +123,8 @@
             this.comboBox2.Location = new System.Drawing.Point(12, 181);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(157, 21);
-            this.comboBox2.TabIndex = 4;
+            this.comboBox2.TabIndex = 5;
+            this.comboBox2.Text = "Distributor";
             // 
             // numericUpDown1
             // 
@@ -139,12 +141,51 @@
             0});
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(156, 20);
-            this.numericUpDown1.TabIndex = 3;
+            this.numericUpDown1.TabIndex = 4;
             this.numericUpDown1.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
+            // 
+            // orderProductName
+            // 
+            this.orderProductName.HeaderText = "Product Name";
+            this.orderProductName.Name = "orderProductName";
+            this.orderProductName.ReadOnly = true;
+            // 
+            // orderproductSize
+            // 
+            this.orderproductSize.HeaderText = "Product Size";
+            this.orderproductSize.Name = "orderproductSize";
+            this.orderproductSize.ReadOnly = true;
+            // 
+            // orderProductQty
+            // 
+            this.orderProductQty.HeaderText = "Quantity";
+            this.orderProductQty.Name = "orderProductQty";
+            this.orderProductQty.ReadOnly = true;
+            // 
+            // orderDistro
+            // 
+            this.orderDistro.HeaderText = "Distro";
+            this.orderDistro.Name = "orderDistro";
+            this.orderDistro.ReadOnly = true;
+            // 
+            // orderCategory
+            // 
+            this.orderCategory.HeaderText = "Category";
+            this.orderCategory.Name = "orderCategory";
+            this.orderCategory.ReadOnly = true;
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(13, 102);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(156, 21);
+            this.comboBox3.TabIndex = 2;
+            this.comboBox3.Text = "Category";
             // 
             // cueTextBox3
             // 
@@ -162,44 +203,6 @@
             this.cueTextBox4.Size = new System.Drawing.Size(157, 20);
             this.cueTextBox4.TabIndex = 0;
             this.cueTextBox4.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cueTextBox4_KeyDown);
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(12, 101);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(157, 21);
-            this.comboBox3.TabIndex = 9;
-            // 
-            // orderProductName
-            // 
-            this.orderProductName.HeaderText = "Product Name";
-            this.orderProductName.Name = "orderProductName";
-            this.orderProductName.ReadOnly = true;
-            // 
-            // orderproductSize
-            // 
-            this.orderproductSize.HeaderText = "Product Size";
-            this.orderproductSize.Name = "orderproductSize";
-            this.orderproductSize.ReadOnly = true;
-            // 
-            // orderCategory
-            // 
-            this.orderCategory.HeaderText = "Category";
-            this.orderCategory.Name = "orderCategory";
-            this.orderCategory.ReadOnly = true;
-            // 
-            // orderProductQty
-            // 
-            this.orderProductQty.HeaderText = "Quantity";
-            this.orderProductQty.Name = "orderProductQty";
-            this.orderProductQty.ReadOnly = true;
-            // 
-            // orderDistro
-            // 
-            this.orderDistro.HeaderText = "Distro";
-            this.orderDistro.Name = "orderDistro";
-            this.orderDistro.ReadOnly = true;
             // 
             // Add_Orders
             // 
@@ -243,9 +246,9 @@
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.DataGridViewTextBoxColumn orderProductName;
         private System.Windows.Forms.DataGridViewTextBoxColumn orderproductSize;
-        private System.Windows.Forms.DataGridViewTextBoxColumn orderCategory;
         private System.Windows.Forms.DataGridViewTextBoxColumn orderProductQty;
         private System.Windows.Forms.DataGridViewTextBoxColumn orderDistro;
+        private System.Windows.Forms.DataGridViewTextBoxColumn orderCategory;
         private System.Windows.Forms.ComboBox comboBox3;
     }
 }

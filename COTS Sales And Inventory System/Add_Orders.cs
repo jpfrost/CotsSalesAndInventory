@@ -20,7 +20,9 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button3_Click(object sender, EventArgs e)
         {
-            SaveOrdersToDatabase();
+            var task = Task.Run(() => SaveOrdersToDatabase());
+            task.Wait();
+            MessageBox.Show("Orders Created");
             this.Dispose();
         }
 
@@ -32,15 +34,37 @@ namespace COTS_Sales_And_Inventory_System
             CreateOrderDate(dateID);
             for (var i = 0; i < dataGridView1.Rows.Count; i++)
             {
+                var categoryiD = GetCategoryID(dataGridView1.Rows[i].Cells[4].Value.ToString());
                 var OrderID = GetCurrentCount("orders", "OrderID");
                 var distroId = CheckifDistroExist(dataGridView1.Rows[i].Cells[3].Value.ToString());
                 CheckIfProductExist(dataGridView1.Rows[i].Cells[0].Value.ToString(),
-                    dataGridView1.Rows[i].Cells[1].Value.ToString());
+                    dataGridView1.Rows[i].Cells[1].Value.ToString(),categoryiD);
                 var sizeId = GetSizeID(dataGridView1.Rows[i].Cells[0].Value.ToString(),
                     dataGridView1.Rows[i].Cells[1].Value.ToString());
                 var orderQty = Convert.ToInt32(dataGridView1.Rows[i].Cells[2].Value);
                 CreateOrder(orderListID,dateID,OrderID,distroId,sizeId,orderQty);
             }
+        }
+
+        private int GetCategoryID(string category)
+        {
+            var found = DatabaseConnection.DatabaseRecord.Tables["category"].Select("categoryName ='"+
+                category+"'");
+            if (found.Length > 0)
+            {
+                return Convert.ToInt32(found[0]["categoryid"]);
+            }
+            return CreatenewCategory(category);
+        }
+
+        private int CreatenewCategory(string category)
+        {
+            var categoryRow= DatabaseConnection.DatabaseRecord.Tables["category"].NewRow();
+            categoryRow["categoryid"] = GetCurrentCount("category", "categoryID");
+            categoryRow["categoryName"] = category;
+            DatabaseConnection.DatabaseRecord.Tables["category"].Rows.Add(categoryRow);
+            DatabaseConnection.UploadChanges();
+            return Convert.ToInt32(categoryRow["categoryID"]);
         }
 
         private void CreateOrder(int orderListId, int dateId, int orderId, int distroId, int sizeId, int orderQty)
@@ -106,7 +130,7 @@ namespace COTS_Sales_And_Inventory_System
             DatabaseConnection.UploadChanges();
         }
 
-        private void CheckIfProductExist(string productName, string productSize)
+        private void CheckIfProductExist(string productName, string productSize, int categoryiD)
         {
             var findProductId = SearchData("items","Item_Name ='"+productName+"'");
             if (findProductId.Length > 0)
@@ -121,12 +145,12 @@ namespace COTS_Sales_And_Inventory_System
             }
             else
             {
-                CreateProduct(productName);
+                CreateProduct(productName,categoryiD);
                 CreateSize(productName, productSize);
             }
         }
 
-        private void CreateProduct(string productName)
+        private void CreateProduct(string productName, int categoryiD)
         {
             var productRow = DatabaseConnection.DatabaseRecord.Tables["Items"].NewRow();
             var _productCode = DatabaseConnection.DatabaseRecord.Tables["items"].AsEnumerable()
@@ -134,6 +158,7 @@ namespace COTS_Sales_And_Inventory_System
            var newProdCode = (Convert.ToInt32(_productCode) + 1).ToString();
             productRow["itemID"] = newProdCode;
             productRow["Item_Name"] = productName;
+            productRow["categoryId"] = categoryiD;
             DatabaseConnection.DatabaseRecord.Tables["Items"].Rows.Add(productRow);
             DatabaseConnection.UploadChanges();
         }
@@ -180,10 +205,11 @@ namespace COTS_Sales_And_Inventory_System
         {
            
             var newOrder = FindifProductExistForSale() ?? dataGridView1.Rows.Add();
-            dataGridView1.Rows[newOrder].Cells[0].Value = cueTextBox3.Text;
-            dataGridView1.Rows[newOrder].Cells[1].Value = comboBox1.Text;
-            dataGridView1.Rows[newOrder].Cells[2].Value = numericUpDown1.Text;
-            dataGridView1.Rows[newOrder].Cells[3].Value = comboBox2.Text;
+            dataGridView1.Rows[newOrder].Cells[0].Value = cueTextBox3.Text; //product name
+            dataGridView1.Rows[newOrder].Cells[1].Value = comboBox1.Text; // product size
+            dataGridView1.Rows[newOrder].Cells[2].Value = numericUpDown1.Text;//quantity
+            dataGridView1.Rows[newOrder].Cells[3].Value = comboBox2.Text;//distro
+            dataGridView1.Rows[newOrder].Cells[4].Value = comboBox3.Text;//category
             ClearFields();
 
         }

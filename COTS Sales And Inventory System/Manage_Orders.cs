@@ -83,6 +83,7 @@ namespace COTS_Sales_And_Inventory_System
         private void button2_Click(object sender, EventArgs e)
         {
             ReceiveOrder();
+            LoadOrderList();
         }
 
         private void ReceiveOrder()
@@ -91,7 +92,27 @@ namespace COTS_Sales_And_Inventory_System
             if (receive.ShowDialog(this) == DialogResult.OK)
             {
                 var orderListID = receive.cueTextBox1.Text;
-                InputOrders(orderListID);
+                var findOrderlist = DatabaseConnection.DatabaseRecord.Tables["orderlist"].Select("idorderlist ='"
+                    +orderListID+"'");
+                if (findOrderlist.Length > 0)
+                {
+                    var orderReceive = Convert.ToBoolean(findOrderlist[0]["orderDelivered"]);
+                    if (!orderReceive)
+                    {
+                        InputOrders(orderListID);
+                        findOrderlist[0]["orderDelivered"] = true;
+                        DatabaseConnection.UploadChanges();
+                        MessageBox.Show("OrderList No.: "+orderListID+" has been receive");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Orders already Delivered");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Order does not exist");
+                }
             }
            
         }
