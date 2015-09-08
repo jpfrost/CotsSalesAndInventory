@@ -156,5 +156,10 @@ namespace COTS_Sales_And_Inventory_System
         {
             return o != DBNull.Value ? Convert.ToInt32(o) : 0;
         }
+
+        private void reportDocument1_InitReport(object sender, EventArgs e)
+        {
+
+        }
     }
 }

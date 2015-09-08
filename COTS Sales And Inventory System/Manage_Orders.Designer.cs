@@ -35,14 +35,15 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.cueTextBox1 = new CueTextBox();
             this.RefreshData = new System.Windows.Forms.Timer(this.components);
+            this.cueTextBox1 = new CueTextBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.Location = new System.Drawing.Point(12, 89);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(133, 72);
@@ -53,6 +54,7 @@
             // 
             // button2
             // 
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.Location = new System.Drawing.Point(12, 188);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(133, 72);
@@ -103,6 +105,12 @@
             this.listBox1.Size = new System.Drawing.Size(98, 238);
             this.listBox1.TabIndex = 4;
             // 
+            // RefreshData
+            // 
+            this.RefreshData.Enabled = true;
+            this.RefreshData.Interval = 3000;
+            this.RefreshData.Tick += new System.EventHandler(this.RefreshData_Tick);
+            // 
             // cueTextBox1
             // 
             this.cueTextBox1.Cue = "Search Orders Here";
@@ -110,12 +118,6 @@
             this.cueTextBox1.Name = "cueTextBox1";
             this.cueTextBox1.Size = new System.Drawing.Size(201, 20);
             this.cueTextBox1.TabIndex = 5;
-            // 
-            // RefreshData
-            // 
-            this.RefreshData.Enabled = true;
-            this.RefreshData.Interval = 300000;
-            this.RefreshData.Tick += new System.EventHandler(this.RefreshData_Tick);
             // 
             // Manage_Orders
             // 

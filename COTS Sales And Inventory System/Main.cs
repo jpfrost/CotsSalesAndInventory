@@ -763,7 +763,7 @@ namespace COTS_Sales_And_Inventory_System
             newReceiptRow["receiptID"] = receiptID;
             newReceiptRow["dateID"] = dateID;
             DatabaseConnection.DatabaseRecord.Tables["receiptID"].Rows.Add(newReceiptRow);
-            for (int index = 0; index < dataGridView2.Rows.Count-1; index++)
+            for (int index = 0; index < dataGridView2.Rows.Count; index++)
             {
                 DataGridViewRow row = dataGridView2.Rows[index];
                 int salesId = CreateSalesID();
@@ -876,6 +876,11 @@ namespace COTS_Sales_And_Inventory_System
         private void button3_Click_1(object sender, EventArgs e)
         {
             SetItemFormVisibility();
+        }
+
+        private void label25_Click(object sender, EventArgs e)
+        {
+
         }
     }
     }
