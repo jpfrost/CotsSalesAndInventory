@@ -4,10 +4,12 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CrystalDecisions.CrystalReports.Engine;
 using Microsoft.Win32;
 
 namespace COTS_Sales_And_Inventory_System
@@ -40,6 +42,40 @@ namespace COTS_Sales_And_Inventory_System
             timerDataRefresh.Start();
         }
 
+        private void CriticalItemShow()
+        {
+            label3.Text = "";
+            for (int x=0;x<_criticalTable.Rows.Count;x++)
+            {
+                ChangeLabelText(_criticalTable.Rows[x]);
+                var timer = new Timer();
+                timer.Interval = 500;
+                timer.Tick += TimerChangeColor;
+                timer.Start();
+            }
+            
+
+        }
+
+        private void ChangeLabelText(DataRow dataRow)
+        {
+            label3.Text = dataRow["product"] + " " + dataRow["size"]+" only have "+dataRow["quantity"]
+                +" left please order immediatelly";
+        }
+
+        private void TimerChangeColor(object sender, EventArgs e)
+        {
+            while (true)
+            {
+                label3.ForeColor = Color.Red;
+                label3.ForeColor = Color.Black;
+            }
+            
+            
+        }
+
+        
+
         private void LoadData()
         {
             LoadInventory();
@@ -58,6 +94,18 @@ namespace COTS_Sales_And_Inventory_System
             FillCategoryListBox();
             FillCategoryComboBox();
             LoadFromDatabase();
+            LoadCriticalLevel();
+            CriticalItemShow();
+        }
+
+        private DataTable _criticalTable;
+        private void LoadCriticalLevel()
+        {
+            _criticalTable= DatabaseConnection.GetCustomTable(
+                "select Item_Name as 'Product',Size,quantity,itemMinLevel " +
+                "from items inner join size on items.ItemID=size.ItemID " +
+                "inner join itemlevel on itemlevel.SizeID=size.SizeID " +
+                "where quantity <= itemMinLevel;", "criticalItems");
         }
 
         private void LoadFromDatabase()
@@ -67,7 +115,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void FillInventory()
         {
-            var dt = DatabaseConnection.GetCustomTable("select Item_Name as 'Product', Size, Price, Quantity, CategoryName as 'Category' from items inner join size on items.ItemID=size.ItemID inner join category on items.CategoryID=category.CategoryID;"
+            var dt = DatabaseConnection.GetCustomTable("select Item_Name as 'Product', Size, Price, Quantity, CategoryName as 'Category' from items inner join size on items.ItemID=size.ItemID inner join category on items.CategoryID=category.CategoryID where Quantity > 0;"
                 ,"SizeAndItemTable");
             dataGridView1.DataSource = dt;
             dataGridView1.Update();
@@ -389,6 +437,7 @@ namespace COTS_Sales_And_Inventory_System
         private void timerDataRefresh_Tick(object sender, EventArgs e)
         {
             LoadFromDatabase();
+            RefreshData();
         }
 
         private void AddAutoCompleteForSalesTextBox()
@@ -708,6 +757,7 @@ namespace COTS_Sales_And_Inventory_System
             else if (keyData == Keys.F5)
             {
                 LoadFromDatabase();
+                RefreshData();
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -759,6 +809,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             int receiptID= CreateReceipt();
             int dateID = CreateDateId();
+            var receiptDataset = CreateReceiptDataset();
             var newReceiptRow= DatabaseConnection.DatabaseRecord.Tables["receiptID"].NewRow();
             newReceiptRow["receiptID"] = receiptID;
             newReceiptRow["dateID"] = dateID;
@@ -776,9 +827,66 @@ namespace COTS_Sales_And_Inventory_System
                 DatabaseConnection.DatabaseRecord.Tables["sale"].Rows.Add(newSales);
                 LessInSales(sizeId, Convert.ToInt32(row.Cells[3].Value));
                 DatabaseConnection.UploadChanges();
+                InsertToReceiptDataset(receiptDataset,row);
+
             }
-            MessageBox.Show("transaction complete");
-            ClearSales();
+            InsertTranscationToReceipt(receiptDataset,receiptID);
+            if (File.Exists("receipt.xml"))
+            {
+                File.Delete("receipt.xml");
+            }
+                receiptDataset.WriteXml("receipt.xml");
+                ConfirmTransaction(receiptDataset);
+                ClearSales();
+        }
+
+        private void InsertTranscationToReceipt(DataSet receiptDataset, int receiptId)
+        {
+            var newMiscRow = receiptDataset.Tables["ReceiptInfo"].NewRow();
+            newMiscRow["receiptID"] = receiptId;
+            newMiscRow["date"] = DateTime.Now.ToString("dd-MM-yyyy");
+            newMiscRow["payment"] = Convert.ToDouble(textBox11.Text);
+            newMiscRow["change"] = Convert.ToDouble(textBox2.Text);
+            receiptDataset.Tables["ReceiptInfo"].Rows.Add(newMiscRow);
+        }
+
+        private void ConfirmTransaction(DataSet receiptDataset)
+        {
+            var print = new Print_Receipt(receiptDataset);
+            print.Show();
+        }
+
+        private void InsertToReceiptDataset(DataSet receiptDataset, DataGridViewRow row)
+        {
+            var newSalesRow= receiptDataset.Tables["SoldItems"].NewRow();
+            newSalesRow["item"] = row.Cells[0].Value.ToString();
+            newSalesRow["size"] = row.Cells[1].Value.ToString();
+            newSalesRow["price"] = Convert.ToDouble(row.Cells[2].Value);
+            newSalesRow["Quantity"] = Convert.ToInt32(row.Cells[3].Value);
+            newSalesRow["Total"] = Convert.ToDouble(row.Cells[2].Value) 
+                * Convert.ToInt32(row.Cells[3].Value);
+            receiptDataset.Tables["SoldItems"].Rows.Add(newSalesRow);
+        }
+
+        
+
+        private DataSet CreateReceiptDataset()
+        {
+            var ds = new DataSet();
+            var dt = new DataTable("SoldItems");
+            dt.Columns.Add("item", typeof (string));
+            dt.Columns.Add("size", typeof(string));
+            dt.Columns.Add("Quantity", typeof(Int32));
+            dt.Columns.Add("price", typeof(Double));
+            dt.Columns.Add("Total", typeof(Double));
+            ds.Tables.Add(dt);
+            dt=new DataTable("ReceiptInfo");
+            dt.Columns.Add("receiptID",typeof(Int32));
+            dt.Columns.Add("date", typeof (DateTime));
+            dt.Columns.Add("payment", typeof(Double));
+            dt.Columns.Add("change", typeof (Double));
+            ds.Tables.Add(dt);
+            return ds;
         }
 
         private void ClearSales()
@@ -881,6 +989,18 @@ namespace COTS_Sales_And_Inventory_System
         private void label25_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private int _critCount = 0;
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            CreateOrders();
+        }
+
+        private void CreateOrders()
+        {
+            
         }
     }
     }

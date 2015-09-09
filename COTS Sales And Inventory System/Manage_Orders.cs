@@ -157,9 +157,50 @@ namespace COTS_Sales_And_Inventory_System
             return o != DBNull.Value ? Convert.ToInt32(o) : 0;
         }
 
-        private void reportDocument1_InitReport(object sender, EventArgs e)
-        {
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            PrintOrder();
+        }
+
+        private void PrintOrder()
+        {
+            var ds = new DataSet();
+           var orders =
+                DatabaseConnection.GetCustomTable(
+                    "select orders.idorderList" +
+                    ",items.Item_Name,size.Size" +
+                    ",orders.OrderQty" +
+                    ",distributor.DistroName " +
+                    "from orderlist " +
+                    "inner join orders on orderlist.idorderList=orders.idorderList" +
+                    " inner join distributor on orders.DistroID=distributor.DistroID " +
+                    "inner join size on orders.SizeID=size.SizeID " +
+                    "inner join items on items.ItemID=size.ItemID " +
+                    "where orders.idorderList="+listBox1.SelectedItem+";",
+                    "receiveOrders");
+            ds.Tables.Add(orders);
+            ds.WriteXml("order.xml");
+            var print = new Print_Orders(ds);
+            print.Show();
+        }
+
+        private void FilterInvetoryByCategory()
+        {
+            if (!listBox1.SelectedItem.Equals("All"))
+            {
+                ((DataTable)dataGridView1.DataSource).DefaultView.RowFilter = ("[OrderList ID]='"
+                 + listBox1.SelectedItem + "'");
+            }
+            else
+            {
+                ((DataTable)dataGridView1.DataSource).DefaultView.RowFilter = string.Empty;
+            }
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FilterInvetoryByCategory();
         }
     }
 }

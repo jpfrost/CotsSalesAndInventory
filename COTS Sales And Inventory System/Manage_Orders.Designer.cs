@@ -37,6 +37,7 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.RefreshData = new System.Windows.Forms.Timer(this.components);
             this.cueTextBox1 = new CueTextBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -44,7 +45,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(12, 89);
+            this.button1.Location = new System.Drawing.Point(12, 61);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(133, 72);
             this.button1.TabIndex = 0;
@@ -55,7 +56,7 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(12, 188);
+            this.button2.Location = new System.Drawing.Point(12, 139);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(133, 72);
             this.button2.TabIndex = 1;
@@ -104,11 +105,12 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(98, 238);
             this.listBox1.TabIndex = 4;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // RefreshData
             // 
             this.RefreshData.Enabled = true;
-            this.RefreshData.Interval = 3000;
+            this.RefreshData.Interval = 10000;
             this.RefreshData.Tick += new System.EventHandler(this.RefreshData_Tick);
             // 
             // cueTextBox1
@@ -119,11 +121,23 @@
             this.cueTextBox1.Size = new System.Drawing.Size(201, 20);
             this.cueTextBox1.TabIndex = 5;
             // 
+            // button4
+            // 
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.Location = new System.Drawing.Point(12, 217);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(133, 72);
+            this.button4.TabIndex = 6;
+            this.button4.Text = "Print Order";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // Manage_Orders
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(621, 334);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.cueTextBox1);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.groupBox1);
@@ -155,5 +169,6 @@
         private System.Windows.Forms.ListBox listBox1;
         private CueTextBox cueTextBox1;
         private System.Windows.Forms.Timer RefreshData;
+        private System.Windows.Forms.Button button4;
     }
 }

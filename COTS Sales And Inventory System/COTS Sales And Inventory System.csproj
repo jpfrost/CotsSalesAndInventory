@@ -95,6 +95,7 @@
     <Compile Include="ForgotPass.Designer.cs">
       <DependentUpon>ForgotPass.cs</DependentUpon>
     </Compile>
+    <Compile Include="ItemLevel.cs" />
     <Compile Include="Items.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -119,8 +120,32 @@
     <Compile Include="Manage_Orders.Designer.cs">
       <DependentUpon>Manage_Orders.cs</DependentUpon>
     </Compile>
+    <Compile Include="orders.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>orders.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Print_Orders.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Print_Orders.Designer.cs">
+      <DependentUpon>Print_Orders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Print_Receipt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Print_Receipt.Designer.cs">
+      <DependentUpon>Print_Receipt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="receipt.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>receipt.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ReceiveOrder.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,6 +185,16 @@
     <EmbeddedResource Include="Manage_Orders.resx">
       <DependentUpon>Manage_Orders.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="orders.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>orders.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Print_Orders.resx">
+      <DependentUpon>Print_Orders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Print_Receipt.resx">
+      <DependentUpon>Print_Receipt.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -169,6 +204,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="receipt.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>receipt.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="ReceiveOrder.resx">
       <DependentUpon>ReceiveOrder.cs</DependentUpon>
     </EmbeddedResource>
@@ -228,6 +267,9 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

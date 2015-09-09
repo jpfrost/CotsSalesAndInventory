@@ -35,3 +35,5 @@ C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory S
 C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\Interop.SAXSERIALIZELib.dll
 C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS Sales And Inventory System.csproj.ResolveComReference.cache
 C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.ReceiveOrder.resources
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.Print_Receipt.resources
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.Print_Orders.resources

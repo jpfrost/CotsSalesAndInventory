@@ -78,7 +78,11 @@ namespace COTS_Sales_And_Inventory_System
             newOrderlist["orderQty"] = orderQty;
             DatabaseConnection.DatabaseRecord.Tables["orders"].Rows.Add(newOrderlist);
             DatabaseConnection.UploadChanges();
+            var crit = new ItemLevel(sizeId,orderQty);
+            crit.InsertCriticalLevel();
         }
+
+        
 
         private int GetSizeID(string productName, string size)
         {
