@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -35,6 +36,8 @@ namespace COTS_Sales_And_Inventory_System
 
         private void Main_Load(object sender, EventArgs e)
         {
+            colorlist.Add(Color.Red);
+            colorlist.Add(Color.Black);
             var x = Task.Run(() => { LoadData(); });
             panel1.Controls.Add(_items);
             _items.Hide();
@@ -45,34 +48,17 @@ namespace COTS_Sales_And_Inventory_System
         private void CriticalItemShow()
         {
             label3.Text = "";
-            for (int x=0;x<_criticalTable.Rows.Count;x++)
-            {
-                ChangeLabelText(_criticalTable.Rows[x]);
-                var timer = new Timer();
-                timer.Interval = 500;
-                timer.Tick += TimerChangeColor;
-                timer.Start();
-            }
-            
-
         }
+
+      
 
         private void ChangeLabelText(DataRow dataRow)
         {
             label3.Text = dataRow["product"] + " " + dataRow["size"]+" only have "+dataRow["quantity"]
-                +" left please order immediatelly";
+                +" left please order immediately";
         }
 
-        private void TimerChangeColor(object sender, EventArgs e)
-        {
-            while (true)
-            {
-                label3.ForeColor = Color.Red;
-                label3.ForeColor = Color.Black;
-            }
-            
-            
-        }
+       
 
         
 
@@ -115,7 +101,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void FillInventory()
         {
-            var dt = DatabaseConnection.GetCustomTable("select Item_Name as 'Product', Size, Price, Quantity, CategoryName as 'Category' from items inner join size on items.ItemID=size.ItemID inner join category on items.CategoryID=category.CategoryID where Quantity > 0;"
+            var dt = DatabaseConnection.GetCustomTable("select Item_Name as 'Product', Size, Price, Quantity, CategoryName as 'Category' from items inner join size on items.ItemID=size.ItemID inner join category on items.CategoryID=category.CategoryID where Quantity > 0 and price <> \"\";"
                 ,"SizeAndItemTable");
             dataGridView1.DataSource = dt;
             dataGridView1.Update();
@@ -775,13 +761,14 @@ namespace COTS_Sales_And_Inventory_System
                 total += Convert.ToDouble(row.Cells[4].Value);
             }
 
-            textBox6.Text = total.ToString();
+            textBox6.Text = (string.Format("{0:0.00}", total));
         }
 
         private void textBox11_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
+                textBox11.Text = (string.Format("{0:0.00}", Convert.ToDouble(textBox11.Text)));
                 CountChange();
             }
         }
@@ -792,7 +779,7 @@ namespace COTS_Sales_And_Inventory_System
             total = Convert.ToDouble(textBox6.Text);
             payment = Convert.ToDouble(textBox11.Text);
             change = payment - total;
-            textBox2.Text = change.ToString();
+            textBox2.Text = (string.Format("{0:0.00}", change));
         }
 
         private void button12_Click(object sender, EventArgs e)
@@ -1001,6 +988,50 @@ namespace COTS_Sales_And_Inventory_System
         private void CreateOrders()
         {
             
+        }
+        List<Color> colorlist=new List<Color>();
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            ChangeLabelColor();
+
+        }
+
+        private void ChangeLabelColor()
+        {
+            if (label3.ForeColor == Color.Red)
+            {
+                label3.ForeColor = Color.Black;
+            }
+            else
+            {
+                label3.ForeColor = Color.Red;
+            }
+        }
+
+        private int x = 0;
+        private void textChangeTimer_Tick(object sender, EventArgs e)
+        {
+                    ChangeLabelText(_criticalTable.Rows[x]);
+                    x++;
+            if (x >= _criticalTable.Rows.Count) x = 0;
+        }
+
+        private void KeyboardOnlyDigits(object sender, KeyPressEventArgs e)
+        {
+            if (Char.IsDigit(e.KeyChar) || (e.KeyChar == '\b'))
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void textBox11_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
     }

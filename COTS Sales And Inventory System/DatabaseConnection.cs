@@ -40,8 +40,7 @@ namespace COTS_Sales_And_Inventory_System
         {
 
            
-                Connection.Open();
-            
+            Connection.Open();
             var dadapt = CreateDataAddapter(query);
             var dt = new DataTable(tableName);
             dadapt.Fill(dt);

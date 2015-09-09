@@ -25,7 +25,7 @@ namespace COTS_Sales_And_Inventory_System.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.0.2")]
         public string MysqlServer {
             get {
                 return ((string)(this["MysqlServer"]));
