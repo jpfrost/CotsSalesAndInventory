@@ -38,8 +38,6 @@ namespace COTS_Sales_And_Inventory_System
 
         public static DataTable GetCustomTable(string query,string tableName)
         {
-
-           
             Connection.Open();
             var dadapt = CreateDataAddapter(query);
             var dt = new DataTable(tableName);

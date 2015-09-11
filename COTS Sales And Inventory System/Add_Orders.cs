@@ -34,7 +34,7 @@ namespace COTS_Sales_And_Inventory_System
             CreateOrderDate(dateID);
             for (var i = 0; i < dataGridView1.Rows.Count; i++)
             {
-                var categoryiD = GetCategoryID(dataGridView1.Rows[i].Cells[4].Value.ToString());
+                var categoryiD = GetCategoryId(dataGridView1.Rows[i].Cells[4].Value.ToString());
                 var OrderID = GetCurrentCount("orders", "OrderID");
                 var distroId = CheckifDistroExist(dataGridView1.Rows[i].Cells[3].Value.ToString());
                 CheckIfProductExist(dataGridView1.Rows[i].Cells[0].Value.ToString(),
@@ -46,7 +46,7 @@ namespace COTS_Sales_And_Inventory_System
             }
         }
 
-        private int GetCategoryID(string category)
+        private int GetCategoryId(string category)
         {
             var found = DatabaseConnection.DatabaseRecord.Tables["category"].Select("categoryName ='"+
                 category+"'");

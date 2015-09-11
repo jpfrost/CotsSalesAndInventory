@@ -329,7 +329,7 @@ namespace COTS_Sales_And_Inventory_System
             }
         }
 
-        private void KeyboardOnlyDigits(object sender, KeyPressEventArgs e)
+         private void KeyboardOnlyDigits(object sender, KeyPressEventArgs e)
         {
             if (Char.IsDigit(e.KeyChar) || (e.KeyChar == '\b'))
             {

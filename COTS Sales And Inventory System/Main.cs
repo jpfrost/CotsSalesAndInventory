@@ -36,8 +36,8 @@ namespace COTS_Sales_And_Inventory_System
 
         private void Main_Load(object sender, EventArgs e)
         {
-            colorlist.Add(Color.Red);
-            colorlist.Add(Color.Black);
+            _colorlist.Add(Color.Red);
+            _colorlist.Add(Color.Black);
             var x = Task.Run(() => { LoadData(); });
             panel1.Controls.Add(_items);
             _items.Hide();
@@ -775,10 +775,9 @@ namespace COTS_Sales_And_Inventory_System
 
         private void CountChange()
         {
-            double total, payment, change;
-            total = Convert.ToDouble(textBox6.Text);
-            payment = Convert.ToDouble(textBox11.Text);
-            change = payment - total;
+            var total = Convert.ToDouble(textBox6.Text);
+            var payment = Convert.ToDouble(textBox11.Text);
+            var change = payment - total;
             textBox2.Text = (string.Format("{0:0.00}", change));
         }
 
@@ -803,9 +802,9 @@ namespace COTS_Sales_And_Inventory_System
             DatabaseConnection.DatabaseRecord.Tables["receiptID"].Rows.Add(newReceiptRow);
             for (int index = 0; index < dataGridView2.Rows.Count; index++)
             {
-                DataGridViewRow row = dataGridView2.Rows[index];
-                int salesId = CreateSalesID();
-                int sizeId = GetSizeID(row);
+                var row = dataGridView2.Rows[index];
+                int salesId = CreateSalesId();
+                int sizeId = GetSizeId(row);
                 var newSales = DatabaseConnection.DatabaseRecord.Tables["sale"].NewRow();
                 newSales["saleID"] = salesId;
                 newSales["receiptID"] = receiptID;
@@ -906,7 +905,7 @@ namespace COTS_Sales_And_Inventory_System
             DatabaseConnection.UploadChanges();
         }
 
-        private int GetSizeID(DataGridViewRow row)
+        private int GetSizeId(DataGridViewRow row)
         {
             var found = DatabaseConnection.DatabaseRecord.Tables["items"].Select("Item_Name ='"
                 +row.Cells[0].Value+"'");
@@ -916,7 +915,7 @@ namespace COTS_Sales_And_Inventory_System
             return Convert.ToInt32(found[0]["SizeID"]);
         }
 
-        private int CreateSalesID()
+        private int CreateSalesId()
         {
             var x = GetCurrentCount("sale","saleID");
             return x;
@@ -989,7 +988,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             
         }
-        List<Color> colorlist=new List<Color>();
+        List<Color> _colorlist=new List<Color>();
 
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -999,14 +998,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void ChangeLabelColor()
         {
-            if (label3.ForeColor == Color.Red)
-            {
-                label3.ForeColor = Color.Black;
-            }
-            else
-            {
-                label3.ForeColor = Color.Red;
-            }
+            label3.ForeColor = label3.ForeColor == Color.Red ? Color.Black : Color.Red;
         }
 
         private int x = 0;

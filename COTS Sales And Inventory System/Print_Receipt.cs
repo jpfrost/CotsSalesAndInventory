@@ -25,5 +25,10 @@ namespace COTS_Sales_And_Inventory_System
             crystalReportViewer1.ReportSource=receipt;
             crystalReportViewer1.Zoom(70);
         }
+
+        private void crystalReportViewer1_Load(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
