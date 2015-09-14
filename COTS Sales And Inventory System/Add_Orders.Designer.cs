@@ -136,6 +136,7 @@
             this.button2.TabIndex = 7;
             this.button2.Text = "Remove";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
@@ -222,7 +223,6 @@
             this.MaximizeBox = false;
             this.Name = "Add_Orders";
             this.Text = "Add_Orders";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.Add_Orders_Load);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

@@ -20,10 +20,20 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button3_Click(object sender, EventArgs e)
         {
-            var task = Task.Run(() => SaveOrdersToDatabase());
-            task.Wait();
-            MessageBox.Show("Orders Created");
-            this.Dispose();
+            button3.Enabled = false;
+
+            if (dataGridView1.Rows.Count>0)
+            {
+                var task = Task.Run(() => SaveOrdersToDatabase());
+                task.Wait();
+                MessageBox.Show("Orders Created");
+                Dispose();
+            }
+            else
+            {
+                MessageBox.Show("Please fill out all the Product Information");
+                Dispose();
+            }
         }
 
         private void SaveOrdersToDatabase()
@@ -34,7 +44,7 @@ namespace COTS_Sales_And_Inventory_System
             CreateOrderDate(dateID);
             for (var i = 0; i < dataGridView1.Rows.Count; i++)
             {
-                var categoryiD = GetCategoryId(dataGridView1.Rows[i].Cells[4].Value.ToString());
+                var categoryiD = GetCategoryID(dataGridView1.Rows[i].Cells[4].Value.ToString());
                 var OrderID = GetCurrentCount("orders", "OrderID");
                 var distroId = CheckifDistroExist(dataGridView1.Rows[i].Cells[3].Value.ToString());
                 CheckIfProductExist(dataGridView1.Rows[i].Cells[0].Value.ToString(),
@@ -46,7 +56,7 @@ namespace COTS_Sales_And_Inventory_System
             }
         }
 
-        private int GetCategoryId(string category)
+        private int GetCategoryID(string category)
         {
             var found = DatabaseConnection.DatabaseRecord.Tables["category"].Select("categoryName ='"+
                 category+"'");
@@ -157,10 +167,6 @@ namespace COTS_Sales_And_Inventory_System
         private void CreateProduct(string productName, int categoryiD)
         {
             var productRow = DatabaseConnection.DatabaseRecord.Tables["Items"].NewRow();
-            var _productCode = DatabaseConnection.DatabaseRecord.Tables["items"].AsEnumerable()
-                    .Max(maxValue => maxValue.Field<string>("itemID"));
-           var newProdCode = (Convert.ToInt32(_productCode) + 1).ToString();
-            productRow["itemID"] = newProdCode;
             productRow["Item_Name"] = productName;
             productRow["categoryId"] = categoryiD;
             DatabaseConnection.DatabaseRecord.Tables["Items"].Rows.Add(productRow);
@@ -194,7 +200,9 @@ namespace COTS_Sales_And_Inventory_System
             }
             else
             {
-                value = (from DataRow rows in DatabaseConnection.DatabaseRecord.Tables[tableName].Rows select (int)rows[columbName]).Concat(new[] { value }).Max();
+                value =
+                    (from DataRow rows in DatabaseConnection.DatabaseRecord.Tables[tableName].Rows
+                        select (int) rows[columbName]).Concat(new[] {value}).Max();
             }
             return value + 1;
 
@@ -202,7 +210,22 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AddOrdertoGrid();
+            DialogResult result = MessageBox.Show("Add item(s) to order list?","Confirmation",MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                if (cueTextBox3.Text != "" && comboBox1.Text != "" && comboBox2.Text != "" && comboBox3.Text != "")
+                {
+                    AddOrdertoGrid();
+                }
+                else
+                {
+                    MessageBox.Show("Please fill out all the Product Information", "Warning", MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
+
+            }
+                
         }
 
         public void AddOrdertoGrid()
@@ -286,6 +309,33 @@ namespace COTS_Sales_And_Inventory_System
 
         private void LoadProduct()
         {
+            var productCode = cueTextBox4.Text;
+            InsertProductInfo(productCode);
+        }
+
+        private void InsertProductInfo(string productCode)
+        {
+            var found = DatabaseConnection.DatabaseRecord.Tables["items"].Select("ItemID ='"
+                +productCode+"'");
+            if (found.Length == 0)
+            {
+                MessageBox.Show("Product does not exist", "Product Not Found", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            else
+            {
+                cueTextBox3.Text = found[0]["Item_Name"].ToString();
+
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure you want to remove this item(s)", "Confirmation", MessageBoxButtons.YesNo);
+            if(result == DialogResult.Yes)
+            {
+                
+            }
             
         }
     }

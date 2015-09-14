@@ -61,7 +61,7 @@ namespace COTS_Sales_And_Inventory_System.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("admin")]
         public string DefaultAdminAccount {
             get {
                 return ((string)(this["DefaultAdminAccount"]));
@@ -73,7 +73,7 @@ namespace COTS_Sales_And_Inventory_System.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("password")]
         public string DefaultAdminPassword {
             get {
                 return ((string)(this["DefaultAdminPassword"]));
@@ -128,6 +128,54 @@ namespace COTS_Sales_And_Inventory_System.Properties {
             }
             set {
                 this["FirstRun"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DefaultDistro")]
+        public string DefaultSupplier {
+            get {
+                return ((string)(this["DefaultSupplier"]));
+            }
+            set {
+                this["DefaultSupplier"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DefaultDistroAddress")]
+        public string DefaultSupplierAddress {
+            get {
+                return ((string)(this["DefaultSupplierAddress"]));
+            }
+            set {
+                this["DefaultSupplierAddress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DefaultDistroNumber")]
+        public string DefaultSupplierNo {
+            get {
+                return ((string)(this["DefaultSupplierNo"]));
+            }
+            set {
+                this["DefaultSupplierNo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Setting {
+            get {
+                return ((string)(this["Setting"]));
+            }
+            set {
+                this["Setting"] = value;
             }
         }
     }

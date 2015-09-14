@@ -28,6 +28,7 @@ namespace COTS_Sales_And_Inventory_System
         private void Print_Orders_Load(object sender, EventArgs e)
         {
             crystalReportViewer1.ReportSource = order;
+            crystalReportViewer1.Zoom(70);
         }
     }
 }

@@ -20,12 +20,16 @@ namespace COTS_Sales_And_Inventory_System
 
         
         private readonly Form _loginForm;
+        private readonly string _username;
+        private readonly string _accountType;
         Items _items = new Items();
 
 
-        public Main(Form loginForm)
+        public Main(Form loginForm,string username,string accountType)
         {
             _loginForm = loginForm;
+            _username = username;
+            _accountType = accountType;
             InitializeComponent();
         }
 
@@ -36,13 +40,24 @@ namespace COTS_Sales_And_Inventory_System
 
         private void Main_Load(object sender, EventArgs e)
         {
+            toolStripStatusLabel1.Text = "Current User: " +_username;
+            toolStripStatusLabel2.Text = "User Rights: "+_accountType;
             _colorlist.Add(Color.Red);
             _colorlist.Add(Color.Black);
             var x = Task.Run(() => { LoadData(); });
+            x.Wait();
             panel1.Controls.Add(_items);
             _items.Hide();
+            LoadDefaults();
             dateTime.Start();
             timerDataRefresh.Start();
+        }
+
+        private void LoadDefaults()
+        {
+            comboBox2.Text = Properties.Settings.Default.DefaultSupplier;
+            textBox10.Text = Properties.Settings.Default.DefaultSupplierNo;
+            textBox9.Text = Properties.Settings.Default.DefaultSupplierAddress;
         }
 
         private void CriticalItemShow()
@@ -56,11 +71,18 @@ namespace COTS_Sales_And_Inventory_System
         {
             label3.Text = dataRow["product"] + " " + dataRow["size"]+" only have "+dataRow["quantity"]
                 +" left please order immediately";
+            InsertToSummary(label3.Text);
         }
 
-       
+        private void InsertToSummary(string text)
+        {
+            var index = richTextBox1.Find(text);
+            if (index == -1)
+            {
+                richTextBox1.AppendText(text+Environment.NewLine);
+            }
+        }
 
-        
 
         private void LoadData()
         {
@@ -422,7 +444,6 @@ namespace COTS_Sales_And_Inventory_System
 
         private void timerDataRefresh_Tick(object sender, EventArgs e)
         {
-            LoadFromDatabase();
             RefreshData();
         }
 
@@ -461,11 +482,6 @@ namespace COTS_Sales_And_Inventory_System
             }
         }
 
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-            
-        }
-
         private void KeyboardOnlyDecimals(object sender, KeyPressEventArgs e)
         {
 
@@ -477,36 +493,6 @@ namespace COTS_Sales_And_Inventory_System
                 e.Handled = true;
             }
         }
-
-        
-
-        private void DragPaste(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(typeof(String)))
-                e.Effect = DragDropEffects.Copy;
-            else
-                e.Effect = DragDropEffects.None;
-        }
-
-        private void DragnDrop(object sender, DragEventArgs e)
-        {
-            
-            Point clientPoint = dataGridView2.PointToClient(new Point(e.X, e.Y));
-
-            
-            if (e.Effect == DragDropEffects.Copy)
-            {
-                string cellvalue = e.Data.GetData(typeof(string)) as string;
-                var hittest = dataGridView2.HitTest(clientPoint.X, clientPoint.Y);
-                if (hittest.ColumnIndex != -1
-                    && hittest.RowIndex != -1)
-                    dataGridView2[hittest.ColumnIndex, hittest.RowIndex].Value = cellvalue;
-
-            }
-        }
-       
-
-        
 
         private void MouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
@@ -533,7 +519,6 @@ namespace COTS_Sales_And_Inventory_System
                 {
                     FindProductName();
                     LoadProductInfo();
-                    /*textBox4.Clear();*/
                     
                 }
                 catch (Exception exception)
@@ -596,8 +581,8 @@ namespace COTS_Sales_And_Inventory_System
                     FindProductName();
                     LoadProductInfo();
                     AddItemToGridView();
-                    /*textBox4.Clear();
-                    comboBox3.Items.Clear();*/
+                    textBox4.Clear();
+                    comboBox3.Items.Clear();
 
                 }
                 catch (Exception e)
@@ -688,17 +673,53 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button11_Click(object sender, EventArgs e)
         {
-            try
+            if (textBox4.Text == "" && comboBox3.Text == "")
             {
-                if (!textBox4.Text.Equals(""))
+                MessageBox.Show("Please fill out all the Product Information", "Warning", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            else
+            {
+                try
                 {
-                    AddItemToGridView();
+                    var size = FindSizeID(textBox4.Text, comboBox3.Text);
+                    if (Convert.ToInt16(size["Quantity"]) <= Convert.ToInt16(numericUpDown1.Text))
+                    {
+                        MessageBox.Show("quantity exceed stocks", "Oppppps...", MessageBoxButtons.OK,
+                            MessageBoxIcon.Stop);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            if (!textBox4.Text.Equals(""))
+                            {
+                                AddItemToGridView();
+                            }
+                        }
+                        catch (Exception exception)
+                        {
+                            Console.WriteLine(exception);
+                        }
+                    }
                 }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                }
+
             }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-            }
+        }
+
+        private DataRow FindSizeID(string item, string size)
+        {
+
+            var itemId = DatabaseConnection.DatabaseRecord.Tables["items"].Select("item_name ='"
+                +item+"'");
+            var sizeData = DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemID ='"
+                +itemId[0]["itemID"]+"' and size ='"+size+"'");
+
+            return sizeData[0];
         }
 
         private void AddItemToGridView()
@@ -766,6 +787,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void textBox11_KeyDown(object sender, KeyEventArgs e)
         {
+          
             if (e.KeyCode == Keys.Enter)
             {
                 textBox11.Text = (string.Format("{0:0.00}", Convert.ToDouble(textBox11.Text)));
@@ -778,12 +800,44 @@ namespace COTS_Sales_And_Inventory_System
             var total = Convert.ToDouble(textBox6.Text);
             var payment = Convert.ToDouble(textBox11.Text);
             var change = payment - total;
-            textBox2.Text = (string.Format("{0:0.00}", change));
+            if (change < 0)
+            {
+                MessageBox.Show("Insufficient Payment");
+            }
+            else
+            {
+                textBox2.Text = (string.Format("{0:0.00}", change));
+            }
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
+            button12.Enabled = false;
             SellItems();
+            ClearSellDatagrid();
+            button12.Enabled = true;
+
+        }
+
+        private void ClearSellDatagrid()
+        {
+            dataGridView2.Rows.Clear();
+            foreach (Control cont in groupBox6.Controls)
+            {
+                if (cont is TextBox)
+                {
+                    cont.Text = "";
+                }
+                if (cont is CueTextBox)
+                {
+                    cont.Text = "";
+                }
+                var box = cont as ComboBox;
+                if (box != null)
+                {
+                    box.Items.Clear();
+                }
+            }
         }
 
         private void SellItems()
@@ -824,6 +878,21 @@ namespace COTS_Sales_And_Inventory_System
                 receiptDataset.WriteXml("receipt.xml");
                 ConfirmTransaction(receiptDataset);
                 ClearSales();
+            WriteToSummary(receiptDataset);
+        }
+
+        private double totalSold;
+        private void WriteToSummary(DataSet receiptDataset)
+        {
+            foreach (DataRow row in receiptDataset.Tables["SoldItems"].Rows)
+            {
+                var line=row["item"]+" "+row["size"]+" price @ "+string.Format("{0:0.00}",row["price"])+" with a quantity of "+row["Quantity"]+" is sold for "
+                    +string.Format("{0:0.00}",row["Total"])+".";
+                richTextBox2.AppendText(line+Environment.NewLine);
+                 totalSold+=
+                Convert.ToDouble(row["total"]);
+                 textBox3.Text = (string.Format("{0:0.00}", totalSold));
+            }
         }
 
         private void InsertTranscationToReceipt(DataSet receiptDataset, int receiptId)
@@ -1004,9 +1073,16 @@ namespace COTS_Sales_And_Inventory_System
         private int x = 0;
         private void textChangeTimer_Tick(object sender, EventArgs e)
         {
-                    ChangeLabelText(_criticalTable.Rows[x]);
-                    x++;
-            if (x >= _criticalTable.Rows.Count) x = 0;
+            try
+            {
+                ChangeLabelText(_criticalTable.Rows[x]);
+                x++;
+                if (x >= _criticalTable.Rows.Count) x = 0;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
         }
 
         private void KeyboardOnlyDigits(object sender, KeyPressEventArgs e)
@@ -1023,7 +1099,39 @@ namespace COTS_Sales_And_Inventory_System
 
         private void textBox11_TextChanged(object sender, EventArgs e)
         {
+            
+        }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            textBox4.Clear();
+            textBox1.Clear();
+            comboBox3.Text = String.Empty;
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _loginForm.Show();
+            this.Dispose();
+        }
+
+        private void accountsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_accountType.Equals("Admin"))
+            {
+                var admin = new FrmAdmin(this);
+                admin.Show();
+            }
+            else
+            {
+                MessageBox.Show("You dont have admin rights", "Not Allowed",MessageBoxButtons.OK,MessageBoxIcon.Hand);
+            }
         }
     }
     }

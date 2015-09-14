@@ -106,11 +106,12 @@
             this.listBox1.Size = new System.Drawing.Size(98, 238);
             this.listBox1.TabIndex = 4;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDoubleClick);
             // 
             // RefreshData
             // 
             this.RefreshData.Enabled = true;
-            this.RefreshData.Interval = 10000;
+            this.RefreshData.Interval = 30000;
             this.RefreshData.Tick += new System.EventHandler(this.RefreshData_Tick);
             // 
             // cueTextBox1
@@ -150,7 +151,6 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Manage_Orders";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.Manage_Orders_Load);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

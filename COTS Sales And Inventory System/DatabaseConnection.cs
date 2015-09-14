@@ -20,9 +20,10 @@ namespace COTS_Sales_And_Inventory_System
             Connection = new MySqlConnection(_conString);
             var tablesList = GetDatabaseTables(Connection);
             GetAllTables(tablesList,Connection);
+            
         }
 
-        private void GetAllTables(List<string> tablesList, MySqlConnection connection)
+        private static void GetAllTables(List<string> tablesList, MySqlConnection connection)
         {
             connection.Open();
             foreach (var tableName in tablesList)
@@ -51,13 +52,13 @@ namespace COTS_Sales_And_Inventory_System
             return new MySqlDataAdapter(query, Connection);
         }
 
-        private static string CreateSelectStatement(string tableName)
+        public static string CreateSelectStatement(string tableName)
         {
             string query = "Select * from " + tableName + ";";
             return query;
         }
 
-        private List<String> GetDatabaseTables(MySqlConnection connection)
+        private static List<String> GetDatabaseTables(MySqlConnection connection)
         {
             var command = connection.CreateCommand();
             command.CommandText = "Show Tables;";
@@ -101,6 +102,22 @@ namespace COTS_Sales_And_Inventory_System
         public static void UploadChanges()
         {
             UpdateEachTable();
+            DropTableAndRetreive();
+        }
+
+        private static void DropTableAndRetreive()
+        {
+            var tablesList = GetDatabaseTables(Connection);
+            DropTables(tablesList,Connection);
+            GetAllTables(tablesList, Connection);
+        }
+
+        private static void DropTables(List<string> tablesList, MySqlConnection connection)
+        {
+            foreach (var tableName in tablesList)
+            {
+                DatabaseRecord.Tables.Remove(tableName);
+            }
         }
 
         private static void UpdateEachTable()
@@ -116,17 +133,17 @@ namespace COTS_Sales_And_Inventory_System
         public static void UpdateTable(object tableName)
         {
 
-            try
-            {
+            /*try
+            {*/
                 var query = CreateSelectStatement(tableName.ToString());
                 var dadapt = CreateDataAddapter(query);
                 var comBuild = new MySqlCommandBuilder(dadapt);
                 dadapt.Update(DatabaseRecord.Tables[tableName.ToString()]);
-            }
+            /*}
             catch (Exception e)
             {
                 Console.WriteLine(e);
-            }
+            }*/
         }
     }
 }

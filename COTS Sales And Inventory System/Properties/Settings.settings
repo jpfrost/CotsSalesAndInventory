@@ -12,10 +12,10 @@
       <Value Profile="(Default)">root</Value>
     </Setting>
     <Setting Name="DefaultAdminAccount" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">admin</Value>
     </Setting>
     <Setting Name="DefaultAdminPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">password</Value>
     </Setting>
     <Setting Name="EmailUser" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -28,6 +28,18 @@
     </Setting>
     <Setting Name="FirstRun" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DefaultSupplier" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DefaultDistro</Value>
+    </Setting>
+    <Setting Name="DefaultSupplierAddress" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DefaultDistroAddress</Value>
+    </Setting>
+    <Setting Name="DefaultSupplierNo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DefaultDistroNumber</Value>
+    </Setting>
+    <Setting Name="Setting" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

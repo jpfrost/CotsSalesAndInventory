@@ -47,6 +47,20 @@ namespace COTS_Sales_And_Inventory_System
             RefreshFilters();
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.F1)
+            {
+                
+            }
+            else if (keyData == Keys.F5)
+            {
+                RefreshGrid();
+                RefreshFilters();
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         private void RefreshFilters()
         {
             listBox1.Items.Clear();
@@ -106,7 +120,7 @@ namespace COTS_Sales_And_Inventory_System
                     }
                     else
                     {
-                        MessageBox.Show("Orders already Delivered");
+                        MessageBox.Show("Orders already Delivered", "" , MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 else
@@ -160,7 +174,17 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button4_Click(object sender, EventArgs e)
         {
-            PrintOrder();
+            try
+            {
+                button4.Enabled = false;
+                PrintOrder();
+                button4.Enabled = true;
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Please select and order number", "Warning", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
         }
 
         private void PrintOrder()
@@ -191,6 +215,7 @@ namespace COTS_Sales_And_Inventory_System
             {
                 ((DataTable)dataGridView1.DataSource).DefaultView.RowFilter = ("[OrderList ID]='"
                  + listBox1.SelectedItem + "'");
+
             }
             else
             {
@@ -201,6 +226,12 @@ namespace COTS_Sales_And_Inventory_System
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             FilterInvetoryByCategory();
+        }
+
+        private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            ReceiveOrder(); //jasper fix this shit..
+
         }
     }
 }

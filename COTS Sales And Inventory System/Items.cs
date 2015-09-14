@@ -201,22 +201,35 @@ namespace COTS_Sales_And_Inventory_System
         {
             var newProdCode = "";
             var newItem = DatabaseConnection.DatabaseRecord.Tables["items"].NewRow();
-            if (cueTextBox1.Text.Equals(""))
-            {
-                _productCode = DatabaseConnection.DatabaseRecord.Tables["items"].AsEnumerable()
-                    .Max(maxValue => maxValue.Field<string>("itemID"));
-                newProdCode = (Convert.ToInt32(_productCode) + 1).ToString();
-            }
-            else
+            if (!cueTextBox1.Text.Equals(""))
             {
                 newProdCode = cueTextBox1.Text;
+                newItem["itemID"] = newProdCode;
             }
-            newItem["itemID"] = newProdCode;
+            
             newItem["item_Name"] = cueTextBox2.Text;
             if (comboBox1.SelectedItem != null) newItem["CategoryID"] = FindCategoryId();
             DatabaseConnection.DatabaseRecord.Tables["items"].Rows.Add(newItem);
             DatabaseConnection.UploadChanges();
-            
+            DatabaseConnection.DatabaseRecord.Tables.Remove("items");
+            DatabaseConnection.DatabaseRecord.Tables.Add(
+            DatabaseConnection.GetCustomTable(
+            DatabaseConnection.CreateSelectStatement("items"), "items"));
+        }
+
+        private int GetCurrentCount(string tableName, string columbName)
+        {
+            var value = 0;
+            if (DatabaseConnection.DatabaseRecord.Tables[tableName].Rows.Count == 0)
+            {
+                return 1;
+            }
+            else
+            {
+                value = (from DataRow rows in DatabaseConnection.DatabaseRecord.Tables[tableName].Rows select (int)rows[columbName]).Concat(new[] { value }).Max();
+            }
+            return value + 1;
+
         }
 
         private Int32 FindCategoryId()
@@ -329,7 +342,7 @@ namespace COTS_Sales_And_Inventory_System
             }
         }
 
-         private void KeyboardOnlyDigits(object sender, KeyPressEventArgs e)
+        private void KeyboardOnlyDigits(object sender, KeyPressEventArgs e)
         {
             if (Char.IsDigit(e.KeyChar) || (e.KeyChar == '\b'))
             {
@@ -413,6 +426,11 @@ namespace COTS_Sales_And_Inventory_System
         {
             return DatabaseConnection.DatabaseRecord.Tables["size"].Select("ItemID ='"
                 +cueTextBox1.Text+"' and Size ='" +comboBox2.SelectedItem+"'");
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

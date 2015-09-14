@@ -81,7 +81,7 @@
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(12, 226);
+            this.comboBox2.Location = new System.Drawing.Point(12, 230);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(149, 21);
             this.comboBox2.TabIndex = 3;
@@ -91,18 +91,18 @@
             // comboBox3
             // 
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(12, 317);
+            this.comboBox3.Location = new System.Drawing.Point(12, 327);
             this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(149, 21);
+            this.comboBox3.Size = new System.Drawing.Size(290, 21);
             this.comboBox3.TabIndex = 6;
             this.comboBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardValidInputs);
             // 
             // button5
             // 
             this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(167, 240);
+            this.button5.Location = new System.Drawing.Point(165, 222);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(149, 35);
+            this.button5.Size = new System.Drawing.Size(137, 35);
             this.button5.TabIndex = 10;
             this.button5.Text = "Disable Product Size";
             this.button5.UseVisualStyleBackColor = true;
@@ -111,9 +111,9 @@
             // button6
             // 
             this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Location = new System.Drawing.Point(167, 199);
+            this.button6.Location = new System.Drawing.Point(165, 178);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(149, 35);
+            this.button6.Size = new System.Drawing.Size(137, 35);
             this.button6.TabIndex = 9;
             this.button6.Text = "Add Product Size";
             this.button6.UseVisualStyleBackColor = true;
@@ -122,19 +122,20 @@
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(12, 385);
+            this.button3.Location = new System.Drawing.Point(12, 395);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(149, 35);
+            this.button3.Size = new System.Drawing.Size(290, 35);
             this.button3.TabIndex = 8;
             this.button3.Text = "Disable Product";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
             this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(12, 344);
+            this.button4.Location = new System.Drawing.Point(12, 354);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(149, 35);
+            this.button4.Size = new System.Drawing.Size(290, 35);
             this.button4.TabIndex = 7;
             this.button4.Text = "Add/Edit Item";
             this.button4.UseVisualStyleBackColor = true;
@@ -143,18 +144,18 @@
             // cueTextBox4
             // 
             this.cueTextBox4.Cue = "Price";
-            this.cueTextBox4.Location = new System.Drawing.Point(12, 279);
+            this.cueTextBox4.Location = new System.Drawing.Point(12, 289);
             this.cueTextBox4.Name = "cueTextBox4";
-            this.cueTextBox4.Size = new System.Drawing.Size(149, 20);
+            this.cueTextBox4.Size = new System.Drawing.Size(290, 20);
             this.cueTextBox4.TabIndex = 5;
             this.cueTextBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardOnlyDecimals);
             // 
             // cueTextBox3
             // 
             this.cueTextBox3.Cue = "Quantity";
-            this.cueTextBox3.Location = new System.Drawing.Point(12, 253);
+            this.cueTextBox3.Location = new System.Drawing.Point(12, 263);
             this.cueTextBox3.Name = "cueTextBox3";
-            this.cueTextBox3.Size = new System.Drawing.Size(149, 20);
+            this.cueTextBox3.Size = new System.Drawing.Size(290, 20);
             this.cueTextBox3.TabIndex = 4;
             this.cueTextBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardOnlyDigits);
             // 
@@ -163,7 +164,7 @@
             this.cueTextBox2.Cue = "Product Name";
             this.cueTextBox2.Location = new System.Drawing.Point(12, 144);
             this.cueTextBox2.Name = "cueTextBox2";
-            this.cueTextBox2.Size = new System.Drawing.Size(149, 20);
+            this.cueTextBox2.Size = new System.Drawing.Size(290, 20);
             this.cueTextBox2.TabIndex = 1;
             this.cueTextBox2.TextChanged += new System.EventHandler(this.cueTextBox2_Leave);
             this.cueTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProductNameKeyDownEnter);
@@ -175,7 +176,7 @@
             this.cueTextBox1.Cue = "Product Code";
             this.cueTextBox1.Location = new System.Drawing.Point(12, 118);
             this.cueTextBox1.Name = "cueTextBox1";
-            this.cueTextBox1.Size = new System.Drawing.Size(149, 20);
+            this.cueTextBox1.Size = new System.Drawing.Size(290, 20);
             this.cueTextBox1.TabIndex = 0;
             this.cueTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProductIdKeyDownEnter);
             this.cueTextBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardValidInputs);
@@ -194,7 +195,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(10, 210);
+            this.label3.Location = new System.Drawing.Point(10, 215);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(26, 12);
             this.label3.TabIndex = 12;
@@ -204,7 +205,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(10, 302);
+            this.label4.Location = new System.Drawing.Point(10, 312);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(41, 12);
             this.label4.TabIndex = 13;
