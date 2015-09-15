@@ -51,6 +51,7 @@ namespace COTS_Sales_And_Inventory_System
             LoadDefaults();
             dateTime.Start();
             timerDataRefresh.Start();
+            comboBox4.SelectedIndex = 0;
         }
 
         private void LoadDefaults()
@@ -614,6 +615,7 @@ namespace COTS_Sales_And_Inventory_System
             if (e.KeyCode==Keys.Enter)
             {
                 LoadProductInfo();
+                button11.Focus();
             }
         }
 
@@ -672,6 +674,11 @@ namespace COTS_Sales_And_Inventory_System
         }
 
         private void button11_Click(object sender, EventArgs e)
+        {
+            AddItem();
+        }
+
+        private void AddItem()
         {
             if (textBox4.Text == "" && comboBox3.Text == "")
             {
@@ -882,6 +889,7 @@ namespace COTS_Sales_And_Inventory_System
         }
 
         private double totalSold;
+        private string rtextboxData;
         private void WriteToSummary(DataSet receiptDataset)
         {
             foreach (DataRow row in receiptDataset.Tables["SoldItems"].Rows)
@@ -891,6 +899,7 @@ namespace COTS_Sales_And_Inventory_System
                 richTextBox2.AppendText(line+Environment.NewLine);
                  totalSold+=
                 Convert.ToDouble(row["total"]);
+                rtextboxData = richTextBox2.Text;
                  textBox3.Text = (string.Format("{0:0.00}", totalSold));
             }
         }
@@ -1132,6 +1141,233 @@ namespace COTS_Sales_And_Inventory_System
             {
                 MessageBox.Show("You dont have admin rights", "Not Allowed",MessageBoxButtons.OK,MessageBoxIcon.Hand);
             }
+        }
+
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ChangeSalesSummaryDisplay();
+        }
+
+        private void ChangeSalesSummaryDisplay()
+        {
+            richTextBox2.Text = "";
+            textBox3.Text = "0.00";
+            switch (comboBox4.SelectedIndex)
+            {
+                case 0:
+                    DisplayCurrentSales();
+                    break;
+                case 1:
+                    DisplayCurrentDaySales();
+                    break;
+                case 2:
+                    DisplaySelectedDaySale();
+                    break;
+                case 3:
+                    DisplaySelectedWeek();
+                    break;
+                case 4:
+                    DisplaySelectedMonth();
+                    break;
+                case 5:
+                    DisplaySelectedYear();
+                    break;
+                case 6:
+                    DisplayAllSales();
+                    break;
+            }
+        }
+
+        private void DisplayAllSales()
+        {
+            var query = ("select Item_Name,size,count,price,date " +
+                         "from date inner join receiptid on date.DateID=receiptid.DateID " +
+                         "inner join sale on sale.receiptid=receiptid.receiptid " +
+                         "inner join size on sale.SizeID=size.SizeID " +
+                         "inner join items on size.ItemID=items.ItemID ");
+            var dt = DatabaseConnection.GetCustomTable(query, "summaryQuery");
+            var total = 0.00;
+            foreach (DataRow row in dt.Rows)
+            {
+                var totalSold = Convert.ToDouble(row["count"]) * Convert.ToDouble(row["price"]);
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0.00}", row["price"]) + " with a quantity of " + row["count"] + " is sold for "
+                    + string.Format("{0:0.00}", totalSold) + ". on " + Convert.ToDateTime(row["date"]).ToString("yy-MM-dd");
+                richTextBox2.AppendText(line + Environment.NewLine);
+                total += totalSold;
+            }
+            textBox3.Text = string.Format("{0:0.00}", total);
+
+        }
+
+        private void DisplaySelectedYear()
+        {
+            var dateselected = summaryDatePicker.Value.ToString("yy");
+            var query = ("select Item_Name,size,count,price,date " +
+                         "from date inner join receiptid on date.DateID=receiptid.DateID " +
+                         "inner join sale on sale.receiptid=receiptid.receiptid " +
+                         "inner join size on sale.SizeID=size.SizeID " +
+                         "inner join items on size.ItemID=items.ItemID " +
+                         "where date like '%" + dateselected + "%'");
+            var dt = DatabaseConnection.GetCustomTable(query, "summaryQuery");
+            var total = 0.00;
+            foreach (DataRow row in dt.Rows)
+            {
+                var totalSold = Convert.ToDouble(row["count"]) * Convert.ToDouble(row["price"]);
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0.00}", row["price"]) + " with a quantity of " + row["count"] + " is sold for "
+                    + string.Format("{0:0.00}", totalSold) + ". on " + Convert.ToDateTime(row["date"]).ToString("yy-MM-dd");
+                richTextBox2.AppendText(line + Environment.NewLine);
+                total += totalSold;
+            }
+            textBox3.Text = string.Format("{0:0.00}", total);
+
+        }
+
+        private void DisplaySelectedMonth()
+        {
+            var dateselected = summaryDatePicker.Value.ToString("yy-MM");
+            var query = ("select Item_Name,size,count,price,date " +
+                         "from date inner join receiptid on date.DateID=receiptid.DateID " +
+                         "inner join sale on sale.receiptid=receiptid.receiptid " +
+                         "inner join size on sale.SizeID=size.SizeID " +
+                         "inner join items on size.ItemID=items.ItemID " +
+                         "where date like '%" + dateselected + "%'");
+            var dt = DatabaseConnection.GetCustomTable(query, "summaryQuery");
+            var total = 0.00;
+            foreach (DataRow row in dt.Rows)
+            {
+                var totalSold = Convert.ToDouble(row["count"]) * Convert.ToDouble(row["price"]);
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0.00}", row["price"]) + " with a quantity of " + row["count"] + " is sold for "
+                    + string.Format("{0:0.00}", totalSold) + ". on " + Convert.ToDateTime(row["date"]).ToString("yy-MM-dd");
+                richTextBox2.AppendText(line + Environment.NewLine);
+                total += totalSold;
+            }
+            textBox3.Text = string.Format("{0:0.00}", total);
+
+        }
+
+        private void DisplaySelectedWeek()
+        {
+            var dateselected = summaryDatePicker.Value.ToString("yy-MM-dd");
+            var query = ("select Item_Name,size,count,price,date " +
+                         "from date inner join receiptid on date.DateID=receiptid.DateID " +
+                         "inner join sale on sale.receiptid=receiptid.receiptid " +
+                         "inner join size on sale.SizeID=size.SizeID " +
+                         "inner join items on size.ItemID=items.ItemID " +
+                         "WHERE date > DATE_SUB('" + dateselected + "', INTERVAL 1 WEEK)");
+            var dt = DatabaseConnection.GetCustomTable(query, "summaryQuery");
+            var total = 0.00;
+            foreach (DataRow row in dt.Rows)
+            {
+                var totalSold = Convert.ToDouble(row["count"]) * Convert.ToDouble(row["price"]);
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0.00}", row["price"]) + " with a quantity of " + row["count"] + " is sold for "
+                    + string.Format("{0:0.00}", totalSold) + ". on " + Convert.ToDateTime(row["date"]).ToString("yy-MM-dd");
+                richTextBox2.AppendText(line + Environment.NewLine);
+                total += totalSold;
+            }
+            textBox3.Text = string.Format("{0:0.00}", total);
+        }
+
+        private void DisplaySelectedDaySale()
+        {
+            var dateToday = summaryDatePicker.Value.ToString("yy-MM-dd");
+            var query = ("select Item_Name,size,count,price,date " +
+                         "from date inner join receiptid on date.DateID=receiptid.DateID " +
+                         "inner join sale on sale.receiptid=receiptid.receiptid " +
+                         "inner join size on sale.SizeID=size.SizeID " +
+                         "inner join items on size.ItemID=items.ItemID " +
+                         "where date like '%" + dateToday + "%'");
+            var dt = DatabaseConnection.GetCustomTable(query, "summaryQuery");
+            var total = 0.00;
+            foreach (DataRow row in dt.Rows)
+            {
+                var totalSold = Convert.ToDouble(row["count"]) * Convert.ToDouble(row["price"]);
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0.00}", row["price"]) + " with a quantity of " + row["count"] + " is sold for "
+                    + string.Format("{0:0.00}", totalSold) + ".";
+                richTextBox2.AppendText(line + Environment.NewLine);
+                total += totalSold;
+            }
+            textBox3.Text = string.Format("{0:0.00}", total);
+
+        }
+
+        private void DisplayCurrentDaySales()
+        {
+            var dateToday = DateTime.Now.ToString("yy-MM-dd");
+            var query = ("select Item_Name,size,count,price,date " +
+                         "from date inner join receiptid on date.DateID=receiptid.DateID " +
+                         "inner join sale on sale.receiptid=receiptid.receiptid " +
+                         "inner join size on sale.SizeID=size.SizeID " +
+                         "inner join items on size.ItemID=items.ItemID " +
+                         "where date like '%" + dateToday + "%'");
+            var dt = DatabaseConnection.GetCustomTable(query,"summaryQuery");
+            var total = 0.00;
+            foreach (DataRow row in dt.Rows)
+            {
+                var totalSold = Convert.ToDouble(row["count"])*Convert.ToDouble(row["price"]);
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0.00}", row["price"]) + " with a quantity of " + row["count"] + " is sold for "
+                    + string.Format("{0:0.00}",totalSold ) + ".";
+                richTextBox2.AppendText(line+Environment.NewLine);
+                total += totalSold;
+            }
+            textBox3.Text = string.Format("{0:0.00}",total);
+
+        }
+
+        private void DisplayCurrentSales()
+        {
+            richTextBox2.Text = rtextboxData;
+            textBox3.Text = (string.Format("{0:0.00}", totalSold));
+        }
+
+        private void summaryDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+            ChangeSalesSummaryDisplay();
+        }
+
+        private void btnPrintSummarySales_Click(object sender, EventArgs e)
+        {
+            btnPrintSummarySales.Enabled = false;
+            PrintSummary();
+            btnPrintSummarySales.Enabled = true;
+        }
+
+        private void PrintSummary()
+        {
+            var summaryReport = CreateSummarySalesReport();
+            InsertSummaryData(summaryReport);
+            summaryReport.WriteXml("summaryReport.xml");
+            var print = new PrintSalesSummary(summaryReport);
+            print.Show();
+        }
+
+        private void InsertSummaryData(DataSet summaryReport)
+        {
+            foreach (var textLine in richTextBox2.Lines)
+            {
+                var summaryLine = summaryReport.Tables["SalesLine"].NewRow();
+                summaryLine["textLine"] = textLine;
+                summaryReport.Tables["SalesLine"].Rows.Add(summaryLine);
+            }
+            var miscReportData = summaryReport.Tables["SummaryData"].NewRow();
+            miscReportData["date"] = summaryDatePicker.Value.ToString("dd-MM-yyyy");
+            miscReportData["mode"] = comboBox4.Text;
+            miscReportData["total"] = textBox3.Text;
+            summaryReport.Tables["SummaryData"].Rows.Add(miscReportData);
+
+        }
+
+        private DataSet CreateSummarySalesReport()
+        {
+            var ds = new DataSet();
+            var dt = new DataTable("SalesLine");
+            dt.Columns.Add("textLine",typeof (string));
+            ds.Tables.Add(dt);
+            dt=new DataTable("SummaryData");
+            dt.Columns.Add("date", typeof (string));
+            dt.Columns.Add("mode", typeof(string));
+            dt.Columns.Add("total", typeof(string));
+            ds.Tables.Add(dt);
+            return ds;
         }
     }
     }

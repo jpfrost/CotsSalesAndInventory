@@ -114,7 +114,8 @@ namespace COTS_Sales_And_Inventory_System
                     if (!orderReceive)
                     {
                         InputOrders(orderListID);
-                        findOrderlist[0]["orderDelivered"] = true;
+                        findOrderlist[0]["orderDelivered"] = 1;
+                        findOrderlist[0].EndEdit();
                         DatabaseConnection.UploadChanges();
                         MessageBox.Show("OrderList No.: "+orderListID+" has been receive");
                     }
@@ -211,15 +212,22 @@ namespace COTS_Sales_And_Inventory_System
 
         private void FilterInvetoryByCategory()
         {
-            if (!listBox1.SelectedItem.Equals("All"))
+            try
             {
-                ((DataTable)dataGridView1.DataSource).DefaultView.RowFilter = ("[OrderList ID]='"
-                 + listBox1.SelectedItem + "'");
+                if (!listBox1.SelectedItem.Equals("All"))
+                {
+                    ((DataTable)dataGridView1.DataSource).DefaultView.RowFilter = ("[OrderList ID]='"
+                                                                                   + listBox1.SelectedItem + "'");
 
+                }
+                else
+                {
+                    ((DataTable)dataGridView1.DataSource).DefaultView.RowFilter = string.Empty;
+                }
             }
-            else
+            catch (Exception e)
             {
-                ((DataTable)dataGridView1.DataSource).DefaultView.RowFilter = string.Empty;
+                Console.WriteLine(e);
             }
         }
 
