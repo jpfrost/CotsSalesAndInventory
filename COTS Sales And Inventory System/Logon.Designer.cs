@@ -123,7 +123,7 @@
             this.cueTextBox1.Name = "cueTextBox1";
             this.cueTextBox1.Size = new System.Drawing.Size(274, 47);
             this.cueTextBox1.TabIndex = 0;
-            this.cueTextBox1.Click += new System.EventHandler(this.btnLogin_Click);
+            this.cueTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LoginKeyDown);
             // 
             // cueTextBox2
             // 
@@ -134,7 +134,7 @@
             this.cueTextBox2.PasswordChar = '*';
             this.cueTextBox2.Size = new System.Drawing.Size(274, 47);
             this.cueTextBox2.TabIndex = 1;
-            this.cueTextBox2.Click += new System.EventHandler(this.btnLogin_Click);
+            this.cueTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LoginKeyDown);
             // 
             // Logon
             // 

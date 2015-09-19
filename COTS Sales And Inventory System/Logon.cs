@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 
 namespace COTS_Sales_And_Inventory_System
@@ -22,13 +23,20 @@ namespace COTS_Sales_And_Inventory_System
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            EnterMain();
+        }
+
+        private void EnterMain()
+        {
             var username = cueTextBox1.Text;
             var password = cueTextBox2.Text;
+            var defaultuser = Properties.Settings.Default.DefaultAdminAccount;
+            var defaultpass = Properties.Settings.Default.DefaultAdminPassword;
 
             if (username.Equals(Properties.Settings.Default.DefaultAdminAccount)
                 && password.Equals(Properties.Settings.Default.DefaultAdminPassword))
             {
-                GoToMain(username,"Admin");
+                GoToMain(username, "Admin");
             }
             else if (username != "" && password != "")
             {
@@ -45,7 +53,7 @@ namespace COTS_Sales_And_Inventory_System
                         else
                         {
                             MessageBox.Show("incorrect password", "Invalid Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
-          
+
                         }
                     }
                 }
@@ -57,7 +65,7 @@ namespace COTS_Sales_And_Inventory_System
             }
             else
             {
-                MessageBox.Show("incorrect username/password", "Invalid Login",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show("incorrect username/password", "Invalid Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -101,7 +109,6 @@ namespace COTS_Sales_And_Inventory_System
 
         private void RecoverPass()
         {
-            this.Hide();
             ForgotPass forgotPass = new ForgotPass();
             forgotPass.Show();
         }
@@ -129,6 +136,14 @@ namespace COTS_Sales_And_Inventory_System
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void LoginKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode==Keys.Enter)
+            {
+                EnterMain();
+            }
         }
 
     }

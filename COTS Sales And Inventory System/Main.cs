@@ -52,6 +52,36 @@ namespace COTS_Sales_And_Inventory_System
             dateTime.Start();
             timerDataRefresh.Start();
             comboBox4.SelectedIndex = 0;
+            LoadAccountSettings();
+        }
+
+        private void LoadAccountSettings()
+        {
+            accountsToolStripMenuItem.Enabled = false;
+            configToolStripMenuItem.Enabled = false;
+            switch (_accountType)
+            {
+                case "Sales Person":
+                    mainTab.TabPages.Remove(tabPage2);
+                    mainTab.TabPages.Remove(tabPage3);
+                    break;
+                case "Sales Manager":
+                    mainTab.TabPages.Remove(tabPage2);
+                    tabControl2.TabPages.Remove(tabPage5);
+                    break;
+                case "Stock Man":
+                    mainTab.TabPages.Remove(tabPage1);
+                    mainTab.TabPages.Remove(tabPage3);
+                    break;
+                case "Stock Manager":
+                    mainTab.TabPages.Remove(tabPage1);
+                    tabControl2.TabPages.Remove(tabPage4);
+                    break;
+                case "Admin":
+                    accountsToolStripMenuItem.Enabled = true;
+            configToolStripMenuItem.Enabled = true;
+                    break;
+            }
         }
 
         private void LoadDefaults()
@@ -690,7 +720,7 @@ namespace COTS_Sales_And_Inventory_System
                 try
                 {
                     var size = FindSizeID(textBox4.Text, comboBox3.Text);
-                    if (Convert.ToInt16(size["Quantity"]) <= Convert.ToInt16(numericUpDown1.Text))
+                    if (Convert.ToInt16(size["Quantity"]) < Convert.ToInt16(numericUpDown1.Text))
                     {
                         MessageBox.Show("quantity exceed stocks", "Oppppps...", MessageBoxButtons.OK,
                             MessageBoxIcon.Stop);
@@ -731,13 +761,26 @@ namespace COTS_Sales_And_Inventory_System
 
         private void AddItemToGridView()
         {
-            var row = FindifProductExistForSale() ?? dataGridView2.Rows.Add();
-                dataGridView2.Rows[row].Cells[0].Value = textBox4.Text;
-                dataGridView2.Rows[row].Cells[1].Value = comboBox3.SelectedItem;
-                dataGridView2.Rows[row].Cells[2].Value = textBox1.Text;
-                dataGridView2.Rows[row].Cells[3].Value =Convert.ToInt32(dataGridView2.Rows[row].Cells[3].Value)
-            + Convert.ToInt32(numericUpDown1.Text);
-                dataGridView2.Rows[row].Cells[4].Value = CountTotal(dataGridView2.Rows[row]);
+            
+                var row = FindifProductExistForSale() ?? dataGridView2.Rows.Add();
+                var purchaseQuantity = Convert.ToInt32(dataGridView2.Rows[row].Cells[3].Value) + Convert.ToInt32(numericUpDown1.Text);
+                var stockQuantity = FindStockQuantity();
+                if (purchaseQuantity <= stockQuantity)
+                {
+                    dataGridView2.Rows[row].Cells[0].Value = textBox4.Text;
+                    dataGridView2.Rows[row].Cells[1].Value = comboBox3.SelectedItem;
+                    dataGridView2.Rows[row].Cells[2].Value = textBox1.Text;
+                    dataGridView2.Rows[row].Cells[3].Value = Convert.ToInt32(dataGridView2.Rows[row].Cells[3].Value)
+                                                         + Convert.ToInt32(numericUpDown1.Text);
+                    dataGridView2.Rows[row].Cells[4].Value = CountTotal(dataGridView2.Rows[row]);
+                }
+             else
+                {
+                        MessageBox.Show("Cannot Exceed items quantity",
+                            "Purchase Quantity Exceed",MessageBoxButtons.OK,MessageBoxIcon.Hand);
+                }
+            
+            
             
         }
 
@@ -748,10 +791,24 @@ namespace COTS_Sales_And_Inventory_System
                 if (row.Cells[0].Value != null && row.Cells[0].Value.Equals(textBox4.Text)
                     && row.Cells[1].Value != null && row.Cells[1].Value.Equals(comboBox3.SelectedItem))
                 {
+                    
                     return row.Index;
+                    
+                   
                 }
             }
             return null;
+        }
+
+        private int FindStockQuantity()
+        {
+            
+            var itemID = DatabaseConnection.DatabaseRecord.Tables["items"].Select("item_name ='"
+                +textBox4.Text+"'");
+            var size = DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemid ='"
+                + itemID[0]["itemId"] + "' and size ='" + comboBox3.Text + "'");
+            var x = Convert.ToInt32(size[0]["Quantity"]);
+            return x;
         }
 
         private double CountTotal(DataGridViewRow Row)
@@ -1115,7 +1172,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             textBox4.Clear();
             textBox1.Clear();
-            comboBox3.Text = String.Empty;
+            comboBox3.Items.Clear();
 
         }
 
@@ -1178,13 +1235,15 @@ namespace COTS_Sales_And_Inventory_System
             }
         }
 
+        private string groupQuery = "";
+
         private void DisplayAllSales()
         {
             var query = ("select Item_Name,size,count,price,date " +
                          "from date inner join receiptid on date.DateID=receiptid.DateID " +
                          "inner join sale on sale.receiptid=receiptid.receiptid " +
                          "inner join size on sale.SizeID=size.SizeID " +
-                         "inner join items on size.ItemID=items.ItemID ");
+                         "inner join items on size.ItemID=items.ItemID  " + groupQuery);
             var dt = DatabaseConnection.GetCustomTable(query, "summaryQuery");
             var total = 0.00;
             foreach (DataRow row in dt.Rows)
@@ -1207,7 +1266,7 @@ namespace COTS_Sales_And_Inventory_System
                          "inner join sale on sale.receiptid=receiptid.receiptid " +
                          "inner join size on sale.SizeID=size.SizeID " +
                          "inner join items on size.ItemID=items.ItemID " +
-                         "where date like '%" + dateselected + "%'");
+                         "where date like '%" + dateselected + "%' " + groupQuery);
             var dt = DatabaseConnection.GetCustomTable(query, "summaryQuery");
             var total = 0.00;
             foreach (DataRow row in dt.Rows)
@@ -1230,7 +1289,7 @@ namespace COTS_Sales_And_Inventory_System
                          "inner join sale on sale.receiptid=receiptid.receiptid " +
                          "inner join size on sale.SizeID=size.SizeID " +
                          "inner join items on size.ItemID=items.ItemID " +
-                         "where date like '%" + dateselected + "%'");
+                         "where date like '%" + dateselected + "%' order by date  " + groupQuery);
             var dt = DatabaseConnection.GetCustomTable(query, "summaryQuery");
             var total = 0.00;
             foreach (DataRow row in dt.Rows)
@@ -1253,7 +1312,7 @@ namespace COTS_Sales_And_Inventory_System
                          "inner join sale on sale.receiptid=receiptid.receiptid " +
                          "inner join size on sale.SizeID=size.SizeID " +
                          "inner join items on size.ItemID=items.ItemID " +
-                         "WHERE date > DATE_SUB('" + dateselected + "', INTERVAL 1 WEEK)");
+                         "WHERE date > DATE_SUB('" + dateselected + "', INTERVAL 1 WEEK)  "+groupQuery);
             var dt = DatabaseConnection.GetCustomTable(query, "summaryQuery");
             var total = 0.00;
             foreach (DataRow row in dt.Rows)
@@ -1275,7 +1334,7 @@ namespace COTS_Sales_And_Inventory_System
                          "inner join sale on sale.receiptid=receiptid.receiptid " +
                          "inner join size on sale.SizeID=size.SizeID " +
                          "inner join items on size.ItemID=items.ItemID " +
-                         "where date like '%" + dateToday + "%'");
+                         "where date like '%" + dateToday + "%' "+groupQuery);
             var dt = DatabaseConnection.GetCustomTable(query, "summaryQuery");
             var total = 0.00;
             foreach (DataRow row in dt.Rows)
@@ -1298,7 +1357,7 @@ namespace COTS_Sales_And_Inventory_System
                          "inner join sale on sale.receiptid=receiptid.receiptid " +
                          "inner join size on sale.SizeID=size.SizeID " +
                          "inner join items on size.ItemID=items.ItemID " +
-                         "where date like '%" + dateToday + "%'");
+                         "where date like '%" + dateToday + "%' "+groupQuery);
             var dt = DatabaseConnection.GetCustomTable(query,"summaryQuery");
             var total = 0.00;
             foreach (DataRow row in dt.Rows)
@@ -1368,6 +1427,24 @@ namespace COTS_Sales_And_Inventory_System
             dt.Columns.Add("total", typeof(string));
             ds.Tables.Add(dt);
             return ds;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked)
+            {
+                groupQuery = "";
+            }
+            else
+            {
+                groupQuery = "";
+            }
+        }
+
+        private void configToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var settings = new Settings();
+            settings.Show();
         }
     }
     }

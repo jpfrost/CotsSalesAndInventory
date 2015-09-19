@@ -133,17 +133,17 @@ namespace COTS_Sales_And_Inventory_System
         public static void UpdateTable(object tableName)
         {
 
-            /*try
-            {*/
+            try
+            {
                 var query = CreateSelectStatement(tableName.ToString());
                 var dadapt = CreateDataAddapter(query);
                 var comBuild = new MySqlCommandBuilder(dadapt);
                 dadapt.Update(DatabaseRecord.Tables[tableName.ToString()]);
-            /*}
+            }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-            }*/
+            }
         }
     }
 }

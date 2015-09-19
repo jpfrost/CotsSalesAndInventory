@@ -103,33 +103,36 @@ namespace COTS_Sales_And_Inventory_System
         private void ReceiveOrder()
         {
             var receive = new ReceiveOrder();
-            if (receive.ShowDialog(this) == DialogResult.OK)
+            if (receive.ShowDialog(this) != DialogResult.OK) return;
+            var orderListId = receive.cueTextBox1.Text;
+            var findOrderlist = DatabaseConnection.DatabaseRecord.Tables["orderlist"].Select("idorderlist ='"
+                                                                                             +orderListId+"'");
+            if (findOrderlist.Length > 0)
             {
-                var orderListID = receive.cueTextBox1.Text;
-                var findOrderlist = DatabaseConnection.DatabaseRecord.Tables["orderlist"].Select("idorderlist ='"
-                    +orderListID+"'");
-                if (findOrderlist.Length > 0)
+                var orderReceive = Convert.ToBoolean(findOrderlist[0]["orderDelivered"]);
+                if (!orderReceive)
                 {
-                    var orderReceive = Convert.ToBoolean(findOrderlist[0]["orderDelivered"]);
-                    if (!orderReceive)
-                    {
-                        InputOrders(orderListID);
-                        findOrderlist[0]["orderDelivered"] = 1;
-                        findOrderlist[0].EndEdit();
-                        DatabaseConnection.UploadChanges();
-                        MessageBox.Show("OrderList No.: "+orderListID+" has been receive");
-                    }
-                    else
-                    {
-                        MessageBox.Show("Orders already Delivered", "" , MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
+                    InputOrders(orderListId);
+                    DirectUpdate(orderListId);
+                    MessageBox.Show("OrderList No.: "+orderListId+" has been receive");
                 }
                 else
                 {
-                    MessageBox.Show("Order does not exist");
+                    MessageBox.Show("Orders already Delivered", "" , MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-           
+            else
+            {
+                MessageBox.Show("Order does not exist");
+            }
+        }
+
+        private void DirectUpdate(string orderListId)
+        {
+            var found = DatabaseConnection.DatabaseRecord.Tables["orderlist"].Select("idorderList ='"
+                +orderListId+"'");
+            found[0]["orderDelivered"] = true;
+            DatabaseConnection.UploadChanges();
         }
 
         private void InputOrders(string orderListId)

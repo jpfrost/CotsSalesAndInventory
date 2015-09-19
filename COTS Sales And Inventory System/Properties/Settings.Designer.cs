@@ -85,7 +85,7 @@ namespace COTS_Sales_And_Inventory_System.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("jpfrost15@gmail.com")]
         public string EmailUser {
             get {
                 return ((string)(this["EmailUser"]));
@@ -97,7 +97,7 @@ namespace COTS_Sales_And_Inventory_System.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Mxdgzg77p77r")]
         public string EmailPassword {
             get {
                 return ((string)(this["EmailPassword"]));
@@ -109,13 +109,13 @@ namespace COTS_Sales_And_Inventory_System.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string EmailSettings {
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EmailSendMessage {
             get {
-                return ((string)(this["EmailSettings"]));
+                return ((bool)(this["EmailSendMessage"]));
             }
             set {
-                this["EmailSettings"] = value;
+                this["EmailSendMessage"] = value;
             }
         }
         
@@ -169,13 +169,145 @@ namespace COTS_Sales_And_Inventory_System.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Setting {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AllowMultiSupplier {
             get {
-                return ((string)(this["Setting"]));
+                return ((bool)(this["AllowMultiSupplier"]));
             }
             set {
-                this["Setting"] = value;
+                this["AllowMultiSupplier"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("12")]
+        public int SalesTax {
+            get {
+                return ((int)(this["SalesTax"]));
+            }
+            set {
+                this["SalesTax"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SalesReceipt {
+            get {
+                return ((bool)(this["SalesReceipt"]));
+            }
+            set {
+                this["SalesReceipt"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SalesDiscount {
+            get {
+                return ((bool)(this["SalesDiscount"]));
+            }
+            set {
+                this["SalesDiscount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool priceMod {
+            get {
+                return ((bool)(this["priceMod"]));
+            }
+            set {
+                this["priceMod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool quantMod {
+            get {
+                return ((bool)(this["quantMod"]));
+            }
+            set {
+                this["quantMod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool printSum {
+            get {
+                return ((bool)(this["printSum"]));
+            }
+            set {
+                this["printSum"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string storeName {
+            get {
+                return ((string)(this["storeName"]));
+            }
+            set {
+                this["storeName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string storeAdd {
+            get {
+                return ((string)(this["storeAdd"]));
+            }
+            set {
+                this["storeAdd"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string storeNo {
+            get {
+                return ((string)(this["storeNo"]));
+            }
+            set {
+                this["storeNo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DefaultSecretQuest {
+            get {
+                return ((string)(this["DefaultSecretQuest"]));
+            }
+            set {
+                this["DefaultSecretQuest"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DefaultSecretAnswer {
+            get {
+                return ((string)(this["DefaultSecretAnswer"]));
+            }
+            set {
+                this["DefaultSecretAnswer"] = value;
             }
         }
     }

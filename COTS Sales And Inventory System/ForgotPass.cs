@@ -19,41 +19,47 @@ namespace COTS_Sales_And_Inventory_System
 
         private void ForgotPass_Load(object sender, EventArgs e)
         {
-            LoadSelection();
+            cueTextBox1.Text = Properties.Settings.Default.DefaultSecretQuest;
+            button1.Enabled = false;
         }
 
-        private void LoadSelection()
+        private void button1_Click(object sender, EventArgs e)
         {
-            var values = GetSelection();
-            InsertValues(values);
+            button1.Enabled = false;
+            var task = Task.Run(() => SendUsernameAndPassword());
+            task.Wait();
+            button1.Enabled = true;
         }
 
-        private void InsertValues(string[] values)
+        private void SendUsernameAndPassword()
         {
-            foreach (var value in values)
+            var emailAcc = Properties.Settings.Default.EmailUser;
+            var emailPass = Properties.Settings.Default.EmailPassword;
+            var subject = "Password Recovery";
+            var body = "Username: "+Properties.Settings.Default.DefaultAdminAccount+"\n"
+                +"Password: "+Properties.Settings.Default.DefaultAdminPassword;
+            try
             {
-                comboBox1.Items.Add(value);
+                var email = new Email(emailAcc, emailPass, subject, body);
+                email.Send();
+                MessageBox.Show("Your Username/Password \nhas been sent to your email");
+            }
+            catch (Exception e)
+            {
+                
             }
         }
 
-
-        private string[] GetSelection()
+        private void cueTextBox2_KeyDown(object sender, KeyEventArgs e)
         {
-            var selection = new String[2];
-            selection[0] = "Email";
-            selection[1] = "Secret Question";
-
-            return selection;
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (cueTextBox2.Text.Equals(Properties.Settings.Default.DefaultSecretAnswer))
+                {
+                    button1.Enabled = true;
+                }
+            }
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SelectTab(comboBox1.SelectedIndex);
-        }
-
-        private void SelectTab(int selectedIndex)
-        {
-            
-        }
     }
 }

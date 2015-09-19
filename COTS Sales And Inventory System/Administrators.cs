@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -41,6 +42,8 @@ namespace COTS_Sales_And_Inventory_System
                     DatabaseConnection.UploadChanges();
                     MessageBox.Show("Account has been created", "Account Created"
                         , MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadAccounts();
+                    ClearField();
                 }
                 else
                 {
@@ -54,6 +57,19 @@ namespace COTS_Sales_And_Inventory_System
                         , MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
+        private void ClearField()
+        {
+            foreach (var control in Controls)
+            {
+                var box = control as CueTextBox;
+                if (box != null)
+                {
+                    box.Text = "";
+                }
+            }
+        }
+
 
         private int SetAccountInt(string accountType)
         {
@@ -103,6 +119,45 @@ namespace COTS_Sales_And_Inventory_System
                 {
                     listBox1.Items.Add(accountRow["AccountName"].ToString());
                 }
+            }
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DisplayAccountInfo();
+        }
+
+        private void DisplayAccountInfo()
+        {
+            var found = accountTable.Select("accountName ='"
+                +listBox1.SelectedItem +"'");
+            cueTextBox1.Text= found[0]["accountName"].ToString();
+            cueTextBox2.Text = found[0]["accountPassword"].ToString();
+            cueTextBox3.Text = found[0]["accountPassword"].ToString();
+            comboBox1.SelectedIndex = Convert.ToInt32(found[0]["accounttype"])-1;
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            UpdateAccount();
+        }
+
+        private void UpdateAccount()
+        {
+            var found = accountTable.Select("accountName ='"
+                + listBox1.SelectedItem + "'");
+            try
+            {
+                found[0]["accountName"] = cueTextBox1.Text;
+                found[0]["accountPassword"] = cueTextBox2.Text;
+                found[0]["AccountType"] = SetAccountInt(comboBox1.Text);
+                DatabaseConnection.UploadChanges();
+                listBox1.Items.Clear();
+                LoadAccounts();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
     }
