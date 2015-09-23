@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using BarcodeLib;
 
 namespace COTS_Sales_And_Inventory_System
 {
@@ -26,17 +19,16 @@ namespace COTS_Sales_And_Inventory_System
         private void LoadOrderList()
         {
             RefreshGrid();
-            RefreshFilters();   
+            RefreshFilters();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            Dispose();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
             var add_Order = new Add_Orders();
             add_Order.Show();
         }
@@ -51,7 +43,6 @@ namespace COTS_Sales_And_Inventory_System
         {
             if (keyData == Keys.F1)
             {
-                
             }
             else if (keyData == Keys.F5)
             {
@@ -66,7 +57,7 @@ namespace COTS_Sales_And_Inventory_System
             listBox1.Items.Clear();
             listBox1.BeginUpdate();
             var datatable = DatabaseConnection.GetCustomTable
-                ("SELECT * FROM cotsalesinventory.orderlist where orderDelivered=false;","orderlist");
+                ("SELECT * FROM cotsalesinventory.orderlist where orderDelivered=false;", "orderlist");
             foreach (DataRow row in datatable.Rows)
             {
                 listBox1.Items.Add(row["idorderlist"].ToString());
@@ -89,9 +80,8 @@ namespace COTS_Sales_And_Inventory_System
                     "inner join items on items.ItemID=Size.ItemID " +
                     "inner join date on date.DateID=orders.DateID " +
                     "inner join orderlist on orders.idorderList=orderlist.idorderList " +
-                    "where orderDelivered=false;","tblOrder");
+                    "where orderDelivered=false;", "tblOrder");
             dataGridView1.DataSource = datatable;
-
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -106,7 +96,7 @@ namespace COTS_Sales_And_Inventory_System
             if (receive.ShowDialog(this) != DialogResult.OK) return;
             var orderListId = receive.cueTextBox1.Text;
             var findOrderlist = DatabaseConnection.DatabaseRecord.Tables["orderlist"].Select("idorderlist ='"
-                                                                                             +orderListId+"'");
+                                                                                             + orderListId + "'");
             if (findOrderlist.Length > 0)
             {
                 var orderReceive = Convert.ToBoolean(findOrderlist[0]["orderDelivered"]);
@@ -114,11 +104,11 @@ namespace COTS_Sales_And_Inventory_System
                 {
                     InputOrders(orderListId);
                     DirectUpdate(orderListId);
-                    MessageBox.Show("OrderList No.: "+orderListId+" has been receive");
+                    MessageBox.Show("OrderList No.: " + orderListId + " has been receive");
                 }
                 else
                 {
-                    MessageBox.Show("Orders already Delivered", "" , MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Orders already Delivered", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             else
@@ -130,7 +120,7 @@ namespace COTS_Sales_And_Inventory_System
         private void DirectUpdate(string orderListId)
         {
             var found = DatabaseConnection.DatabaseRecord.Tables["orderlist"].Select("idorderList ='"
-                +orderListId+"'");
+                                                                                     + orderListId + "'");
             found[0]["orderDelivered"] = true;
             DatabaseConnection.UploadChanges();
         }
@@ -142,39 +132,36 @@ namespace COTS_Sales_And_Inventory_System
                     "SELECT items.ItemID," +
                     "size.sizeID," +
                     "orders.OrderQty," +
-                    "orders.idorderlist"+
+                    "orders.idorderlist" +
                     " FROM items " +
                     "inner join Size on items.ItemID=size.ItemID " +
                     "inner join Orders on Size.SizeID=Orders.SizeID " +
                     "inner join orderlist on Orders.idorderList=orderlist.idorderList; ",
                     "receiveOrders");
-            var receiveOrders = orders.Select("idorderlist ='"+ orderListId+"'");
+            var receiveOrders = orders.Select("idorderlist ='" + orderListId + "'");
             InsertOrders(receiveOrders);
-
         }
 
         private void InsertOrders(DataRow[] receiveOrders)
         {
-            foreach (DataRow orderRow in receiveOrders)
+            foreach (var orderRow in receiveOrders)
             {
                 var itemID = orderRow["itemID"].ToString();
                 var sizeID = Convert.ToInt32(orderRow["sizeID"]);
                 var quantity = Convert.ToInt32(orderRow["orderQty"]);
-                var Size = DatabaseConnection.DatabaseRecord.Tables["Size"].Select("itemID ='"+itemID
-                    +"' and sizeId ='"+sizeID+"'");
-                int initialQty = GetQuantity(Size[0]["quantity"]);
+                var Size = DatabaseConnection.DatabaseRecord.Tables["Size"].Select("itemID ='" + itemID
+                                                                                   + "' and sizeId ='" + sizeID + "'");
+                var initialQty = GetQuantity(Size[0]["quantity"]);
                 initialQty += quantity;
                 Size[0]["quantity"] = initialQty;
                 DatabaseConnection.UploadChanges();
             }
-            
         }
 
         private int GetQuantity(object o)
         {
             return o != DBNull.Value ? Convert.ToInt32(o) : 0;
         }
-
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -194,7 +181,7 @@ namespace COTS_Sales_And_Inventory_System
         private void PrintOrder()
         {
             var ds = new DataSet();
-           var orders =
+            var orders =
                 DatabaseConnection.GetCustomTable(
                     "select orders.idorderList" +
                     ",items.Item_Name,size.Size" +
@@ -205,7 +192,7 @@ namespace COTS_Sales_And_Inventory_System
                     " inner join distributor on orders.DistroID=distributor.DistroID " +
                     "inner join size on orders.SizeID=size.SizeID " +
                     "inner join items on items.ItemID=size.ItemID " +
-                    "where orders.idorderList="+listBox1.SelectedItem+";",
+                    "where orders.idorderList=" + listBox1.SelectedItem + ";",
                     "receiveOrders");
             ds.Tables.Add(orders);
             ds.WriteXml("order.xml");
@@ -219,13 +206,12 @@ namespace COTS_Sales_And_Inventory_System
             {
                 if (!listBox1.SelectedItem.Equals("All"))
                 {
-                    ((DataTable)dataGridView1.DataSource).DefaultView.RowFilter = ("[OrderList ID]='"
-                                                                                   + listBox1.SelectedItem + "'");
-
+                    ((DataTable) dataGridView1.DataSource).DefaultView.RowFilter = ("[OrderList ID]='"
+                                                                                    + listBox1.SelectedItem + "'");
                 }
                 else
                 {
-                    ((DataTable)dataGridView1.DataSource).DefaultView.RowFilter = string.Empty;
+                    ((DataTable) dataGridView1.DataSource).DefaultView.RowFilter = string.Empty;
                 }
             }
             catch (Exception e)
@@ -242,7 +228,6 @@ namespace COTS_Sales_And_Inventory_System
         private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             ReceiveOrder(); //jasper fix this shit..
-
         }
     }
 }

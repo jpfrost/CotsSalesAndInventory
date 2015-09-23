@@ -30,11 +30,6 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.orderProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderproductSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderProductQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderDistro = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -44,6 +39,12 @@
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.cueTextBox3 = new CueTextBox();
             this.cueTextBox4 = new CueTextBox();
+            this.orderProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.orderproductSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.orderProductQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.orderDistro = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.orderCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.orderProductID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -70,7 +71,8 @@
             this.orderproductSize,
             this.orderProductQty,
             this.orderDistro,
-            this.orderCategory});
+            this.orderCategory,
+            this.orderProductID});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(3, 16);
             this.dataGridView1.Name = "dataGridView1";
@@ -78,36 +80,6 @@
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.Size = new System.Drawing.Size(347, 223);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // orderProductName
-            // 
-            this.orderProductName.HeaderText = "Product Name";
-            this.orderProductName.Name = "orderProductName";
-            this.orderProductName.ReadOnly = true;
-            // 
-            // orderproductSize
-            // 
-            this.orderproductSize.HeaderText = "Product Size";
-            this.orderproductSize.Name = "orderproductSize";
-            this.orderproductSize.ReadOnly = true;
-            // 
-            // orderProductQty
-            // 
-            this.orderProductQty.HeaderText = "Quantity";
-            this.orderProductQty.Name = "orderProductQty";
-            this.orderProductQty.ReadOnly = true;
-            // 
-            // orderDistro
-            // 
-            this.orderDistro.HeaderText = "Distro";
-            this.orderDistro.Name = "orderDistro";
-            this.orderDistro.ReadOnly = true;
-            // 
-            // orderCategory
-            // 
-            this.orderCategory.HeaderText = "Category";
-            this.orderCategory.Name = "orderCategory";
-            this.orderCategory.ReadOnly = true;
             // 
             // comboBox1
             // 
@@ -205,6 +177,42 @@
             this.cueTextBox4.TabIndex = 0;
             this.cueTextBox4.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cueTextBox4_KeyDown);
             // 
+            // orderProductName
+            // 
+            this.orderProductName.HeaderText = "Product Name";
+            this.orderProductName.Name = "orderProductName";
+            this.orderProductName.ReadOnly = true;
+            // 
+            // orderproductSize
+            // 
+            this.orderproductSize.HeaderText = "Product Size";
+            this.orderproductSize.Name = "orderproductSize";
+            this.orderproductSize.ReadOnly = true;
+            // 
+            // orderProductQty
+            // 
+            this.orderProductQty.HeaderText = "Quantity";
+            this.orderProductQty.Name = "orderProductQty";
+            this.orderProductQty.ReadOnly = true;
+            // 
+            // orderDistro
+            // 
+            this.orderDistro.HeaderText = "Distro";
+            this.orderDistro.Name = "orderDistro";
+            this.orderDistro.ReadOnly = true;
+            // 
+            // orderCategory
+            // 
+            this.orderCategory.HeaderText = "Category";
+            this.orderCategory.Name = "orderCategory";
+            this.orderCategory.ReadOnly = true;
+            // 
+            // orderProductID
+            // 
+            this.orderProductID.HeaderText = "ID";
+            this.orderProductID.Name = "orderProductID";
+            this.orderProductID.ReadOnly = true;
+            // 
             // Add_Orders
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -244,11 +252,12 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.DataGridViewTextBoxColumn orderProductName;
         private System.Windows.Forms.DataGridViewTextBoxColumn orderproductSize;
         private System.Windows.Forms.DataGridViewTextBoxColumn orderProductQty;
         private System.Windows.Forms.DataGridViewTextBoxColumn orderDistro;
         private System.Windows.Forms.DataGridViewTextBoxColumn orderCategory;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn orderProductID;
     }
 }

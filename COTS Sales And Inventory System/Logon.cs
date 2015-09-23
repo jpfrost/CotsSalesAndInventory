@@ -1,21 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.UI.WebControls;
 using System.Windows.Forms;
 
 namespace COTS_Sales_And_Inventory_System
 {
     public partial class Logon : Form
     {
-        DatabaseConnection dataCon = new DatabaseConnection();
+        private DatabaseConnection dataCon = new DatabaseConnection();
+
         public Logon()
         {
             InitializeComponent();
@@ -52,8 +44,8 @@ namespace COTS_Sales_And_Inventory_System
                         }
                         else
                         {
-                            MessageBox.Show("incorrect password", "Invalid Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+                            MessageBox.Show("incorrect password", "Invalid Login", MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
                         }
                     }
                 }
@@ -65,7 +57,8 @@ namespace COTS_Sales_And_Inventory_System
             }
             else
             {
-                MessageBox.Show("incorrect username/password", "Invalid Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("incorrect username/password", "Invalid Login", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -91,15 +84,15 @@ namespace COTS_Sales_And_Inventory_System
         private DataRow[] SearchforAccount(string username)
         {
             var found = DatabaseConnection.DatabaseRecord.Tables["account"].Select("AccountName ='"
-                +username+"'");
+                                                                                   + username + "'");
             return found;
         }
 
-        private void GoToMain( string username, string accounttype)
+        private void GoToMain(string username, string accounttype)
         {
-                Hide();
-                var main = new Main(this,username,accounttype);
-                main.Show();
+            Hide();
+            var main = new Main(this, username, accounttype);
+            main.Show();
         }
 
         private void lnkForget_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -109,42 +102,36 @@ namespace COTS_Sales_And_Inventory_System
 
         private void RecoverPass()
         {
-            ForgotPass forgotPass = new ForgotPass();
+            var forgotPass = new ForgotPass();
             forgotPass.Show();
         }
 
         private void Logon_Load(object sender, EventArgs e)
         {
-            
         }
 
         private void txtUser_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void label3_Click(object sender, EventArgs e)
         {
-
         }
 
         private void label4_Click(object sender, EventArgs e)
         {
-
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
         {
-
         }
 
         private void LoginKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode==Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
                 EnterMain();
             }
         }
-
     }
 }

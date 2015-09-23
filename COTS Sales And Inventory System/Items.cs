@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Data;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace COTS_Sales_And_Inventory_System
 {
     public partial class Items : UserControl
     {
+        private static string _productName;
         private string _productCategory;
         private string _productCode;
         private string _productdistro;
-        private static string _productName;
         private string _productPrice;
         private string _productQuantity;
         private string _productSize;
-
 
         public Items()
         {
@@ -29,7 +27,6 @@ namespace COTS_Sales_And_Inventory_System
             LoadComboBox("distributor", "distroName", comboBox3);
         }
 
-
         private void LoadComboBox(string table, string columb, ComboBox comboBox)
         {
             var dataCategory = DatabaseConnection.DatabaseRecord.Tables[table];
@@ -39,10 +36,8 @@ namespace COTS_Sales_And_Inventory_System
             }
         }
 
-
         private void Items_Load(object sender, EventArgs e)
         {
-
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -51,7 +46,7 @@ namespace COTS_Sales_And_Inventory_System
             {
                 if (ProductExist())
                 {
-                    var prodId= GetProductId();
+                    var prodId = GetProductId();
                     cueTextBox1.Text = prodId;
                 }
                 AddEditItemSize();
@@ -65,7 +60,7 @@ namespace COTS_Sales_And_Inventory_System
         private String GetProductId()
         {
             var found = FindProductId();
-           return found[0]["itemID"].ToString();
+            return found[0]["itemID"].ToString();
         }
 
         private Boolean ProductExist()
@@ -77,17 +72,17 @@ namespace COTS_Sales_And_Inventory_System
 
         private DataRow[] FindProductId()
         {
-           return DatabaseConnection.DatabaseRecord.Tables["items"].Select("Item_Name ='"
-                + cueTextBox2.Text + "'");
+            return DatabaseConnection.DatabaseRecord.Tables["items"].Select("Item_Name ='"
+                                                                            + cueTextBox2.Text + "'");
         }
 
         private void AddEditItemSize()
         {
-            var exist= FindIfSizeExist();
+            var exist = FindIfSizeExist();
             if (exist)
             {
-               var foundSize= FindSize();
-                foreach (DataRow row in foundSize)
+                var foundSize = FindSize();
+                foreach (var row in foundSize)
                 {
                     row["Price"] = cueTextBox4.Text;
                     row["Quantity"] = cueTextBox3.Text;
@@ -118,15 +113,15 @@ namespace COTS_Sales_And_Inventory_System
         private void GetItemID()
         {
             var found = DatabaseConnection.DatabaseRecord.Tables["items"].Select("Item_Name ='"
-                +cueTextBox2.Text+"'");
-            cueTextBox1.Text= found[0]["itemID"].ToString();
+                                                                                 + cueTextBox2.Text + "'");
+            cueTextBox1.Text = found[0]["itemID"].ToString();
         }
 
         private bool FindIfSizeExist()
         {
-            var found = DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemID = '" 
-                + cueTextBox1.Text + "' and Size = '"
-                + comboBox2.SelectedItem+"'" );
+            var found = DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemID = '"
+                                                                                + cueTextBox1.Text + "' and Size = '"
+                                                                                + comboBox2.SelectedItem + "'");
             return found.Length > 0;
         }
 
@@ -145,7 +140,6 @@ namespace COTS_Sales_And_Inventory_System
             }
 
             ClearInputs();
-            
         }
 
         public void ClearInputs()
@@ -167,7 +161,6 @@ namespace COTS_Sales_And_Inventory_System
             LoadAllComboBoxData();
         }
 
-
         private void EditProduct()
         {
             var exist = FindIfSizeExist();
@@ -187,14 +180,13 @@ namespace COTS_Sales_And_Inventory_System
             found[0]["Quantity"] = Convert.ToInt32(cueTextBox3.Text);
             found[0]["price"] = Convert.ToDouble(cueTextBox4.Text);
             DatabaseConnection.UploadChanges();
-
         }
 
         private DataRow[] FindSize()
         {
-            return DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemID = '" 
-                + cueTextBox1.Text + "' and Size = '"
-                + comboBox2.SelectedItem+"'" );
+            return DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemID = '"
+                                                                           + cueTextBox1.Text + "' and Size = '"
+                                                                           + comboBox2.SelectedItem + "'");
         }
 
         private void AddNewItem()
@@ -206,15 +198,15 @@ namespace COTS_Sales_And_Inventory_System
                 newProdCode = cueTextBox1.Text;
                 newItem["itemID"] = newProdCode;
             }
-            
+
             newItem["item_Name"] = cueTextBox2.Text;
             if (comboBox1.SelectedItem != null) newItem["CategoryID"] = FindCategoryId();
             DatabaseConnection.DatabaseRecord.Tables["items"].Rows.Add(newItem);
             DatabaseConnection.UploadChanges();
             DatabaseConnection.DatabaseRecord.Tables.Remove("items");
             DatabaseConnection.DatabaseRecord.Tables.Add(
-            DatabaseConnection.GetCustomTable(
-            DatabaseConnection.CreateSelectStatement("items"), "items"));
+                DatabaseConnection.GetCustomTable(
+                    DatabaseConnection.CreateSelectStatement("items"), "items"));
         }
 
         private int GetCurrentCount(string tableName, string columbName)
@@ -224,18 +216,16 @@ namespace COTS_Sales_And_Inventory_System
             {
                 return 1;
             }
-            else
-            {
-                value = (from DataRow rows in DatabaseConnection.DatabaseRecord.Tables[tableName].Rows select (int)rows[columbName]).Concat(new[] { value }).Max();
-            }
+            value =
+                (from DataRow rows in DatabaseConnection.DatabaseRecord.Tables[tableName].Rows
+                    select (int) rows[columbName]).Concat(new[] {value}).Max();
             return value + 1;
-
         }
 
         private Int32 FindCategoryId()
         {
             var found = DatabaseConnection.DatabaseRecord.Tables["category"].Select("CategoryName ='"
-                +comboBox1.Text+"'");
+                                                                                    + comboBox1.Text + "'");
 
             return Convert.ToInt32(found[0]["CategoryID"].ToString());
         }
@@ -245,7 +235,7 @@ namespace COTS_Sales_And_Inventory_System
             if (e.KeyCode != Keys.Enter) return;
             try
             {
-                cueTextBox1.Text = (string)FindProductId()[0]["itemID"];
+                cueTextBox1.Text = (string) FindProductId()[0]["itemID"];
                 LoadSize();
             }
             catch (Exception exception)
@@ -274,9 +264,9 @@ namespace COTS_Sales_And_Inventory_System
         }
 
         private DataRow[] FindProductName()
-        {   
+        {
             var found = DatabaseConnection.DatabaseRecord.Tables["items"].Select("itemID ='"
-                +cueTextBox1.Text+"'");
+                                                                                 + cueTextBox1.Text + "'");
             return found;
         }
 
@@ -284,7 +274,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             try
             {
-                cueTextBox1.Text = (string)FindProductId()[0]["itemID"];
+                cueTextBox1.Text = (string) FindProductId()[0]["itemID"];
                 LoadSize();
             }
             catch (Exception exception)
@@ -297,8 +287,8 @@ namespace COTS_Sales_And_Inventory_System
         {
             comboBox2.Items.Clear();
             var sizeRow = DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemID ='"
-                +cueTextBox1.Text+"'");
-            foreach (DataRow row in sizeRow.Where(row => !comboBox2.Items.Contains(row["Size"])))
+                                                                                  + cueTextBox1.Text + "'");
+            foreach (var row in sizeRow.Where(row => !comboBox2.Items.Contains(row["Size"])))
             {
                 comboBox2.Items.Add(row["size"]);
             }
@@ -317,17 +307,15 @@ namespace COTS_Sales_And_Inventory_System
         private void DeleteItemSize()
         {
             var found = FindSize();
-            foreach (DataRow dataRow in found)
+            foreach (var dataRow in found)
             {
                 dataRow.Delete();
             }
             DatabaseConnection.UploadChanges();
-            
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
         {
-
         }
 
         private void KeyboardValidInputs(object sender, KeyPressEventArgs e)
@@ -356,9 +344,10 @@ namespace COTS_Sales_And_Inventory_System
 
         private void KeyboardOnlyDecimals(object sender, KeyPressEventArgs e)
         {
-
-            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == (char)Keys.Back || e.KeyChar == '.'))
-            { e.Handled = true; }
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == (char) Keys.Back || e.KeyChar == '.'))
+            {
+                e.Handled = true;
+            }
             var txtDecimal = sender as TextBox;
             if (txtDecimal != null && (e.KeyChar == '.' && txtDecimal.Text.Contains(".")))
             {
@@ -368,9 +357,9 @@ namespace COTS_Sales_And_Inventory_System
 
         private void LoadItemData()
         {
-            var itemData= FindItem();
+            var itemData = FindItem();
             var itemSize = FindSizes();
-            FillForm(itemData,itemSize);
+            FillForm(itemData, itemSize);
         }
 
         private void FillForm(DataRow[] itemData, DataRow[] itemSize)
@@ -378,13 +367,12 @@ namespace COTS_Sales_And_Inventory_System
             cueTextBox2.Text = itemData[0]["Item_Name"].ToString();
             SelectCategory(itemData);
             FillSizeSelection(itemSize);
-
         }
 
         private void FillSizeSelection(DataRow[] itemSize)
         {
             ClearSizeSelection();
-            foreach (DataRow rowData in itemSize)
+            foreach (var rowData in itemSize)
             {
                 comboBox2.Items.Add(rowData["Size"]);
             }
@@ -399,25 +387,25 @@ namespace COTS_Sales_And_Inventory_System
         private void SelectCategory(DataRow[] itemData)
         {
             var found = DatabaseConnection.DatabaseRecord.Tables["category"].Select("categoryID ='"
-                +itemData[0]["categoryID"]+"'");
+                                                                                    + itemData[0]["categoryID"] + "'");
             comboBox1.SelectedItem = found[0]["categoryName"];
         }
 
         private DataRow[] FindSizes()
         {
             return DatabaseConnection.DatabaseRecord.Tables["size"].Select("ItemID ='"
-                +cueTextBox1.Text+"'");
+                                                                           + cueTextBox1.Text + "'");
         }
 
         private DataRow[] FindItem()
         {
             return DatabaseConnection.DatabaseRecord.Tables["Items"].Select("ItemID ='"
-                +cueTextBox1.Text+"'");
+                                                                            + cueTextBox1.Text + "'");
         }
 
         private void LoadSizeData(object sender, EventArgs e)
         {
-           var found= FindSizeId();
+            var found = FindSizeId();
             cueTextBox3.Text = found[0]["Quantity"].ToString();
             cueTextBox4.Text = found[0]["Price"].ToString();
         }
@@ -425,12 +413,12 @@ namespace COTS_Sales_And_Inventory_System
         private DataRow[] FindSizeId()
         {
             return DatabaseConnection.DatabaseRecord.Tables["size"].Select("ItemID ='"
-                +cueTextBox1.Text+"' and Size ='" +comboBox2.SelectedItem+"'");
+                                                                           + cueTextBox1.Text + "' and Size ='" +
+                                                                           comboBox2.SelectedItem + "'");
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

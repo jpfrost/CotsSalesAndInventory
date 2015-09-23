@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
-using MySql.Data;
 using MySql.Data.MySqlClient;
 
 namespace COTS_Sales_And_Inventory_System
@@ -13,14 +9,20 @@ namespace COTS_Sales_And_Inventory_System
     {
         public static DataSet DatabaseRecord = new DataSet();
         public static MySqlConnection Connection;
-        private static String _server, _userId, _password,_conString;
+        private static String _server, _userId, _password, _conString;
+
+        public DatabaseConnection()
+        {
+            GetSqlSettings();
+            ConnectionString();
+            ConnectToDatabase();
+        }
 
         private void ConnectToDatabase()
         {
             Connection = new MySqlConnection(_conString);
             var tablesList = GetDatabaseTables(Connection);
-            GetAllTables(tablesList,Connection);
-            
+            GetAllTables(tablesList, Connection);
         }
 
         private static void GetAllTables(List<string> tablesList, MySqlConnection connection)
@@ -28,7 +30,7 @@ namespace COTS_Sales_And_Inventory_System
             connection.Open();
             foreach (var tableName in tablesList)
             {
-               var query= CreateSelectStatement(tableName);
+                var query = CreateSelectStatement(tableName);
                 var dadapt = CreateDataAddapter(query);
                 var dt = new DataTable(tableName);
                 dadapt.Fill(dt);
@@ -37,7 +39,7 @@ namespace COTS_Sales_And_Inventory_System
             connection.Close();
         }
 
-        public static DataTable GetCustomTable(string query,string tableName)
+        public static DataTable GetCustomTable(string query, string tableName)
         {
             Connection.Open();
             var dadapt = CreateDataAddapter(query);
@@ -54,7 +56,7 @@ namespace COTS_Sales_And_Inventory_System
 
         public static string CreateSelectStatement(string tableName)
         {
-            string query = "Select * from " + tableName + ";";
+            var query = "Select * from " + tableName + ";";
             return query;
         }
 
@@ -67,29 +69,21 @@ namespace COTS_Sales_And_Inventory_System
             var list = new List<String>();
             while (reader.Read())
             {
-                for (int x = 0; x < reader.FieldCount; x++)
+                for (var x = 0; x < reader.FieldCount; x++)
                 {
                     list.Add(reader.GetValue(x).ToString());
                 }
-                
             }
             connection.Close();
             return list;
         }
 
-        public DatabaseConnection()
-        {
-            GetSqlSettings();
-            ConnectionString();
-            ConnectToDatabase();
-        }
-
         private void ConnectionString()
         {
             _conString = "SERVER=" + _server + ";" +
-                        "DATABASE=" + "cotsalesinventory" + ";" +
-                        "UID=" + _userId + ";" +
-                        "PASSWORD=" + _password;
+                         "DATABASE=" + "cotsalesinventory" + ";" +
+                         "UID=" + _userId + ";" +
+                         "PASSWORD=" + _password;
         }
 
         private void GetSqlSettings()
@@ -108,7 +102,7 @@ namespace COTS_Sales_And_Inventory_System
         private static void DropTableAndRetreive()
         {
             var tablesList = GetDatabaseTables(Connection);
-            DropTables(tablesList,Connection);
+            DropTables(tablesList, Connection);
             GetAllTables(tablesList, Connection);
         }
 
@@ -132,7 +126,6 @@ namespace COTS_Sales_And_Inventory_System
 
         public static void UpdateTable(object tableName)
         {
-
             try
             {
                 var query = CreateSelectStatement(tableName.ToString());

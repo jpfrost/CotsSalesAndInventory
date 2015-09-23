@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -22,7 +17,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             button3.Enabled = false;
 
-            if (dataGridView1.Rows.Count>0)
+            if (dataGridView1.Rows.Count > 0)
             {
                 var task = Task.Run(() => SaveOrdersToDatabase());
                 task.Wait();
@@ -48,18 +43,19 @@ namespace COTS_Sales_And_Inventory_System
                 var OrderID = GetCurrentCount("orders", "OrderID");
                 var distroId = CheckifDistroExist(dataGridView1.Rows[i].Cells[3].Value.ToString());
                 CheckIfProductExist(dataGridView1.Rows[i].Cells[0].Value.ToString(),
-                    dataGridView1.Rows[i].Cells[1].Value.ToString(),categoryiD);
+                    dataGridView1.Rows[i].Cells[1].Value.ToString(), categoryiD,
+                    dataGridView1.Rows[i].Cells[5].Value.ToString());
                 var sizeId = GetSizeID(dataGridView1.Rows[i].Cells[0].Value.ToString(),
                     dataGridView1.Rows[i].Cells[1].Value.ToString());
                 var orderQty = Convert.ToInt32(dataGridView1.Rows[i].Cells[2].Value);
-                CreateOrder(orderListID,dateID,OrderID,distroId,sizeId,orderQty);
+                CreateOrder(orderListID, dateID, OrderID, distroId, sizeId, orderQty);
             }
         }
 
         private int GetCategoryID(string category)
         {
-            var found = DatabaseConnection.DatabaseRecord.Tables["category"].Select("categoryName ='"+
-                category+"'");
+            var found = DatabaseConnection.DatabaseRecord.Tables["category"].Select("categoryName ='" +
+                                                                                    category + "'");
             if (found.Length > 0)
             {
                 return Convert.ToInt32(found[0]["categoryid"]);
@@ -69,7 +65,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private int CreatenewCategory(string category)
         {
-            var categoryRow= DatabaseConnection.DatabaseRecord.Tables["category"].NewRow();
+            var categoryRow = DatabaseConnection.DatabaseRecord.Tables["category"].NewRow();
             categoryRow["categoryid"] = GetCurrentCount("category", "categoryID");
             categoryRow["categoryName"] = category;
             DatabaseConnection.DatabaseRecord.Tables["category"].Rows.Add(categoryRow);
@@ -79,7 +75,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void CreateOrder(int orderListId, int dateId, int orderId, int distroId, int sizeId, int orderQty)
         {
-            var newOrderlist= DatabaseConnection.DatabaseRecord.Tables["orders"].NewRow();
+            var newOrderlist = DatabaseConnection.DatabaseRecord.Tables["orders"].NewRow();
             newOrderlist["orderid"] = orderId;
             newOrderlist["dateID"] = dateId;
             newOrderlist["distroID"] = distroId;
@@ -88,32 +84,30 @@ namespace COTS_Sales_And_Inventory_System
             newOrderlist["orderQty"] = orderQty;
             DatabaseConnection.DatabaseRecord.Tables["orders"].Rows.Add(newOrderlist);
             DatabaseConnection.UploadChanges();
-            var crit = new ItemLevel(sizeId,orderQty);
+            var crit = new ItemLevel(sizeId, orderQty);
             crit.InsertCriticalLevel();
         }
-
-        
 
         private int GetSizeID(string productName, string size)
         {
             var itemID = DatabaseConnection.DatabaseRecord.Tables["items"].Select("Item_name ='"
-                +productName+"'");
+                                                                                  + productName + "'");
             var found = DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemID ='"
-                +itemID[0]["itemid"]+"' and size ='"+size+"'");
+                                                                                + itemID[0]["itemid"] + "' and size ='" +
+                                                                                size + "'");
             return Convert.ToInt32(found[0]["sizeID"]);
         }
-
 
         private int CheckifDistroExist(string distroName)
         {
             var searchDistro = DatabaseConnection.DatabaseRecord.Tables["distributor"].Select("distroName ='" +
-                                                                                               distroName+"'");
+                                                                                              distroName + "'");
             if (searchDistro.Length > 0)
             {
                 return Convert.ToInt32(searchDistro[0]["DistroID"]);
             }
-            var distroId= GetCurrentCount("distributor", "DistroID");
-            CreateNewDistro(distroId,distroName);
+            var distroId = GetCurrentCount("distributor", "DistroID");
+            CreateNewDistro(distroId, distroName);
             return distroId;
         }
 
@@ -137,48 +131,64 @@ namespace COTS_Sales_And_Inventory_System
 
         private void CreateOrderDate(int dateId)
         {
-            var newDate= DatabaseConnection.DatabaseRecord.Tables["date"].NewRow();
+            var newDate = DatabaseConnection.DatabaseRecord.Tables["date"].NewRow();
             newDate["dateID"] = dateId;
             newDate["Date"] = DateTime.Now.ToString("dd-MM-yyyy");
             DatabaseConnection.DatabaseRecord.Tables["date"].Rows.Add(newDate);
             DatabaseConnection.UploadChanges();
         }
 
-        private void CheckIfProductExist(string productName, string productSize, int categoryiD)
+        private void CheckIfProductExist(string productName, string productSize, int categoryiD,string productID)
         {
-            var findProductId = SearchData("items","Item_Name ='"+productName+"'");
+            var findProductId = SearchData("items", "Item_Name ='" + productName + "'");
             if (findProductId.Length > 0)
             {
                 var findSizeId = SearchData("Size", "Size ='" + productSize + "' and" +
                                                     " itemID ='"
-                                                    +findProductId[0]["ItemID"]+"'");
+                                                    + findProductId[0]["ItemID"] + "'");
                 if (findSizeId.Length == 0)
                 {
-                    CreateSize(productName,productSize);
+                    CreateSize(productName, productSize);
                 }
             }
             else
             {
-                CreateProduct(productName,categoryiD);
+                CreateProduct(productName, categoryiD,productID);
                 CreateSize(productName, productSize);
             }
         }
 
-        private void CreateProduct(string productName, int categoryiD)
+        private void CreateProduct(string productName, int categoryiD, string productId)
         {
             var productRow = DatabaseConnection.DatabaseRecord.Tables["Items"].NewRow();
+            if (!productId.Equals(""))
+            {
+                productRow["itemID"] = productId;
+            }
+            else
+            {
+                productRow["itemID"] = CreateNewProductID();
+            }
             productRow["Item_Name"] = productName;
             productRow["categoryId"] = categoryiD;
             DatabaseConnection.DatabaseRecord.Tables["Items"].Rows.Add(productRow);
             DatabaseConnection.UploadChanges();
         }
 
+        private string CreateNewProductID()
+        {
+            var x = GetCurrentCount("items_seq", "id");
+            var newitemSeqRow = DatabaseConnection.DatabaseRecord.Tables["items_seq"].NewRow();
+            newitemSeqRow["id"] = x;
+            return "MANUAL" + x;
+        }
+
         private void CreateSize(string productName, string productSize)
         {
             var sizeRow = DatabaseConnection.DatabaseRecord.Tables["Size"].NewRow();
             var ItemID = DatabaseConnection.DatabaseRecord.Tables["items"].Select("Item_name ='"
-                +productName+"'");
-            sizeRow["sizeID"] = GetCurrentCount("size","SizeId");
+                                                                                  + productName + "'");
+            sizeRow["sizeID"] = GetCurrentCount("size", "SizeId");
             sizeRow["Size"] = productSize;
             sizeRow["itemID"] = ItemID[0]["ItemID"];
             DatabaseConnection.DatabaseRecord.Tables["size"].Rows.Add(sizeRow);
@@ -190,7 +200,6 @@ namespace COTS_Sales_And_Inventory_System
             return DatabaseConnection.DatabaseRecord.Tables[tablename].Select(query);
         }
 
-
         private int GetCurrentCount(string tableName, string columbName)
         {
             var value = 0;
@@ -198,19 +207,16 @@ namespace COTS_Sales_And_Inventory_System
             {
                 return 1;
             }
-            else
-            {
-                value =
-                    (from DataRow rows in DatabaseConnection.DatabaseRecord.Tables[tableName].Rows
-                        select (int) rows[columbName]).Concat(new[] {value}).Max();
-            }
+            value =
+                (from DataRow rows in DatabaseConnection.DatabaseRecord.Tables[tableName].Rows
+                    select (int) rows[columbName]).Concat(new[] {value}).Max();
             return value + 1;
-
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Add item(s) to order list?","Confirmation",MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var result = MessageBox.Show("Add item(s) to order list?", "Confirmation", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
@@ -223,22 +229,19 @@ namespace COTS_Sales_And_Inventory_System
                     MessageBox.Show("Please fill out all the Product Information", "Warning", MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
                 }
-
             }
-                
         }
 
         public void AddOrdertoGrid()
         {
-           
             var newOrder = FindifProductExistForSale() ?? dataGridView1.Rows.Add();
             dataGridView1.Rows[newOrder].Cells[0].Value = cueTextBox3.Text; //product name
             dataGridView1.Rows[newOrder].Cells[1].Value = comboBox1.Text; // product size
-            dataGridView1.Rows[newOrder].Cells[2].Value = numericUpDown1.Text;//quantity
-            dataGridView1.Rows[newOrder].Cells[3].Value = comboBox2.Text;//distro
-            dataGridView1.Rows[newOrder].Cells[4].Value = comboBox3.Text;//category
+            dataGridView1.Rows[newOrder].Cells[2].Value = numericUpDown1.Text; //quantity
+            dataGridView1.Rows[newOrder].Cells[3].Value = comboBox2.Text; //distro
+            dataGridView1.Rows[newOrder].Cells[4].Value = comboBox3.Text; //category
+            dataGridView1.Rows[newOrder].Cells[5].Value = cueTextBox4.Text;//productID
             ClearFields();
-
         }
 
         private int? FindifProductExistForSale()
@@ -282,8 +285,6 @@ namespace COTS_Sales_And_Inventory_System
             }
         }
 
-        
-
         private void Add_Orders_Load(object sender, EventArgs e)
         {
             LoadDistros();
@@ -316,27 +317,24 @@ namespace COTS_Sales_And_Inventory_System
         private void InsertProductInfo(string productCode)
         {
             var found = DatabaseConnection.DatabaseRecord.Tables["items"].Select("ItemID ='"
-                +productCode+"'");
+                                                                                 + productCode + "'");
             if (found.Length == 0)
             {
-                MessageBox.Show("Product does not exist", "Product Not Found", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                
             }
             else
             {
                 cueTextBox3.Text = found[0]["Item_Name"].ToString();
-
             }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Are you sure you want to remove this item(s)", "Confirmation", MessageBoxButtons.YesNo);
-            if(result == DialogResult.Yes)
+            var result = MessageBox.Show("Are you sure you want to remove this item(s)", "Confirmation",
+                MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
             {
-                
             }
-            
         }
     }
 }

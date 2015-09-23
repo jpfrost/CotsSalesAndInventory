@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -36,8 +30,8 @@ namespace COTS_Sales_And_Inventory_System
             var emailAcc = Properties.Settings.Default.EmailUser;
             var emailPass = Properties.Settings.Default.EmailPassword;
             var subject = "Password Recovery";
-            var body = "Username: "+Properties.Settings.Default.DefaultAdminAccount+"\n"
-                +"Password: "+Properties.Settings.Default.DefaultAdminPassword;
+            var body = "Username: " + Properties.Settings.Default.DefaultAdminAccount + "\n"
+                       + "Password: " + Properties.Settings.Default.DefaultAdminPassword;
             try
             {
                 var email = new Email(emailAcc, emailPass, subject, body);
@@ -46,7 +40,6 @@ namespace COTS_Sales_And_Inventory_System
             }
             catch (Exception e)
             {
-                
             }
         }
 
@@ -60,6 +53,5 @@ namespace COTS_Sales_And_Inventory_System
                 }
             }
         }
-
     }
 }

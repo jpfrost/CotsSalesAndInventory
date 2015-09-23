@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
-using MimeKit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace COTS_Sales_And_Inventory_System
 {
-    class Email
+    internal class Email
     {
-        private string _sender;
-        private string fromPassword;
-        private string subject;
-        private string body;
+        private readonly string _sender;
+        private readonly string body;
+        private readonly string fromPassword;
+        private readonly string subject;
+
         public Email(string sender, string fromPassword, string subject, string body)
         {
             _sender = sender;

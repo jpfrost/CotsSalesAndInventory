@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
@@ -105,18 +100,18 @@ namespace COTS_Sales_And_Inventory_System
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var dialog = MessageBox.Show("Do you want to save settings?","Save Settings?",MessageBoxButtons.YesNo,MessageBoxIcon.Hand);
+            var dialog = MessageBox.Show("Do you want to save settings?", "Save Settings?", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Hand);
             if (dialog == DialogResult.Yes)
             {
                 SaveSettings();
                 var result = MessageBox.Show("Settings have been change\n " +
-                                 "do you want to restart the application?", "Restart now"
-                                 , MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                             "do you want to restart the application?", "Restart now"
+                    , MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
                     Application.Restart();
@@ -147,74 +142,72 @@ namespace COTS_Sales_And_Inventory_System
 
         private void SaveMySqlSettings()
         {
-            Properties.Settings.Default.MysqlServer= txtmySqlServer.Text;
+            Properties.Settings.Default.MysqlServer = txtmySqlServer.Text;
             Properties.Settings.Default.MysqlUser = txtMySqlUser.Text;
-            Properties.Settings.Default.MysqlPass=txtMySqlPassword.Text;
+            Properties.Settings.Default.MysqlPass = txtMySqlPassword.Text;
             Properties.Settings.Default.Save();
         }
 
         private void SaveStoreInfo()
         {
-           Properties.Settings.Default.storeName= txtStoreName.Text  ;
-           Properties.Settings.Default.storeAdd= txtStoreAdd.Text  ;
-           Properties.Settings.Default.storeNo=txtStoreContact.Text;
-           Properties.Settings.Default.Save();
+            Properties.Settings.Default.storeName = txtStoreName.Text;
+            Properties.Settings.Default.storeAdd = txtStoreAdd.Text;
+            Properties.Settings.Default.storeNo = txtStoreContact.Text;
+            Properties.Settings.Default.Save();
         }
 
         private void SaveSummarySettings()
         {
-           Properties.Settings.Default.printSum= enablePrintSum.Checked  ;
-           Properties.Settings.Default.Save();
+            Properties.Settings.Default.printSum = enablePrintSum.Checked;
+            Properties.Settings.Default.Save();
         }
 
         private void SaveInventorySettings()
         {
-            Properties.Settings.Default.priceMod=enablePriceMod.Checked  ;
-          Properties.Settings.Default.quantMod=  enableQuanMod.Checked  ;
-          Properties.Settings.Default.Save();
+            Properties.Settings.Default.priceMod = enablePriceMod.Checked;
+            Properties.Settings.Default.quantMod = enableQuanMod.Checked;
+            Properties.Settings.Default.Save();
         }
 
         private void SaveSalesComputation()
         {
-            Properties.Settings.Default.SalesTax= Convert.ToInt32(numSalesTax.Text) ;
-           Properties.Settings.Default.SalesReceipt= chkPrintReceipt.Checked  ;
-           Properties.Settings.Default.SalesDiscount=salesEnableDiscount.Checked;
-           Properties.Settings.Default.Save();
+            Properties.Settings.Default.SalesTax = Convert.ToInt32(numSalesTax.Text);
+            Properties.Settings.Default.SalesReceipt = chkPrintReceipt.Checked;
+            Properties.Settings.Default.SalesDiscount = salesEnableDiscount.Checked;
+            Properties.Settings.Default.Save();
         }
 
         private void SaveSupplierSettings()
         {
-           Properties.Settings.Default.DefaultSupplier= defaultSupplier.Text  ;
-           Properties.Settings.Default.DefaultSupplierAddress= defaultSupplierAdd.Text  ;
-           Properties.Settings.Default.DefaultSupplierNo= defaultSupplierNo.Text  ;
-           Properties.Settings.Default.AllowMultiSupplier= supplierAllowMulti.Checked  ;
-           Properties.Settings.Default.Save();
+            Properties.Settings.Default.DefaultSupplier = defaultSupplier.Text;
+            Properties.Settings.Default.DefaultSupplierAddress = defaultSupplierAdd.Text;
+            Properties.Settings.Default.DefaultSupplierNo = defaultSupplierNo.Text;
+            Properties.Settings.Default.AllowMultiSupplier = supplierAllowMulti.Checked;
+            Properties.Settings.Default.Save();
         }
 
         private void SaveEmailSettings()
         {
-           Properties.Settings.Default.EmailUser= ownerEmail.Text  ;
-           Properties.Settings.Default.EmailPassword= ownerEmailPassword.Text  ;
-           Properties.Settings.Default.EmailSendMessage= emailSendReport.Checked  ;
-           Properties.Settings.Default.Save();
+            Properties.Settings.Default.EmailUser = ownerEmail.Text;
+            Properties.Settings.Default.EmailPassword = ownerEmailPassword.Text;
+            Properties.Settings.Default.EmailSendMessage = emailSendReport.Checked;
+            Properties.Settings.Default.Save();
         }
 
         private void SaveAdminSettings()
         {
             Properties.Settings.Default.DefaultAdminAccount = adminUsername.Text;
-            Properties.Settings.Default.DefaultAdminPassword=adminPassword.Text;
-            Properties.Settings.Default.DefaultAdminPassword= adminPassword2.Text;
+            Properties.Settings.Default.DefaultAdminPassword = adminPassword.Text;
+            Properties.Settings.Default.DefaultAdminPassword = adminPassword2.Text;
             Properties.Settings.Default.Save();
         }
 
         private void groupBox5_Enter(object sender, EventArgs e)
         {
-
         }
 
         private void emailSendReport_CheckedChanged(object sender, EventArgs e)
         {
-
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -257,9 +250,9 @@ namespace COTS_Sales_And_Inventory_System
             var mysqlUser = txtMySqlUser.Text;
             var mysqlPass = txtMySqlPassword.Text;
             var conString = "SERVER=" + mysqlServer + ";" +
-                        "DATABASE=" + "cotsalesinventory" + ";" +
-                        "UID=" + mysqlUser + ";" +
-                        "PASSWORD=" + mysqlPass;
+                            "DATABASE=" + "cotsalesinventory" + ";" +
+                            "UID=" + mysqlUser + ";" +
+                            "PASSWORD=" + mysqlPass;
             MySqlConnection conn = null;
             try
             {

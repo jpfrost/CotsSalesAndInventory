@@ -1,5 +1,7 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="COTS_Sales_And_Inventory_System.Properties" GeneratedClassName="Settings">
+
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)"
+              GeneratedClassNamespace="COTS_Sales_And_Inventory_System.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="MysqlServer" Type="System.String" Scope="User">

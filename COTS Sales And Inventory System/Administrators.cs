@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using CrystalDecisions.CrystalReports.Engine;
 
 namespace COTS_Sales_And_Inventory_System
 {
     public partial class FrmAdmin : Form
     {
         private readonly Main _main;
+        private readonly DataTable accountTable = DatabaseConnection.DatabaseRecord.Tables["account"];
 
         public FrmAdmin(Main main)
         {
@@ -24,12 +18,11 @@ namespace COTS_Sales_And_Inventory_System
 
         private void label1_Click(object sender, EventArgs e)
         {
-
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            var foundAccount = accountTable.Select("AccountName ='" + cueTextBox1.Text+"'");
+            var foundAccount = accountTable.Select("AccountName ='" + cueTextBox1.Text + "'");
             if (foundAccount.Length == 0)
             {
                 if (cueTextBox2.Text.Equals(cueTextBox3.Text))
@@ -54,7 +47,7 @@ namespace COTS_Sales_And_Inventory_System
             else
             {
                 MessageBox.Show("Account already exist", "Account Exist!!!"
-                        , MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    , MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -70,20 +63,19 @@ namespace COTS_Sales_And_Inventory_System
             }
         }
 
-
         private int SetAccountInt(string accountType)
         {
             switch (accountType)
             {
                 case ("Sales Person"):
                     return 1;
-                case("Sales Manager"):
+                case ("Sales Manager"):
                     return 2;
-                case("Stock Man"):
+                case ("Stock Man"):
                     return 3;
-                case("Stock Mananger"):
+                case ("Stock Mananger"):
                     return 4;
-                case("Administrator"):
+                case ("Administrator"):
                     return 5;
             }
             return 0;
@@ -96,12 +88,10 @@ namespace COTS_Sales_And_Inventory_System
             {
                 return 1;
             }
-            else
-            {
-                value = (from DataRow rows in DatabaseConnection.DatabaseRecord.Tables[tableName].Rows select (int)rows[columbName]).Concat(new[] { value }).Max();
-            }
+            value =
+                (from DataRow rows in DatabaseConnection.DatabaseRecord.Tables[tableName].Rows
+                    select (int) rows[columbName]).Concat(new[] {value}).Max();
             return value + 1;
-
         }
 
         private void FrmAdmin_Load(object sender, EventArgs e)
@@ -110,7 +100,6 @@ namespace COTS_Sales_And_Inventory_System
             comboBox1.SelectedIndex = 0;
         }
 
-        private DataTable accountTable = DatabaseConnection.DatabaseRecord.Tables["account"];
         private void LoadAccounts()
         {
             foreach (DataRow accountRow in accountTable.Rows)
@@ -130,11 +119,11 @@ namespace COTS_Sales_And_Inventory_System
         private void DisplayAccountInfo()
         {
             var found = accountTable.Select("accountName ='"
-                +listBox1.SelectedItem +"'");
-            cueTextBox1.Text= found[0]["accountName"].ToString();
+                                            + listBox1.SelectedItem + "'");
+            cueTextBox1.Text = found[0]["accountName"].ToString();
             cueTextBox2.Text = found[0]["accountPassword"].ToString();
             cueTextBox3.Text = found[0]["accountPassword"].ToString();
-            comboBox1.SelectedIndex = Convert.ToInt32(found[0]["accounttype"])-1;
+            comboBox1.SelectedIndex = Convert.ToInt32(found[0]["accounttype"]) - 1;
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -145,7 +134,7 @@ namespace COTS_Sales_And_Inventory_System
         private void UpdateAccount()
         {
             var found = accountTable.Select("accountName ='"
-                + listBox1.SelectedItem + "'");
+                                            + listBox1.SelectedItem + "'");
             try
             {
                 found[0]["accountName"] = cueTextBox1.Text;
