@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -7,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CrystalDecisions.Shared;
 
 namespace COTS_Sales_And_Inventory_System
 {
@@ -38,8 +40,11 @@ namespace COTS_Sales_And_Inventory_System
         {
         }
 
+
         private void Main_Load(object sender, EventArgs e)
         {
+            Hide();
+            LoadDummyReport();
             toolStripStatusLabel1.Text = "Current User: " + _username;
             toolStripStatusLabel2.Text = "User Rights: " + _accountType;
             _colorlist.Add(Color.Red);
@@ -53,6 +58,13 @@ namespace COTS_Sales_And_Inventory_System
             timerDataRefresh.Start();
             comboBox4.SelectedIndex = 0;
             LoadAccountSettings();
+            Show();
+        }
+
+        private void LoadDummyReport()
+        {
+            var ds = new DataSet();
+            var printdummy = new Print_Receipt(ds);
         }
 
         private void LoadAccountSettings()
@@ -1424,6 +1436,11 @@ namespace COTS_Sales_And_Inventory_System
         {
             var settings = new Settings();
             settings.Show();
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+
         }
     }
 }
