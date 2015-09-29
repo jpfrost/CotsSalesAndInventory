@@ -32,6 +32,7 @@ namespace COTS_Sales_And_Inventory_System
             _username = username;
             _accountType = accountType;
             InitializeComponent();
+            Hide();
         }
 
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
@@ -40,6 +41,8 @@ namespace COTS_Sales_And_Inventory_System
 
         private void Main_Load(object sender, EventArgs e)
         {
+            
+            LoadDummyReport();
             toolStripStatusLabel1.Text = "Current User: " + _username;
             toolStripStatusLabel2.Text = "User Rights: " + _accountType;
             _colorlist.Add(Color.Red);
@@ -53,6 +56,13 @@ namespace COTS_Sales_And_Inventory_System
             timerDataRefresh.Start();
             comboBox4.SelectedIndex = 0;
             LoadAccountSettings();
+            Show();
+        }
+
+        private void LoadDummyReport()
+        {
+            var report = new Print_Receipt(new DataSet());
+            report.Dispose();
         }
 
         private void LoadAccountSettings()
@@ -89,6 +99,7 @@ namespace COTS_Sales_And_Inventory_System
             comboBox2.Text = Properties.Settings.Default.DefaultSupplier;
             textBox10.Text = Properties.Settings.Default.DefaultSupplierNo;
             textBox9.Text = Properties.Settings.Default.DefaultSupplierAddress;
+            cueTextBox5.Enabled = Properties.Settings.Default.SalesDiscount;
             comboBox5.SelectedIndex = 0;
         }
 
@@ -197,8 +208,15 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button9_Click(object sender, EventArgs e)
         {
-            AddCategory();
-            LoadData();
+            if (!comboBox1.Text.Equals(""))
+            {
+                AddCategory();
+                LoadData();
+            }
+            else
+            {
+                MessageBox.Show("Please Enter a Category Name\n Before you click Add Category");
+            }
         }
 
         private void AddCategory()
@@ -456,12 +474,23 @@ namespace COTS_Sales_And_Inventory_System
         private void AddAutoCompleteForSalesTextBox()
         {
             var autoCompleteCollectionProductName = new AutoCompleteStringCollection();
-            foreach (DataRow dr in DatabaseConnection.DatabaseRecord.Tables["items"].Rows)
+            for (int x = 0; x < dataGridView1.Rows.Count;x++)
+            {
+                var itemName = dataGridView1.Rows[x].Cells[0].Value.ToString();
+                if (!autoCompleteCollectionProductName.Contains(itemName))
+                {
+                    autoCompleteCollectionProductName.Add(itemName);
+                }
+            }
+            //iniba ko para sa datagrid gagawa ng auto complete
+            /*foreach (DataRow dr in DatabaseConnection.DatabaseRecord.Tables["items"].Rows)
             {
                 autoCompleteCollectionProductName.Add(dr["Item_Name"].ToString());
-            }
+            }*/
             textBox4.AutoCompleteSource = AutoCompleteSource.CustomSource;
             textBox4.AutoCompleteCustomSource = autoCompleteCollectionProductName;
+            cueTextBox2.AutoCompleteSource=AutoCompleteSource.CustomSource;
+            cueTextBox2.AutoCompleteCustomSource = autoCompleteCollectionProductName;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -790,14 +819,16 @@ namespace COTS_Sales_And_Inventory_System
             CountOverAllTotal();
         }
 
+        private double _totalPayment;
         private void CountOverAllTotal()
         {
+            _totalPayment = 0;
             double total = 0;
             foreach (DataGridViewRow row in dataGridView2.Rows)
             {
                 total += Convert.ToDouble(row.Cells[4].Value);
             }
-
+            _totalPayment = total;
             textBox6.Text = (string.Format("{0:0.00}", total));
         }
 
@@ -1074,7 +1105,13 @@ namespace COTS_Sales_And_Inventory_System
         {
             if (e.RowIndex >= 0)
             {
-                dataGridView2.Rows.RemoveAt(e.RowIndex);
+                var dialog = MessageBox.Show("Are you sure you want to remove item",
+                    "Remove item",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+
+                if (dialog == DialogResult.Yes)
+                {
+                    dataGridView2.Rows.RemoveAt(e.RowIndex);
+                }
             }
         }
 
@@ -1091,6 +1128,10 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button3_Click_1(object sender, EventArgs e)
         {
+            if (!cueTextBox2.Text.Equals(""))
+            {
+                _items.InsertProductName(cueTextBox2.Text);
+            }
             SetItemFormVisibility();
         }
 
@@ -1424,6 +1465,66 @@ namespace COTS_Sales_And_Inventory_System
         {
             var settings = new Settings();
             settings.Show();
+        }
+
+        private void cueTextBox5_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                BeginInvoke(new Action(ComputeDiscount));
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+        }
+
+        private void ComputeDiscount()
+        {
+            try
+            {
+                var x= Convert.ToDouble(cueTextBox5.Text);
+                var total = _totalPayment;
+
+                if (x < 100.00)
+                {
+                    x /= 100.00;
+                    total *= x;
+                    var stringTotal =(string.Format("{0:0.00}", total));
+                    cueTextBox3.Text = stringTotal;
+                    textBox6.Text = (string.Format("{0:0.00}", _totalPayment-total));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+        }
+
+        private void cueTextBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode==Keys.Enter)
+            {
+                InsertProductNametoCuetextBox2();
+            }
+        }
+
+        private void InsertProductNametoCuetextBox2()
+        {
+            var found = DatabaseConnection.DatabaseRecord.Tables["items"].Select("itemID ='"+cueTextBox1.Text+"'");
+            if (found.Length>0)
+            {
+                cueTextBox2.Text = found[0]["item_Name"].ToString();
+            }
+        }
+
+        private void cueTextBox5_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                
+            }
         }
     }
 }

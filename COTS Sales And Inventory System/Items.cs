@@ -38,6 +38,18 @@ namespace COTS_Sales_And_Inventory_System
 
         private void Items_Load(object sender, EventArgs e)
         {
+            AutoCompleteItemName();
+        }
+
+        private void AutoCompleteItemName()
+        {
+            var autoCompleteCollectionProductName = new AutoCompleteStringCollection();
+            foreach (DataRow dr in DatabaseConnection.DatabaseRecord.Tables["items"].Rows)
+            {
+                autoCompleteCollectionProductName.Add(dr["Item_Name"].ToString());
+            }
+            cueTextBox2.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            cueTextBox2.AutoCompleteCustomSource = autoCompleteCollectionProductName;
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -121,7 +133,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             var found = DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemID = '"
                                                                                 + cueTextBox1.Text + "' and Size = '"
-                                                                                + comboBox2.SelectedItem + "'");
+                                                                                + comboBox2.Text + "'");
             return found.Length > 0;
         }
 
@@ -275,6 +287,7 @@ namespace COTS_Sales_And_Inventory_System
             try
             {
                 cueTextBox1.Text = (string) FindProductId()[0]["itemID"];
+                SelectCategory(FindProductId());
                 LoadSize();
             }
             catch (Exception exception)
@@ -293,6 +306,7 @@ namespace COTS_Sales_And_Inventory_System
                 comboBox2.Items.Add(row["size"]);
             }
             comboBox2.Refresh();
+            comboBox2.SelectedIndex = 0;
         }
 
         private void button5_Click(object sender, EventArgs e)

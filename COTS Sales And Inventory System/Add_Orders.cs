@@ -48,8 +48,27 @@ namespace COTS_Sales_And_Inventory_System
                 var sizeId = GetSizeID(dataGridView1.Rows[i].Cells[0].Value.ToString(),
                     dataGridView1.Rows[i].Cells[1].Value.ToString());
                 var orderQty = Convert.ToInt32(dataGridView1.Rows[i].Cells[2].Value);
+               if (radioButton2.Checked)
+               {
+                   RemoveItemFromInventory(sizeId, orderQty);
+               }
                 CreateOrder(orderListID, dateID, OrderID, distroId, sizeId, orderQty);
             }
+        }
+
+        private Boolean RemoveItemFromInventory(int sizeId, int orderQty)
+        {
+            bool accepted = false;
+            var size = DatabaseConnection.DatabaseRecord.Tables["size"].Select("sizeID ='" + sizeId + "'");
+            var x = Convert.ToInt32(size[0]["Quantity"]);
+            if (x >= orderQty)
+            {
+                x -= orderQty;
+                size[0]["Quantity"] = x;
+                DatabaseConnection.UploadChanges();
+                accepted = true;
+            }
+            return accepted;
         }
 
         private int GetCategoryID(string category)
@@ -215,6 +234,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button1_Click(object sender, EventArgs e)
         {
+
             var result = MessageBox.Show("Add item(s) to order list?", "Confirmation", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
@@ -222,7 +242,21 @@ namespace COTS_Sales_And_Inventory_System
             {
                 if (cueTextBox3.Text != "" && comboBox1.Text != "" && comboBox2.Text != "" && comboBox3.Text != "")
                 {
-                    AddOrdertoGrid();
+                    if (radioButton2.Checked)
+                    {
+                        if (SearchifPossibleItem())
+                        {
+                            AddOrdertoGrid();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Cannot Proceed with back order. order quantity Exceed stock quantity","Cannot Proceed with order");
+                        }
+                    }
+                    else
+                    {
+                        AddOrdertoGrid();
+                    }
                 }
                 else
                 {
@@ -230,6 +264,37 @@ namespace COTS_Sales_And_Inventory_System
                         MessageBoxIcon.Warning);
                 }
             }
+        }
+
+        private bool SearchifPossibleItem()
+        {
+            var notNegative = false;
+            var itemName = FindItemID();
+            var size = FindSizeId(itemName);
+            if (ComputeQuantity(size) >= 0)
+            {
+                notNegative = true;
+            }
+            return notNegative;
+        }
+
+        private int ComputeQuantity(DataRow[] size)
+        {
+            var originalQuantity = Convert.ToInt32(size[0]["Quantity"]);
+            var orderQuantity = Convert.ToInt32(numericUpDown1.Text);
+            originalQuantity -= orderQuantity;
+            return originalQuantity;
+        }
+
+        private DataRow[] FindSizeId(DataRow[] itemName)
+        {
+            var x = DatabaseConnection.GetCustomTable("SELECT * " +
+                                                      "FROM size inner join items on " +
+                                                      "size.ItemID=items.ItemID where " +
+                                                      "items.ItemID='"+itemName[0]["itemID"]+"'",
+                                                      "itemSize");
+
+            return x.Select("size ='"+comboBox1.Text+"'");
         }
 
         public void AddOrdertoGrid()
@@ -242,6 +307,8 @@ namespace COTS_Sales_And_Inventory_System
             dataGridView1.Rows[newOrder].Cells[4].Value = comboBox3.Text; //category
             dataGridView1.Rows[newOrder].Cells[5].Value = cueTextBox4.Text;//productID
             ClearFields();
+            LoadDistros();
+            LoadCategory();
         }
 
         private int? FindifProductExistForSale()
@@ -288,6 +355,33 @@ namespace COTS_Sales_And_Inventory_System
         private void Add_Orders_Load(object sender, EventArgs e)
         {
             LoadDistros();
+            LoadCategory();
+            AutoCompleteItemName();
+            radioButton1.Checked = true;
+        }
+
+        private void LoadCategory()
+        {
+            comboBox3.Items.Clear();
+            var found = DatabaseConnection.DatabaseRecord.Tables["category"];
+            foreach (DataRow row in found.Rows)
+            {
+                if (!comboBox3.Items.Contains(row["CategoryName"].ToString()))
+                {
+                    comboBox3.Items.Add(row["CategoryName"].ToString());
+                }
+            }
+        }
+
+        private void AutoCompleteItemName()
+        {
+            var autoCompleteCollectionProductName = new AutoCompleteStringCollection();
+            foreach (DataRow dr in DatabaseConnection.DatabaseRecord.Tables["items"].Rows)
+            {
+                autoCompleteCollectionProductName.Add(dr["Item_Name"].ToString());
+            }
+            cueTextBox3.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            cueTextBox3.AutoCompleteCustomSource = autoCompleteCollectionProductName;
         }
 
         private void LoadDistros()
@@ -312,6 +406,8 @@ namespace COTS_Sales_And_Inventory_System
         {
             var productCode = cueTextBox4.Text;
             InsertProductInfo(productCode);
+            LoadItemInfo();
+            cueTextBox4.Text = "";
         }
 
         private void InsertProductInfo(string productCode)
@@ -334,7 +430,107 @@ namespace COTS_Sales_And_Inventory_System
                 MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
+                
+            }
+        }
+
+        private void cueTextBox3_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                LoadItemInfo();
+            }
+        }
+
+        private void LoadItemInfo()
+        {
+            var itemID = FindItemID();
+            LoadSize(itemID);
+            LoadItemCategory(itemID);
+        }
+
+        private void LoadItemCategory(DataRow[] itemId)
+        {
+            var category = DatabaseConnection.DatabaseRecord.Tables["Category"].Select("CategoryID ='"+itemId[0]["CategoryID"]+"'");
+            comboBox3.SelectedItem = category[0]["CategoryName"].ToString();
+        }
+
+        private void LoadSize(DataRow[] itemId)
+        {
+            comboBox1.Items.Clear();
+            var size = DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemID ='"+itemId[0]["itemID"]+"'");
+            foreach (var row in size)
+            {
+                comboBox1.Items.Add(row["Size"]);
+            }
+            comboBox1.SelectedIndex = 0;
+        }
+
+        private DataRow[] FindItemID()
+        {
+            return DatabaseConnection.DatabaseRecord.Tables["items"].Select("item_Name ='"+cueTextBox3.Text+"'");
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                var dialog = MessageBox.Show("Are you sure you want to remove item",
+                    "Remove item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (dialog == DialogResult.Yes)
+                {
+                    dataGridView1.Rows.RemoveAt(e.RowIndex);
+                }
+            }
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void radioButton2_Click(object sender, EventArgs e)
+        {
+            var radiobutton = (RadioButton)sender;
+            if (!radiobutton.Checked)
+            {
+                var dialogResult = MessageBox.Show("are you sure?", "Change Order", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+
+                if (dialogResult == DialogResult.Yes)
+                {
+                    UncheckOtherRadioButton();
+                    radiobutton.Checked = true;
+                    ClearDataGrid();
+                }
+            }
+            else
+            {
+                radiobutton.Checked = false;
+            }
+        }
+
+        private void ClearDataGrid()
+        {
+            dataGridView1.Rows.Clear();
+        }
+
+        private void UncheckOtherRadioButton()
+        {
+            foreach (var control in Controls)
+            {
+                var button = control as RadioButton;
+                if (button != null)
+                {
+                    button.Checked = false;
+                }
             }
         }
     }
-}
+    }

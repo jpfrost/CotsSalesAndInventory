@@ -12,7 +12,19 @@ namespace COTS_Sales_And_Inventory_System
 
         public Logon()
         {
+            /*var t = new Thread(new ThreadStart(LoadingScreen));
+            t.Start();
+            while (t.IsAlive)
+            {
+                Thread.Sleep(1000);
+            }
+            t.Abort();*/
             InitializeComponent();
+        }
+
+        private void LoadingScreen()
+        {
+            Application.Run(new Loading_Screen());
         }
 
 

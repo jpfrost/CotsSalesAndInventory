@@ -39,6 +39,8 @@ namespace COTS_Sales_And_Inventory_System
         private void LoadCrystal()
         {
             var report = new Print_Orders(new DataSet());
+            report.Show();
+            report.Dispose();
         }
 
         private int _noOfDots;
