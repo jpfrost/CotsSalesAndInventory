@@ -144,6 +144,14 @@ namespace COTS_Sales_And_Inventory_System
             var newOrderList = DatabaseConnection.DatabaseRecord.Tables["orderlist"].NewRow();
             newOrderList["idorderlist"] = orderId;
             newOrderList["orderDelivered"] = false;
+            if (radioButton2.Checked)
+            {
+                newOrderList["orderdesc"] = "Back Order";
+            }
+            else
+            {
+                newOrderList["orderdesc"] = "Order";
+            }
             DatabaseConnection.DatabaseRecord.Tables["orderlist"].Rows.Add(newOrderList);
             DatabaseConnection.UploadChanges();
         }
@@ -234,12 +242,18 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button1_Click(object sender, EventArgs e)
         {
-
             var result = MessageBox.Show("Add item(s) to order list?", "Confirmation", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
+                AddItemToDataGrid();
+            }
+        }
+
+        private void AddItemToDataGrid()
+        {
+            
                 if (cueTextBox3.Text != "" && comboBox1.Text != "" && comboBox2.Text != "" && comboBox3.Text != "")
                 {
                     if (radioButton2.Checked)
@@ -250,7 +264,7 @@ namespace COTS_Sales_And_Inventory_System
                         }
                         else
                         {
-                            MessageBox.Show("Cannot Proceed with back order. order quantity Exceed stock quantity","Cannot Proceed with order");
+                            MessageBox.Show("Cannot Proceed with back order. order quantity Exceed stock quantity", "Cannot Proceed with order");
                         }
                     }
                     else
@@ -263,7 +277,7 @@ namespace COTS_Sales_And_Inventory_System
                     MessageBox.Show("Please fill out all the Product Information", "Warning", MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
                 }
-            }
+            
         }
 
         private bool SearchifPossibleItem()
@@ -360,6 +374,26 @@ namespace COTS_Sales_And_Inventory_System
             radioButton1.Checked = true;
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.F1)
+            {
+                cueTextBox4.Focus();
+                return true;
+            }
+            if (keyData == Keys.F2)
+            {
+                cueTextBox3.Focus();
+                return true;
+            }
+            if (keyData == Keys.F3)
+            {
+                numericUpDown1.Focus();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         private void LoadCategory()
         {
             comboBox3.Items.Clear();
@@ -399,6 +433,7 @@ namespace COTS_Sales_And_Inventory_System
             if (e.KeyCode == Keys.Enter)
             {
                 LoadProduct();
+                AddItemToDataGrid();
             }
         }
 

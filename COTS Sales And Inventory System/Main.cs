@@ -806,6 +806,16 @@ namespace COTS_Sales_And_Inventory_System
                 cueTextBox6.Focus();
                 return true;
             }
+            if (keyData == Keys.F2)
+            {
+                textBox4.Focus();
+                return true;
+            }
+            if (keyData == Keys.F3)
+            {
+                numericUpDown1.Focus();
+                return true;
+            }
             if (keyData == Keys.F5)
             {
                 LoadFromDatabase();

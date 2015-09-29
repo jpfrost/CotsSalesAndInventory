@@ -86,13 +86,14 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ReceiveOrder();
+            var receive = new ReceiveOrder();
+            ReceiveOrder(receive);
             LoadOrderList();
         }
 
-        private void ReceiveOrder()
+        private void ReceiveOrder(ReceiveOrder receive)
         {
-            var receive = new ReceiveOrder();
+            
             if (receive.ShowDialog(this) != DialogResult.OK) return;
             var orderListId = receive.cueTextBox1.Text;
             var findOrderlist = DatabaseConnection.DatabaseRecord.Tables["orderlist"].Select("idorderlist ='"
@@ -227,7 +228,17 @@ namespace COTS_Sales_And_Inventory_System
 
         private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            ReceiveOrder(); //jasper fix this shit..
+            DirectReceiveOrder(sender,e);
         }
+
+        private void DirectReceiveOrder(object sender, MouseEventArgs mouseEventArgs)
+        {
+            var list = (ListBox) sender;
+
+            var x = list.SelectedItem;
+            var receive = new ReceiveOrder(Convert.ToInt32(x));
+            ReceiveOrder(receive);
+        }
+
     }
 }

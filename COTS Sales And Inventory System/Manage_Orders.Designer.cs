@@ -36,7 +36,6 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.RefreshData = new System.Windows.Forms.Timer(this.components);
-            this.cueTextBox1 = new CueTextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -45,7 +44,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(12, 61);
+            this.button1.Location = new System.Drawing.Point(12, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(133, 72);
             this.button1.TabIndex = 0;
@@ -56,7 +55,7 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(12, 139);
+            this.button2.Location = new System.Drawing.Point(12, 107);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(133, 72);
             this.button2.TabIndex = 1;
@@ -77,9 +76,9 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.dataGridView1);
-            this.groupBox1.Location = new System.Drawing.Point(256, 54);
+            this.groupBox1.Location = new System.Drawing.Point(256, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(353, 242);
+            this.groupBox1.Size = new System.Drawing.Size(353, 284);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Orders Pending";
@@ -95,15 +94,15 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(347, 223);
+            this.dataGridView1.Size = new System.Drawing.Size(347, 265);
             this.dataGridView1.TabIndex = 0;
             // 
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(151, 61);
+            this.listBox1.Location = new System.Drawing.Point(151, 9);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(98, 238);
+            this.listBox1.Size = new System.Drawing.Size(98, 290);
             this.listBox1.TabIndex = 4;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             this.listBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDoubleClick);
@@ -114,18 +113,10 @@
             this.RefreshData.Interval = 30000;
             this.RefreshData.Tick += new System.EventHandler(this.RefreshData_Tick);
             // 
-            // cueTextBox1
-            // 
-            this.cueTextBox1.Cue = "Search Orders Here";
-            this.cueTextBox1.Location = new System.Drawing.Point(151, 28);
-            this.cueTextBox1.Name = "cueTextBox1";
-            this.cueTextBox1.Size = new System.Drawing.Size(201, 20);
-            this.cueTextBox1.TabIndex = 5;
-            // 
             // button4
             // 
             this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(12, 217);
+            this.button4.Location = new System.Drawing.Point(12, 202);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(133, 72);
             this.button4.TabIndex = 6;
@@ -139,7 +130,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(621, 334);
             this.Controls.Add(this.button4);
-            this.Controls.Add(this.cueTextBox1);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button3);
@@ -155,7 +145,6 @@
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -167,7 +156,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ListBox listBox1;
-        private CueTextBox cueTextBox1;
         private System.Windows.Forms.Timer RefreshData;
         private System.Windows.Forms.Button button4;
     }
