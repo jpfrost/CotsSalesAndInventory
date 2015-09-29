@@ -27,6 +27,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private static void GetAllTables(List<string> tablesList, MySqlConnection connection)
         {
+            DatabaseRecord.Tables.Clear();
             connection.Open();
             foreach (var tableName in tablesList)
             {

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace COTS_Sales_And_Inventory_System
@@ -12,6 +14,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             InitializeComponent();
         }
+
 
         private void btnLogin_Click(object sender, EventArgs e)
         {

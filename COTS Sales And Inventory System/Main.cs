@@ -43,8 +43,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void Main_Load(object sender, EventArgs e)
         {
-            Hide();
-            LoadDummyReport();
+            
             toolStripStatusLabel1.Text = "Current User: " + _username;
             toolStripStatusLabel2.Text = "User Rights: " + _accountType;
             _colorlist.Add(Color.Red);
@@ -58,14 +57,8 @@ namespace COTS_Sales_And_Inventory_System
             timerDataRefresh.Start();
             comboBox4.SelectedIndex = 0;
             LoadAccountSettings();
-            Show();
         }
 
-        private void LoadDummyReport()
-        {
-            var ds = new DataSet();
-            var printdummy = new Print_Receipt(ds);
-        }
 
         private void LoadAccountSettings()
         {
