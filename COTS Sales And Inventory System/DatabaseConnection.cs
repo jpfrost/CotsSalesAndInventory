@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using MySql.Data.MySqlClient;
 
 namespace COTS_Sales_And_Inventory_System
@@ -42,7 +43,11 @@ namespace COTS_Sales_And_Inventory_System
 
         public static DataTable GetCustomTable(string query, string tableName)
         {
-            Connection.Open();
+            
+            if (!Connection.State.ToString().Equals("Open"))
+            {
+                Connection.Open();
+            }
             var dadapt = CreateDataAddapter(query);
             var dt = new DataTable(tableName);
             dadapt.Fill(dt);
@@ -65,7 +70,10 @@ namespace COTS_Sales_And_Inventory_System
         {
             var command = connection.CreateCommand();
             command.CommandText = "Show Tables;";
-            connection.Open();
+            if (!connection.State.ToString().Equals("Open"))
+            {
+                connection.Open();
+            }
             var reader = command.ExecuteReader();
             var list = new List<String>();
             while (reader.Read())
@@ -138,6 +146,21 @@ namespace COTS_Sales_And_Inventory_System
             {
                 Console.WriteLine(e);
             }
+        }
+
+        public static void TruncateDatabase()
+        {
+            
+            if (!Connection.State.ToString().Equals("Open"))
+            {
+                Connection.Open();
+            }
+            var tableList = GetDatabaseTables(Connection);
+            foreach (var cmd in tableList.Select(tableName => "TRUNCATE TABLE " + tableName).Select(query => new MySqlCommand(query, Connection)))
+            {
+                cmd.ExecuteNonQuery();
+            }
+            Connection.Close();
         }
     }
 }

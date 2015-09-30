@@ -121,7 +121,7 @@ namespace COTS_Sales_And_Inventory_System.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool FirstRun {
             get {
                 return ((bool)(this["FirstRun"]));
@@ -308,6 +308,18 @@ namespace COTS_Sales_And_Inventory_System.Properties {
             }
             set {
                 this["DefaultSecretAnswer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool EnableOrdering {
+            get {
+                return ((bool)(this["EnableOrdering"]));
+            }
+            set {
+                this["EnableOrdering"] = value;
             }
         }
     }

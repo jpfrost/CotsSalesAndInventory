@@ -34,10 +34,12 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.cueTextBox1 = new CueTextBox();
-            this.cueTextBox2 = new CueTextBox();
-            this.cueTextBox3 = new CueTextBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cueTextBox3 = new CueTextBox();
+            this.cueTextBox2 = new CueTextBox();
+            this.cueTextBox1 = new CueTextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,7 +47,7 @@
             // 
             this.btnAdd.BackColor = System.Drawing.Color.Tomato;
             this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAdd.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.btnAdd.ForeColor = System.Drawing.Color.Black;
             this.btnAdd.Location = new System.Drawing.Point(43, 398);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(116, 43);
@@ -58,7 +60,7 @@
             // 
             this.btnUpdate.BackColor = System.Drawing.Color.Tomato;
             this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpdate.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.btnUpdate.ForeColor = System.Drawing.Color.Black;
             this.btnUpdate.Location = new System.Drawing.Point(214, 398);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(116, 43);
@@ -71,7 +73,7 @@
             // 
             this.btnDelete.BackColor = System.Drawing.Color.Tomato;
             this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDelete.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.btnDelete.ForeColor = System.Drawing.Color.Black;
             this.btnDelete.Location = new System.Drawing.Point(377, 398);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(116, 43);
@@ -81,9 +83,9 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.BackColor = System.Drawing.Color.Silver;
+            this.groupBox1.BackColor = System.Drawing.Color.Tomato;
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.groupBox1.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.groupBox1.Location = new System.Drawing.Point(0, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(541, 100);
@@ -104,40 +106,11 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(12, 118);
+            this.listBox1.Location = new System.Drawing.Point(12, 144);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(120, 264);
+            this.listBox1.Size = new System.Drawing.Size(120, 238);
             this.listBox1.TabIndex = 6;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
-            // 
-            // cueTextBox1
-            // 
-            this.cueTextBox1.Cue = "Username";
-            this.cueTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cueTextBox1.Location = new System.Drawing.Point(167, 118);
-            this.cueTextBox1.Name = "cueTextBox1";
-            this.cueTextBox1.Size = new System.Drawing.Size(257, 26);
-            this.cueTextBox1.TabIndex = 7;
-            // 
-            // cueTextBox2
-            // 
-            this.cueTextBox2.Cue = "Password";
-            this.cueTextBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cueTextBox2.Location = new System.Drawing.Point(167, 168);
-            this.cueTextBox2.Name = "cueTextBox2";
-            this.cueTextBox2.PasswordChar = '*';
-            this.cueTextBox2.Size = new System.Drawing.Size(257, 26);
-            this.cueTextBox2.TabIndex = 8;
-            // 
-            // cueTextBox3
-            // 
-            this.cueTextBox3.Cue = "Re-Type Password";
-            this.cueTextBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cueTextBox3.Location = new System.Drawing.Point(167, 213);
-            this.cueTextBox3.Name = "cueTextBox3";
-            this.cueTextBox3.PasswordChar = '*';
-            this.cueTextBox3.Size = new System.Drawing.Size(257, 26);
-            this.cueTextBox3.TabIndex = 9;
             // 
             // comboBox1
             // 
@@ -150,10 +123,57 @@
             "Stock Man",
             "Stock Manager",
             "Administrator"});
-            this.comboBox1.Location = new System.Drawing.Point(167, 263);
+            this.comboBox1.Location = new System.Drawing.Point(186, 306);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(257, 28);
             this.comboBox1.TabIndex = 10;
+            // 
+            // cueTextBox3
+            // 
+            this.cueTextBox3.Cue = "Re-Type Password";
+            this.cueTextBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cueTextBox3.Location = new System.Drawing.Point(186, 248);
+            this.cueTextBox3.Name = "cueTextBox3";
+            this.cueTextBox3.PasswordChar = '*';
+            this.cueTextBox3.Size = new System.Drawing.Size(257, 26);
+            this.cueTextBox3.TabIndex = 9;
+            // 
+            // cueTextBox2
+            // 
+            this.cueTextBox2.Cue = "Password";
+            this.cueTextBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cueTextBox2.Location = new System.Drawing.Point(186, 203);
+            this.cueTextBox2.Name = "cueTextBox2";
+            this.cueTextBox2.PasswordChar = '*';
+            this.cueTextBox2.Size = new System.Drawing.Size(257, 26);
+            this.cueTextBox2.TabIndex = 8;
+            // 
+            // cueTextBox1
+            // 
+            this.cueTextBox1.Cue = "Username";
+            this.cueTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cueTextBox1.Location = new System.Drawing.Point(186, 153);
+            this.cueTextBox1.Name = "cueTextBox1";
+            this.cueTextBox1.Size = new System.Drawing.Size(257, 26);
+            this.cueTextBox1.TabIndex = 7;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 125);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(0, 13);
+            this.label2.TabIndex = 11;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(12, 125);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(77, 16);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "Filter Name";
             // 
             // FrmAdmin
             // 
@@ -161,6 +181,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(537, 465);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.cueTextBox3);
             this.Controls.Add(this.cueTextBox2);
@@ -195,5 +217,7 @@
         private CueTextBox cueTextBox2;
         private CueTextBox cueTextBox3;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }

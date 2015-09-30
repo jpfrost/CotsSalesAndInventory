@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.mainTab = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button12 = new System.Windows.Forms.Button();
@@ -40,7 +40,6 @@
             this.button4 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.cueTextBox6 = new CueTextBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -60,10 +59,7 @@
             this.receiptTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label19 = new System.Windows.Forms.Label();
-            this.cueTextBox3 = new CueTextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.cueTextBox5 = new CueTextBox();
-            this.cueTextBox4 = new CueTextBox();
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
             this.label27 = new System.Windows.Forms.Label();
@@ -94,8 +90,6 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button9 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
-            this.cueTextBox2 = new CueTextBox();
-            this.cueTextBox1 = new CueTextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -134,6 +128,14 @@
             this.button2 = new System.Windows.Forms.Button();
             this.colorChangeTimer = new System.Windows.Forms.Timer(this.components);
             this.textChangeTimer = new System.Windows.Forms.Timer(this.components);
+            this.label20 = new System.Windows.Forms.Label();
+            this.nullIPriceItem = new System.Windows.Forms.Timer(this.components);
+            this.cueTextBox6 = new CueTextBox();
+            this.cueTextBox3 = new CueTextBox();
+            this.cueTextBox5 = new CueTextBox();
+            this.cueTextBox4 = new CueTextBox();
+            this.cueTextBox2 = new CueTextBox();
+            this.cueTextBox1 = new CueTextBox();
             this.mainTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -175,7 +177,7 @@
             // tabPage1
             // 
             this.tabPage1.AllowDrop = true;
-            this.tabPage1.BackColor = System.Drawing.Color.Snow;
+            this.tabPage1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.tabPage1.Controls.Add(this.button12);
             this.tabPage1.Controls.Add(this.button11);
             this.tabPage1.Controls.Add(this.button4);
@@ -262,17 +264,6 @@
             this.label8.Size = new System.Drawing.Size(42, 16);
             this.label8.TabIndex = 34;
             this.label8.Text = "Price:";
-            // 
-            // cueTextBox6
-            // 
-            this.cueTextBox6.Cue = "Use Barcode Here";
-            this.cueTextBox6.Location = new System.Drawing.Point(104, 34);
-            this.cueTextBox6.Name = "cueTextBox6";
-            this.cueTextBox6.Size = new System.Drawing.Size(155, 20);
-            this.cueTextBox6.TabIndex = 33;
-            this.cueTextBox6.Enter += new System.EventHandler(this.ClearCueBox);
-            this.cueTextBox6.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cueTextBox6_KeyDown);
-            this.cueTextBox6.MouseLeave += new System.EventHandler(this.ClearCueBox);
             // 
             // numericUpDown1
             // 
@@ -478,6 +469,7 @@
             // groupBox6
             // 
             this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox6.BackColor = System.Drawing.Color.WhiteSmoke;
             this.groupBox6.Controls.Add(this.label19);
             this.groupBox6.Controls.Add(this.cueTextBox3);
             this.groupBox6.Controls.Add(this.textBox2);
@@ -509,17 +501,6 @@
             this.label19.TabIndex = 42;
             this.label19.Text = "Discounted Ammount:";
             // 
-            // cueTextBox3
-            // 
-            this.cueTextBox3.Cue = "Discount";
-            this.cueTextBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cueTextBox3.Location = new System.Drawing.Point(200, 70);
-            this.cueTextBox3.Name = "cueTextBox3";
-            this.cueTextBox3.ReadOnly = true;
-            this.cueTextBox3.Size = new System.Drawing.Size(155, 29);
-            this.cueTextBox3.TabIndex = 41;
-            this.cueTextBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
             // textBox2
             // 
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -530,27 +511,6 @@
             this.textBox2.Size = new System.Drawing.Size(155, 29);
             this.textBox2.TabIndex = 40;
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
-            // 
-            // cueTextBox5
-            // 
-            this.cueTextBox5.Cue = "Enter Discount    ";
-            this.cueTextBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cueTextBox5.Location = new System.Drawing.Point(200, 11);
-            this.cueTextBox5.Name = "cueTextBox5";
-            this.cueTextBox5.Size = new System.Drawing.Size(155, 29);
-            this.cueTextBox5.TabIndex = 39;
-            this.cueTextBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.cueTextBox5.TextChanged += new System.EventHandler(this.cueTextBox5_TextChanged);
-            this.cueTextBox5.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cueTextBox5_KeyDown);
-            this.cueTextBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardOnlyDecimals);
-            // 
-            // cueTextBox4
-            // 
-            this.cueTextBox4.Cue = "(Optional)";
-            this.cueTextBox4.Location = new System.Drawing.Point(200, 285);
-            this.cueTextBox4.Name = "cueTextBox4";
-            this.cueTextBox4.Size = new System.Drawing.Size(155, 20);
-            this.cueTextBox4.TabIndex = 38;
             // 
             // textBox11
             // 
@@ -677,11 +637,12 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.BackColor = System.Drawing.Color.WhiteSmoke;
             this.groupBox3.Controls.Add(this.button13);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(328, 434);
+            this.groupBox3.Location = new System.Drawing.Point(136, 453);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(200, 141);
+            this.groupBox3.Size = new System.Drawing.Size(398, 141);
             this.groupBox3.TabIndex = 32;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Manage Order";
@@ -689,14 +650,14 @@
             // button13
             // 
             this.button13.BackColor = System.Drawing.Color.Tomato;
-            this.button13.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button13.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button13.Image = ((System.Drawing.Image)(resources.GetObject("button13.Image")));
             this.button13.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button13.Location = new System.Drawing.Point(12, 26);
+            this.button13.Location = new System.Drawing.Point(12, 32);
             this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(171, 89);
+            this.button13.Size = new System.Drawing.Size(363, 89);
             this.button13.TabIndex = 28;
-            this.button13.Text = "Manage Order";
+            this.button13.Text = "                Manage Order";
             this.button13.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.button13.UseVisualStyleBackColor = false;
             this.button13.Click += new System.EventHandler(this.button13_Click);
@@ -704,7 +665,10 @@
             // groupBox9
             // 
             this.groupBox9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox9.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.groupBox9.Controls.Add(this.label20);
             this.groupBox9.Controls.Add(this.label3);
+            this.groupBox9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox9.Location = new System.Drawing.Point(340, 13);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(492, 100);
@@ -735,11 +699,12 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.BackColor = System.Drawing.Color.WhiteSmoke;
             this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(122, 375);
+            this.groupBox1.Location = new System.Drawing.Point(125, 352);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 92);
+            this.groupBox1.Size = new System.Drawing.Size(200, 76);
             this.groupBox1.TabIndex = 27;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Item";
@@ -750,7 +715,7 @@
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
             this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.Location = new System.Drawing.Point(23, 21);
+            this.button3.Location = new System.Drawing.Point(20, 21);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(157, 49);
             this.button3.TabIndex = 2;
@@ -760,6 +725,7 @@
             // 
             // groupBox8
             // 
+            this.groupBox8.BackColor = System.Drawing.Color.WhiteSmoke;
             this.groupBox8.Controls.Add(this.textBox10);
             this.groupBox8.Controls.Add(this.label26);
             this.groupBox8.Controls.Add(this.textBox9);
@@ -855,6 +821,7 @@
             // 
             // groupBox7
             // 
+            this.groupBox7.BackColor = System.Drawing.Color.WhiteSmoke;
             this.groupBox7.Controls.Add(this.comboBox1);
             this.groupBox7.Controls.Add(this.button9);
             this.groupBox7.Controls.Add(this.button7);
@@ -903,24 +870,6 @@
             this.button7.Text = "     Delete";
             this.button7.UseVisualStyleBackColor = false;
             this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
-            // cueTextBox2
-            // 
-            this.cueTextBox2.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cueTextBox2.Cue = "Search Product Name Here";
-            this.cueTextBox2.Location = new System.Drawing.Point(113, 82);
-            this.cueTextBox2.Name = "cueTextBox2";
-            this.cueTextBox2.Size = new System.Drawing.Size(212, 20);
-            this.cueTextBox2.TabIndex = 25;
-            // 
-            // cueTextBox1
-            // 
-            this.cueTextBox1.Cue = "Search Product Code Here";
-            this.cueTextBox1.Location = new System.Drawing.Point(113, 52);
-            this.cueTextBox1.Name = "cueTextBox1";
-            this.cueTextBox1.Size = new System.Drawing.Size(212, 20);
-            this.cueTextBox1.TabIndex = 24;
-            this.cueTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cueTextBox1_KeyDown);
             // 
             // listBox1
             // 
@@ -1123,6 +1072,7 @@
             // 
             // richTextBox1
             // 
+            this.richTextBox1.BackColor = System.Drawing.SystemColors.Control;
             this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBox1.Location = new System.Drawing.Point(3, 3);
             this.richTextBox1.Name = "richTextBox1";
@@ -1298,6 +1248,83 @@
             this.textChangeTimer.Interval = 5000;
             this.textChangeTimer.Tick += new System.EventHandler(this.textChangeTimer_Tick);
             // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.Location = new System.Drawing.Point(6, 43);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(59, 16);
+            this.label20.TabIndex = 31;
+            this.label20.Text = "label20";
+            // 
+            // nullIPriceItem
+            // 
+            this.nullIPriceItem.Enabled = true;
+            this.nullIPriceItem.Interval = 5000;
+            this.nullIPriceItem.Tick += new System.EventHandler(this.nullIPriceItem_Tick);
+            // 
+            // cueTextBox6
+            // 
+            this.cueTextBox6.Cue = "Use Barcode Here";
+            this.cueTextBox6.Location = new System.Drawing.Point(104, 34);
+            this.cueTextBox6.Name = "cueTextBox6";
+            this.cueTextBox6.Size = new System.Drawing.Size(155, 20);
+            this.cueTextBox6.TabIndex = 33;
+            this.cueTextBox6.Enter += new System.EventHandler(this.ClearCueBox);
+            this.cueTextBox6.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cueTextBox6_KeyDown);
+            this.cueTextBox6.MouseLeave += new System.EventHandler(this.ClearCueBox);
+            // 
+            // cueTextBox3
+            // 
+            this.cueTextBox3.Cue = "Discount";
+            this.cueTextBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cueTextBox3.Location = new System.Drawing.Point(200, 70);
+            this.cueTextBox3.Name = "cueTextBox3";
+            this.cueTextBox3.ReadOnly = true;
+            this.cueTextBox3.Size = new System.Drawing.Size(155, 29);
+            this.cueTextBox3.TabIndex = 41;
+            this.cueTextBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // cueTextBox5
+            // 
+            this.cueTextBox5.Cue = "Enter Discount    ";
+            this.cueTextBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cueTextBox5.Location = new System.Drawing.Point(200, 11);
+            this.cueTextBox5.Name = "cueTextBox5";
+            this.cueTextBox5.Size = new System.Drawing.Size(155, 29);
+            this.cueTextBox5.TabIndex = 39;
+            this.cueTextBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.cueTextBox5.TextChanged += new System.EventHandler(this.cueTextBox5_TextChanged);
+            this.cueTextBox5.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cueTextBox5_KeyDown);
+            this.cueTextBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardOnlyDecimals);
+            // 
+            // cueTextBox4
+            // 
+            this.cueTextBox4.Cue = "(Optional)";
+            this.cueTextBox4.Location = new System.Drawing.Point(200, 285);
+            this.cueTextBox4.Name = "cueTextBox4";
+            this.cueTextBox4.Size = new System.Drawing.Size(155, 20);
+            this.cueTextBox4.TabIndex = 38;
+            // 
+            // cueTextBox2
+            // 
+            this.cueTextBox2.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cueTextBox2.Cue = "Search Product Name Here";
+            this.cueTextBox2.Location = new System.Drawing.Point(113, 82);
+            this.cueTextBox2.Name = "cueTextBox2";
+            this.cueTextBox2.Size = new System.Drawing.Size(212, 20);
+            this.cueTextBox2.TabIndex = 25;
+            // 
+            // cueTextBox1
+            // 
+            this.cueTextBox1.Cue = "Search Product Code Here";
+            this.cueTextBox1.Location = new System.Drawing.Point(113, 52);
+            this.cueTextBox1.Name = "cueTextBox1";
+            this.cueTextBox1.Size = new System.Drawing.Size(212, 20);
+            this.cueTextBox1.TabIndex = 24;
+            this.cueTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cueTextBox1_KeyDown);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1458,5 +1485,7 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label19;
         private CueTextBox cueTextBox3;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Timer nullIPriceItem;
     }
 }

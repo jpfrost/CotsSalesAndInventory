@@ -39,6 +39,18 @@ namespace COTS_Sales_And_Inventory_System
         private void Items_Load(object sender, EventArgs e)
         {
             AutoCompleteItemName();
+            LoadDefaults();
+        }
+
+        private void LoadDefaults()
+        {
+            cueTextBox3.Enabled = Properties.Settings.Default.quantMod;
+            cueTextBox4.Enabled = Properties.Settings.Default.priceMod;
+            if (!Properties.Settings.Default.EnableOrdering)
+            {
+                comboBox1.DropDownStyle = ComboBoxStyle.DropDown;
+                comboBox2.DropDownStyle = ComboBoxStyle.DropDown;
+            }
         }
 
         private void AutoCompleteItemName()

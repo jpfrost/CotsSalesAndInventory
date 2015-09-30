@@ -6,9 +6,9 @@ using MySql.Data.MySqlClient;
 
 namespace COTS_Sales_And_Inventory_System
 {
-    public partial class Settings : Form
+    public partial class SettingsForm : Form
     {
-        public Settings()
+        public SettingsForm()
         {
             InitializeComponent();
         }
@@ -67,6 +67,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             enablePriceMod.Checked = Properties.Settings.Default.priceMod;
             enableQuanMod.Checked = Properties.Settings.Default.quantMod;
+            enOrderMod.Checked = Properties.Settings.Default.EnableOrdering;
         }
 
         private void LoadSalesComputation()
@@ -104,6 +105,11 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (Properties.Settings.Default.FirstRun)
+            {
+                Properties.Settings.Default.FirstRun = false;
+                Properties.Settings.Default.Save();
+            }
             var dialog = MessageBox.Show("Do you want to save settings?", "Save Settings?", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Hand);
             if (dialog == DialogResult.Yes)
@@ -166,6 +172,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             Properties.Settings.Default.priceMod = enablePriceMod.Checked;
             Properties.Settings.Default.quantMod = enableQuanMod.Checked;
+            Properties.Settings.Default.EnableOrdering = enOrderMod.Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -228,7 +235,7 @@ namespace COTS_Sales_And_Inventory_System
                 var body = "This is a test email from Cots Sales and Inventory";
                 var email = new Email(mailSender, mailPassowrd, subject, body);
                 email.Send();
-                MessageBox.Show("Message sending Sucess", "Message Sent!",
+                MessageBox.Show(@"Message sending Sucess", @"Message Sent!",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception exception)
@@ -270,6 +277,47 @@ namespace COTS_Sales_And_Inventory_System
                 {
                     conn.Close();
                 }
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            ResetSystem();
+            Application.Exit();
+        }
+
+        private void ResetSystem()
+        {
+            var dialog = MessageBox.Show("This will restore the system to its default values", "System Reset",
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if (dialog == DialogResult.OK)
+            {
+                Properties.Settings.Default.DefaultAdminAccount = "admin";
+                Properties.Settings.Default.DefaultAdminPassword = "password";
+                Properties.Settings.Default.DefaultSecretAnswer = "";
+                Properties.Settings.Default.DefaultSecretQuest = "";
+                Properties.Settings.Default.DefaultSupplier = "";
+                Properties.Settings.Default.DefaultSupplierAddress = "";
+                Properties.Settings.Default.DefaultSupplierNo = "";
+                Properties.Settings.Default.EmailUser = "";
+                Properties.Settings.Default.EmailPassword = "";
+                Properties.Settings.Default.FirstRun = true;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var dialog = MessageBox.Show("This will remove all data from the database", "Database Reset",
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if (dialog == DialogResult.OK)
+            {
+                DatabaseConnection.TruncateDatabase();
             }
         }
     }

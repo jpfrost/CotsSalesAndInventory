@@ -19,6 +19,7 @@ namespace COTS_Sales_And_Inventory_System
                 Thread.Sleep(1000);
             }
             t.Abort();*/
+            
             InitializeComponent();
         }
 
@@ -123,6 +124,12 @@ namespace COTS_Sales_And_Inventory_System
 
         private void Logon_Load(object sender, EventArgs e)
         {
+            if (Properties.Settings.Default.FirstRun)
+            {
+                var settings = new SettingsForm();
+                settings.TopMost = true;
+                settings.Show();
+            }
         }
 
         private void txtUser_TextChanged(object sender, EventArgs e)

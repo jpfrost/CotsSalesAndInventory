@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using COTS_Sales_And_Inventory_System.Properties;
 
 namespace COTS_Sales_And_Inventory_System
 {
@@ -20,11 +21,14 @@ namespace COTS_Sales_And_Inventory_System
         private readonly Stopwatch timer = new Stopwatch();
         private int _critCount = 0;
         private DataTable _criticalTable;
+        private DataTable _itemWithNoPrice;
+        private double _totalPayment;
         private string groupQuery = "";
         private string recordedInput;
         private string rtextboxData;
         private double totalSold;
         private int x;
+        private int y;
 
         public Main(Form loginForm, string username, string accountType)
         {
@@ -41,7 +45,6 @@ namespace COTS_Sales_And_Inventory_System
 
         private void Main_Load(object sender, EventArgs e)
         {
-            
             LoadDummyReport();
             toolStripStatusLabel1.Text = "Current User: " + _username;
             toolStripStatusLabel2.Text = "User Rights: " + _accountType;
@@ -51,7 +54,7 @@ namespace COTS_Sales_And_Inventory_System
             x.Wait();
             panel1.Controls.Add(_items);
             _items.Hide();
-            LoadDefaults();
+            LoadSettings();
             dateTime.Start();
             timerDataRefresh.Start();
             comboBox4.SelectedIndex = 0;
@@ -94,12 +97,13 @@ namespace COTS_Sales_And_Inventory_System
             }
         }
 
-        private void LoadDefaults()
+        private void LoadSettings()
         {
-            comboBox2.Text = Properties.Settings.Default.DefaultSupplier;
-            textBox10.Text = Properties.Settings.Default.DefaultSupplierNo;
-            textBox9.Text = Properties.Settings.Default.DefaultSupplierAddress;
-            cueTextBox5.Enabled = Properties.Settings.Default.SalesDiscount;
+            comboBox2.Text = Settings.Default.DefaultSupplier;
+            textBox10.Text = Settings.Default.DefaultSupplierNo;
+            textBox9.Text = Settings.Default.DefaultSupplierAddress;
+            cueTextBox5.Enabled = Settings.Default.SalesDiscount;
+            button13.Enabled = Settings.Default.EnableOrdering;
             comboBox5.SelectedIndex = 0;
         }
 
@@ -108,11 +112,18 @@ namespace COTS_Sales_And_Inventory_System
             label3.Text = "";
         }
 
-        private void ChangeLabelText(DataRow dataRow)
+        private void ChangeCritLevelText(DataRow dataRow)
         {
             label3.Text = dataRow["product"] + " " + dataRow["size"] + " only have " + dataRow["quantity"]
                           + " left please order immediately";
             InsertToSummary(label3.Text);
+        }
+
+        private void ChangeItemWithNoPriceText(DataRow dataRow)
+        {
+            label20.Text = dataRow["item_Name"] + " " +
+                           dataRow["size"] + " has no price yet...";
+            InsertToSummary(label20.Text);
         }
 
         private void InsertToSummary(string text)
@@ -141,7 +152,16 @@ namespace COTS_Sales_And_Inventory_System
             FillCategoryComboBox();
             LoadFromDatabase();
             LoadCriticalLevel();
+            LoadItemWithNoPrice();
             CriticalItemShow();
+        }
+
+        private void LoadItemWithNoPrice()
+        {
+            _itemWithNoPrice =
+                DatabaseConnection.GetCustomTable(
+                    "select Item_Name, Size from items inner join size on items.ItemID=size.ItemID where price is Null;",
+                    "nullPrices");
         }
 
         private void LoadCriticalLevel()
@@ -418,26 +438,15 @@ namespace COTS_Sales_And_Inventory_System
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (Settings.Default.EmailSendMessage)
+            {
+                SendReportToEmail();
+            }
             Application.Exit();
-        }
-
-        private void bindingSource1_CurrentChanged(object sender, EventArgs e)
-        {
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-        }
-
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                GetDistrosInformation();
-            }
-            catch (Exception aException)
-            {
-            }
         }
 
         private void GetDistrosInformation()
@@ -474,7 +483,7 @@ namespace COTS_Sales_And_Inventory_System
         private void AddAutoCompleteForSalesTextBox()
         {
             var autoCompleteCollectionProductName = new AutoCompleteStringCollection();
-            for (int x = 0; x < dataGridView1.Rows.Count;x++)
+            for (var x = 0; x < dataGridView1.Rows.Count; x++)
             {
                 var itemName = dataGridView1.Rows[x].Cells[0].Value.ToString();
                 if (!autoCompleteCollectionProductName.Contains(itemName))
@@ -489,14 +498,28 @@ namespace COTS_Sales_And_Inventory_System
             }*/
             textBox4.AutoCompleteSource = AutoCompleteSource.CustomSource;
             textBox4.AutoCompleteCustomSource = autoCompleteCollectionProductName;
-            cueTextBox2.AutoCompleteSource=AutoCompleteSource.CustomSource;
+            cueTextBox2.AutoCompleteSource = AutoCompleteSource.CustomSource;
             cueTextBox2.AutoCompleteCustomSource = autoCompleteCollectionProductName;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (Settings.Default.EmailSendMessage)
+            {
+                SendReportToEmail();
+            }
             _loginForm.Show();
             Dispose();
+        }
+
+        private void SendReportToEmail()
+        {
+            var emailAcc = Settings.Default.EmailUser;
+            var emailPass = Settings.Default.EmailPassword;
+            var subject = "Session Report";
+            var body = "";
+            var email = new Email(emailAcc, emailPass, subject, body);
+            email.Send();
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -816,6 +839,11 @@ namespace COTS_Sales_And_Inventory_System
                 numericUpDown1.Focus();
                 return true;
             }
+            if (keyData == Keys.F6)
+            {
+                cueTextBox5.Focus();
+                return true;
+            }
             if (keyData == Keys.F5)
             {
                 LoadFromDatabase();
@@ -829,7 +857,6 @@ namespace COTS_Sales_And_Inventory_System
             CountOverAllTotal();
         }
 
-        private double _totalPayment;
         private void CountOverAllTotal()
         {
             _totalPayment = 0;
@@ -871,6 +898,14 @@ namespace COTS_Sales_And_Inventory_System
             button12.Enabled = false;
             if (textBox11.Text.Equals(""))
             {
+                var dialog = MessageBox.Show("Are you sure you want to proceed \n" +
+                                             "with this transaction?", "Proceed with Transaction",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Hand);
+                if (dialog == DialogResult.No)
+                {
+                    MessageBox.Show("Transaction Cancelled");
+                    return;
+                }
                 textBox11.Text = textBox6.Text;
             }
             if (textBox2.Text.Equals(""))
@@ -938,7 +973,7 @@ namespace COTS_Sales_And_Inventory_System
                 File.Delete("receipt.xml");
             }
             receiptDataset.WriteXml("receipt.xml");
-            if (Properties.Settings.Default.SalesReceipt)
+            if (Settings.Default.SalesReceipt)
             {
                 PrintTransaction(receiptDataset);
             }
@@ -974,9 +1009,9 @@ namespace COTS_Sales_And_Inventory_System
             newMiscRow["change"] = Convert.ToDouble(textBox2.Text);
             newMiscRow["tax"] = Convert.ToDouble(CalculateTax());
             newMiscRow["vatSale"] = Convert.ToDouble(CalculateVatSale());
-            newMiscRow["storeName"] = Properties.Settings.Default.storeName;
-            newMiscRow["storeAddress"] = Properties.Settings.Default.storeAdd;
-            newMiscRow["storeNo"] = Properties.Settings.Default.storeNo;
+            newMiscRow["storeName"] = Settings.Default.storeName;
+            newMiscRow["storeAddress"] = Settings.Default.storeAdd;
+            newMiscRow["storeNo"] = Settings.Default.storeNo;
             newMiscRow["grandTotal"] = textBox6.Text;
             receiptDataset.Tables["ReceiptInfo"].Rows.Add(newMiscRow);
         }
@@ -984,16 +1019,16 @@ namespace COTS_Sales_And_Inventory_System
         private string CalculateVatSale()
         {
             var x = Convert.ToDouble(textBox6.Text);
-            var y = (100-Convert.ToDouble(Properties.Settings.Default.SalesTax))/100;
-             return string.Format("{0:0.00}",x*y);
+            var y = (100 - Convert.ToDouble(Settings.Default.SalesTax))/100;
+            return string.Format("{0:0.00}", x*y);
         }
 
         private string CalculateTax()
         {
             var x = Convert.ToDouble(textBox6.Text);
-            var y = Convert.ToDouble(Properties.Settings.Default.SalesTax);
+            var y = Convert.ToDouble(Settings.Default.SalesTax);
             var z = x*(y/100);
-            return string.Format("{0:0.00}",z);
+            return string.Format("{0:0.00}", z);
         }
 
         private void PrintTransaction(DataSet receiptDataset)
@@ -1029,14 +1064,14 @@ namespace COTS_Sales_And_Inventory_System
             dt.Columns.Add("date", typeof (DateTime));
             dt.Columns.Add("payment", typeof (Double));
             dt.Columns.Add("change", typeof (Double));
-            dt.Columns.Add("tax", typeof(Double));
-            dt.Columns.Add("vatSale", typeof(Double));
-            dt.Columns.Add("storeName", typeof(String));
-            dt.Columns.Add("storeAddress", typeof(String));
-            dt.Columns.Add("storeNo", typeof(String));
+            dt.Columns.Add("tax", typeof (Double));
+            dt.Columns.Add("vatSale", typeof (Double));
+            dt.Columns.Add("storeName", typeof (String));
+            dt.Columns.Add("storeAddress", typeof (String));
+            dt.Columns.Add("storeNo", typeof (String));
             dt.Columns.Add("grandTotal", typeof (String));
             ds.Tables.Add(dt);
-            
+
             return ds;
         }
 
@@ -1116,7 +1151,7 @@ namespace COTS_Sales_And_Inventory_System
             if (e.RowIndex >= 0)
             {
                 var dialog = MessageBox.Show("Are you sure you want to remove item",
-                    "Remove item",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+                    "Remove item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (dialog == DialogResult.Yes)
                 {
@@ -1166,13 +1201,14 @@ namespace COTS_Sales_And_Inventory_System
         private void ChangeLabelColor()
         {
             label3.ForeColor = label3.ForeColor == Color.Red ? Color.Black : Color.Red;
+            label20.ForeColor = label20.ForeColor == Color.Red ? Color.Black : Color.Red;
         }
 
         private void textChangeTimer_Tick(object sender, EventArgs e)
         {
             try
             {
-                ChangeLabelText(_criticalTable.Rows[x]);
+                ChangeCritLevelText(_criticalTable.Rows[x]);
                 x++;
                 if (x >= _criticalTable.Rows.Count) x = 0;
             }
@@ -1473,7 +1509,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void configToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var settings = new Settings();
+            var settings = new SettingsForm();
             settings.Show();
         }
 
@@ -1493,28 +1529,27 @@ namespace COTS_Sales_And_Inventory_System
         {
             try
             {
-                var x= Convert.ToDouble(cueTextBox5.Text);
+                var x = Convert.ToDouble(cueTextBox5.Text);
                 var total = _totalPayment;
 
                 if (x < 100.00)
                 {
                     x /= 100.00;
                     total *= x;
-                    var stringTotal =(string.Format("{0:0.00}", total));
+                    var stringTotal = (string.Format("{0:0.00}", total));
                     cueTextBox3.Text = stringTotal;
-                    textBox6.Text = (string.Format("{0:0.00}", _totalPayment-total));
+                    textBox6.Text = (string.Format("{0:0.00}", _totalPayment - total));
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
-
         }
 
         private void cueTextBox1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode==Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
                 InsertProductNametoCuetextBox2();
             }
@@ -1522,8 +1557,8 @@ namespace COTS_Sales_And_Inventory_System
 
         private void InsertProductNametoCuetextBox2()
         {
-            var found = DatabaseConnection.DatabaseRecord.Tables["items"].Select("itemID ='"+cueTextBox1.Text+"'");
-            if (found.Length>0)
+            var found = DatabaseConnection.DatabaseRecord.Tables["items"].Select("itemID ='" + cueTextBox1.Text + "'");
+            if (found.Length > 0)
             {
                 cueTextBox2.Text = found[0]["item_Name"].ToString();
             }
@@ -1533,7 +1568,20 @@ namespace COTS_Sales_And_Inventory_System
         {
             if (e.KeyCode == Keys.Enter)
             {
-                
+            }
+        }
+
+        private void nullIPriceItem_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                ChangeItemWithNoPriceText(_itemWithNoPrice.Rows[y]);
+                y++;
+                if (y >= _itemWithNoPrice.Rows.Count) y = 0;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
             }
         }
     }

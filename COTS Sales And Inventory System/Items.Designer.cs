@@ -90,53 +90,55 @@
             // 
             // button3
             // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.BackColor = System.Drawing.Color.Tomato;
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.Location = new System.Drawing.Point(12, 395);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(290, 35);
             this.button3.TabIndex = 8;
             this.button3.Text = "Disable Product";
-            this.button3.UseVisualStyleBackColor = true;
+            this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.BackColor = System.Drawing.Color.Tomato;
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button4.Location = new System.Drawing.Point(12, 354);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(290, 35);
             this.button4.TabIndex = 7;
-            this.button4.Text = "Edit Item";
-            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Text = "Add/Edit Item";
+            this.button4.UseVisualStyleBackColor = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(10, 171);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(9, 167);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 12);
+            this.label2.Size = new System.Drawing.Size(66, 16);
             this.label2.TabIndex = 11;
             this.label2.Text = "Category:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(10, 215);
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(9, 210);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(26, 12);
+            this.label3.Size = new System.Drawing.Size(37, 16);
             this.label3.TabIndex = 12;
             this.label3.Text = "Size:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(10, 312);
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(9, 306);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(41, 12);
+            this.label4.Size = new System.Drawing.Size(61, 16);
             this.label4.TabIndex = 13;
             this.label4.Text = "Supplier:";
             // 
@@ -152,7 +154,7 @@
             // cueTextBox4
             // 
             this.cueTextBox4.Cue = "Price";
-            this.cueTextBox4.Location = new System.Drawing.Point(12, 289);
+            this.cueTextBox4.Location = new System.Drawing.Point(12, 283);
             this.cueTextBox4.Name = "cueTextBox4";
             this.cueTextBox4.Size = new System.Drawing.Size(290, 20);
             this.cueTextBox4.TabIndex = 5;
@@ -161,7 +163,7 @@
             // cueTextBox3
             // 
             this.cueTextBox3.Cue = "Quantity";
-            this.cueTextBox3.Location = new System.Drawing.Point(12, 263);
+            this.cueTextBox3.Location = new System.Drawing.Point(12, 257);
             this.cueTextBox3.Name = "cueTextBox3";
             this.cueTextBox3.Size = new System.Drawing.Size(290, 20);
             this.cueTextBox3.TabIndex = 4;
@@ -194,7 +196,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
