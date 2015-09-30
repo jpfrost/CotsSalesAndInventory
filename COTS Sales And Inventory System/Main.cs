@@ -1013,6 +1013,9 @@ namespace COTS_Sales_And_Inventory_System
             newMiscRow["storeAddress"] = Settings.Default.storeAdd;
             newMiscRow["storeNo"] = Settings.Default.storeNo;
             newMiscRow["grandTotal"] = textBox6.Text;
+            newMiscRow["cashier"] = _username;
+            newMiscRow["custName"] = cueTextBox4.Text;
+            newMiscRow["custRemark"] = textBox5.Text;
             receiptDataset.Tables["ReceiptInfo"].Rows.Add(newMiscRow);
         }
 
@@ -1070,6 +1073,9 @@ namespace COTS_Sales_And_Inventory_System
             dt.Columns.Add("storeAddress", typeof (String));
             dt.Columns.Add("storeNo", typeof (String));
             dt.Columns.Add("grandTotal", typeof (String));
+            dt.Columns.Add("cashier", typeof (String));
+            dt.Columns.Add("custName", typeof (String));
+            dt.Columns.Add("custRemark", typeof (String));
             ds.Tables.Add(dt);
 
             return ds;
