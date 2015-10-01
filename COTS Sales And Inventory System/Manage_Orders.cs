@@ -238,6 +238,7 @@ namespace COTS_Sales_And_Inventory_System
             var x = list.SelectedItem;
             var receive = new ReceiveOrder(Convert.ToInt32(x));
             ReceiveOrder(receive);
+            LoadOrderList();
         }
 
     }

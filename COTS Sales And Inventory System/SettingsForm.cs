@@ -141,7 +141,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void SaveSecret()
         {
-            Properties.Settings.Default.DefaultSecretQuest = comboBox1.SelectedItem.ToString();
+            Properties.Settings.Default.DefaultSecretQuest = comboBox1.Text;
             Properties.Settings.Default.DefaultSecretAnswer = cueTextBox2.Text;
             Properties.Settings.Default.Save();
         }

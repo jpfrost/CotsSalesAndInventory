@@ -163,9 +163,9 @@
             // 
             this.button3.BackColor = System.Drawing.Color.Tomato;
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(94, 310);
+            this.button3.Location = new System.Drawing.Point(11, 310);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 34);
+            this.button3.Size = new System.Drawing.Size(158, 34);
             this.button3.TabIndex = 8;
             this.button3.Text = "Close";
             this.button3.UseVisualStyleBackColor = false;
@@ -178,7 +178,6 @@
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(157, 21);
             this.comboBox2.TabIndex = 5;
-            this.comboBox2.Text = "Distributor";
             // 
             // numericUpDown1
             // 

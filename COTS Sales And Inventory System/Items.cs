@@ -24,7 +24,11 @@ namespace COTS_Sales_And_Inventory_System
         private void LoadAllComboBoxData()
         {
             LoadComboBox("category", "categoryName", comboBox1);
-            LoadComboBox("distributor", "distroName", comboBox3);
+            var found = DatabaseConnection.DatabaseRecord.Tables["distributor"].Select("distroEnable ='" + 1 + "'");
+            foreach (DataRow row in found)
+            {
+                comboBox3.Items.Add(row["distroName"]);
+            }
         }
 
         private void LoadComboBox(string table, string columb, ComboBox comboBox)

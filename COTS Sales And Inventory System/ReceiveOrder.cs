@@ -11,9 +11,9 @@ namespace COTS_Sales_And_Inventory_System
             InitializeComponent();
         }
 
-        public ReceiveOrder(int orderlistID)
+        public ReceiveOrder(int orderlistId)
         {
-            _orderListID = orderlistID;
+            _orderListID = orderlistId;
             InitializeComponent();
         }
 

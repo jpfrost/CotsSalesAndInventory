@@ -3,6 +3,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using COTS_Sales_And_Inventory_System.Properties;
 
 namespace COTS_Sales_And_Inventory_System
 {
@@ -26,8 +27,15 @@ namespace COTS_Sales_And_Inventory_System
             }
             else
             {
-                MessageBox.Show("Please fill out all the Product Information");
-                Dispose();
+                var dialog = MessageBox.Show("Do you want to close this window", "Close Window",MessageBoxButtons.YesNo,MessageBoxIcon.Hand);
+                if (dialog == DialogResult.Yes)
+                {
+                    Dispose();
+                }
+                else
+                {
+                    button3.Enabled = true;
+                }
             }
         }
 
@@ -420,12 +428,19 @@ namespace COTS_Sales_And_Inventory_System
 
         private void LoadDistros()
         {
-            var distro = DatabaseConnection.DatabaseRecord.Tables["distributor"];
-            foreach (DataRow distroRow in distro.Rows)
+            comboBox2.Items.Clear();
+            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox2.Items.Add(Settings.Default.DefaultSupplier);
+            if (Settings.Default.AllowMultiSupplier)
             {
-                comboBox2.Items.Add(distroRow["distroName"]);
+                var distro = DatabaseConnection.DatabaseRecord.Tables["distributor"].Select("distroEnable ='" + 1 + "'");
+                foreach (DataRow distroRow in distro)
+                {
+                    comboBox2.Items.Add(distroRow["distroName"]);
+                }
             }
             comboBox2.Refresh();
+            comboBox2.SelectedIndex = 0;
         }
 
         private void cueTextBox4_KeyDown(object sender, KeyEventArgs e)

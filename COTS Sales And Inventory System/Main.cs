@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using COTS_Sales_And_Inventory_System.Properties;
+using CrystalDecisions.CrystalReports.Engine;
 
 namespace COTS_Sales_And_Inventory_System
 {
@@ -104,6 +105,14 @@ namespace COTS_Sales_And_Inventory_System
             textBox9.Text = Settings.Default.DefaultSupplierAddress;
             cueTextBox5.Enabled = Settings.Default.SalesDiscount;
             button13.Enabled = Settings.Default.EnableOrdering;
+            button10.Enabled = Settings.Default.AllowMultiSupplier;
+            button8.Enabled = Settings.Default.AllowMultiSupplier;
+            if (!Settings.Default.AllowMultiSupplier)
+            {
+                comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
+                textBox10.Enabled = false;
+                textBox9.Enabled = false;
+            }
             comboBox5.SelectedIndex = 0;
         }
 
@@ -182,7 +191,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             var dt =
                 DatabaseConnection.GetCustomTable(
-                    "select Item_Name as 'Product', Size, Price, Quantity, CategoryName as 'Category' from items inner join size on items.ItemID=size.ItemID inner join category on items.CategoryID=category.CategoryID where Quantity > 0 and price <> \"\";"
+                    "select Item_Name as 'Product', Size, FORMAT(Price,2) as Price, Quantity, CategoryName as 'Category' from items inner join size on items.ItemID=size.ItemID inner join category on items.CategoryID=category.CategoryID where Quantity > 0 and price <> \"\";"
                     , "SizeAndItemTable");
             dataGridView1.DataSource = dt;
             dataGridView1.Update();
@@ -196,18 +205,23 @@ namespace COTS_Sales_And_Inventory_System
             {
                 comboBox1.Items.Add(catName);
             }
-            foreach (DataRow rows in DatabaseConnection.DatabaseRecord.Tables["distributor"].Rows)
+            if (Settings.Default.AllowMultiSupplier)
             {
-                try
+                foreach (
+                    DataRow rows in
+                        DatabaseConnection.DatabaseRecord.Tables["distributor"].Select("distroEnable ='" + 1 + "'"))
                 {
-                    if (!comboBox2.Items.Contains(rows["distroName"]))
+                    try
                     {
-                        comboBox2.Items.Add(rows["distroName"]);
+                        if (!comboBox2.Items.Contains(rows["distroName"]))
+                        {
+                            comboBox2.Items.Add(rows["distroName"]);
+                        }
                     }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                 }
             }
         }
@@ -215,6 +229,7 @@ namespace COTS_Sales_And_Inventory_System
         private void FillCategoryListBox()
         {
             listBox1.BeginUpdate();
+            listBox1.Items.Clear();
             listBox1.Items.Add("All");
             foreach (DataRow rows in DatabaseConnection.DatabaseRecord.Tables["category"].Rows)
             {
@@ -291,20 +306,53 @@ namespace COTS_Sales_And_Inventory_System
         }
 
         private void button7_Click(object sender, EventArgs e)
-        {
-            var del = comboBox1.SelectedItem;
-            var found = FindRow("category", "categoryName ='" + del + "'");
-            DeleteComboBox(comboBox1, found);
+        {       var del = comboBox1.Text;
+            if (!del.Equals("All"))
+            {
+
+                var found = FindRow("category", "categoryName ='" + del + "'");
+                RemoveCategoryFromItems(del);
+                DisableItemInComboBox(comboBox1, found);
+                DatabaseConnection.GetCustomTable("DELETE FROM category WHERE `CategoryName`='" + del + "'", "test");
+                MessageBox.Show(del + @" has been deleted");
+                DatabaseConnection.UploadChanges();
+                listBox1.Items.Remove(del);
+                comboBox1.Items.Remove(del);
+            }
+            else
+            {
+                MessageBox.Show("Cannot Remove All");
+            }
         }
 
-        private void DeleteComboBox(ComboBox cb, DataRow[] found)
+        
+
+        private void RemoveCategoryFromItems(string del)
+        {
+            var categoryRow = DatabaseConnection.DatabaseRecord.Tables["category"].Select("CategoryName ='"+del+"'");
+            var found = DatabaseConnection.DatabaseRecord.Tables["items"].Select("CategoryID ='"+categoryRow[0]["categoryID"]+"'");
+            foreach (DataRow row in found)
+            {
+                row["CategoryID"] = DBNull.Value;
+            }
+            
+            DatabaseConnection.UploadChanges();
+        }
+
+        private void DisableItemInComboBox(ComboBox cb, DataRow[] found)
         {
             foreach (var rows in found)
             {
-                rows.Delete();
+                try
+                {
+                    rows["distroEnable"] = 0;
+                }
+                catch (Exception e)
+                {
+                    // ignored
+                }
             }
             DatabaseConnection.UploadChanges();
-            MessageBox.Show(@"Delete Successful");
             cb.Text = "";
             RefreshData();
         }
@@ -323,7 +371,16 @@ namespace COTS_Sales_And_Inventory_System
             var found = FindRow("distributor", "DistroName = '" + distroName + "'");
             if (found.Length > 0)
             {
-                MessageBox.Show(@"Distro Exist this distributor will not be created", @"Distributor Exist");
+                if (found[0]["distroEnable"] == DBNull.Value||Convert.ToInt32(found[0]["distroEnable"]) == 0)
+                {
+                    found[0]["distroEnable"] = 1;
+                    DatabaseConnection.UploadChanges();
+                    MessageBox.Show("Found Existing Distributor It will be Enabled");
+                }
+                else
+                {
+                    MessageBox.Show(@"Distro Exist this distributor will not be created", @"Distributor Exist");
+                }
             }
             else
             {
@@ -338,6 +395,7 @@ namespace COTS_Sales_And_Inventory_System
             newDistro[1] = distroName;
             newDistro[2] = distroEmail;
             newDistro[3] = distroNumber;
+            newDistro[4] = 1;
             DatabaseConnection.DatabaseRecord.Tables["distributor"].Rows.Add(newDistro);
             DatabaseConnection.UploadChanges();
             MessageBox.Show(@"New distributor added...");
@@ -348,7 +406,10 @@ namespace COTS_Sales_And_Inventory_System
         {
             var del = comboBox2.SelectedItem;
             var found = FindRow("distributor", "DistroName ='" + del + "'");
-            DeleteComboBox(comboBox2, found);
+            DisableItemInComboBox(comboBox2, found);
+            textBox9.Text = "";
+            textBox10.Text = "";
+            MessageBox.Show(@"Distributor has been disabled");
             RefreshData();
         }
 
@@ -524,6 +585,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            comboBox1.SelectedItem = listBox1.SelectedItem.ToString();
             FilterInvetoryByCategory();
         }
 
@@ -866,14 +928,14 @@ namespace COTS_Sales_And_Inventory_System
                 total += Convert.ToDouble(row.Cells[4].Value);
             }
             _totalPayment = total;
-            textBox6.Text = (string.Format("{0:0.00}", total));
+            textBox6.Text = (string.Format("{0:0,0.00}", total));
         }
 
         private void textBox11_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                textBox11.Text = (string.Format("{0:0.00}", Convert.ToDouble(textBox11.Text)));
+                textBox11.Text = (string.Format("{0:0,0.00}", Convert.ToDouble(textBox11.Text)));
                 CountChange();
             }
         }
@@ -889,7 +951,7 @@ namespace COTS_Sales_And_Inventory_System
             }
             else
             {
-                textBox2.Text = (string.Format("{0:0.00}", change));
+                textBox2.Text = (string.Format("{0:0,0.00}", change));
             }
         }
 
@@ -989,14 +1051,14 @@ namespace COTS_Sales_And_Inventory_System
         {
             foreach (DataRow row in receiptDataset.Tables["SoldItems"].Rows)
             {
-                var line = row["item"] + " " + row["size"] + " price @ " + string.Format("{0:0.00}", row["price"]) +
+                var line = row["item"] + " " + row["size"] + " price @ " + string.Format("{0:0,0.00}", row["price"]) +
                            " with a quantity of " + row["Quantity"] + " is sold for "
-                           + string.Format("{0:0.00}", row["Total"]) + ".";
+                           + string.Format("{0:0,0.00}", row["Total"]) + ".";
                 richTextBox2.AppendText(line + Environment.NewLine);
                 totalSold +=
                     Convert.ToDouble(row["total"]);
                 rtextboxData = richTextBox2.Text;
-                textBox3.Text = (string.Format("{0:0.00}", totalSold));
+                textBox3.Text = (string.Format("{0:0,0.00}", totalSold));
             }
         }
 
@@ -1023,7 +1085,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             var x = Convert.ToDouble(textBox6.Text);
             var y = (100 - Convert.ToDouble(Settings.Default.SalesTax))/100;
-            return string.Format("{0:0.00}", x*y);
+            return string.Format("{0:0,0.00}", x*y);
         }
 
         private string CalculateTax()
@@ -1031,7 +1093,7 @@ namespace COTS_Sales_And_Inventory_System
             var x = Convert.ToDouble(textBox6.Text);
             var y = Convert.ToDouble(Settings.Default.SalesTax);
             var z = x*(y/100);
-            return string.Format("{0:0.00}", z);
+            return string.Format("{0:0,0.00}", z);
         }
 
         private void PrintTransaction(DataSet receiptDataset)
@@ -1317,14 +1379,14 @@ namespace COTS_Sales_And_Inventory_System
             foreach (DataRow row in dt.Rows)
             {
                 var totalSold = Convert.ToDouble(row["count"])*Convert.ToDouble(row["price"]);
-                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0.00}", row["price"]) +
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0,0.00}", row["price"]) +
                            " with a quantity of " + row["count"] + " is sold for "
-                           + string.Format("{0:0.00}", totalSold) + ". on " +
+                           + string.Format("{0:0,0.00}", totalSold) + ". on " +
                            Convert.ToDateTime(row["date"]).ToString("yy-MM-dd");
                 richTextBox2.AppendText(line + Environment.NewLine);
                 total += totalSold;
             }
-            textBox3.Text = string.Format("{0:0.00}", total);
+            textBox3.Text = string.Format("{0:0,0.00}", total);
         }
 
         private void DisplaySelectedYear()
@@ -1341,14 +1403,14 @@ namespace COTS_Sales_And_Inventory_System
             foreach (DataRow row in dt.Rows)
             {
                 var totalSold = Convert.ToDouble(row["count"])*Convert.ToDouble(row["price"]);
-                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0.00}", row["price"]) +
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0,0.00}", row["price"]) +
                            " with a quantity of " + row["count"] + " is sold for "
-                           + string.Format("{0:0.00}", totalSold) + ". on " +
+                           + string.Format("{0:0,0.00}", totalSold) + ". on " +
                            Convert.ToDateTime(row["date"]).ToString("yy-MM-dd");
                 richTextBox2.AppendText(line + Environment.NewLine);
                 total += totalSold;
             }
-            textBox3.Text = string.Format("{0:0.00}", total);
+            textBox3.Text = string.Format("{0:0,0.00}", total);
         }
 
         private void DisplaySelectedMonth()
@@ -1365,14 +1427,14 @@ namespace COTS_Sales_And_Inventory_System
             foreach (DataRow row in dt.Rows)
             {
                 var totalSold = Convert.ToDouble(row["count"])*Convert.ToDouble(row["price"]);
-                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0.00}", row["price"]) +
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0,0.00}", row["price"]) +
                            " with a quantity of " + row["count"] + " is sold for "
-                           + string.Format("{0:0.00}", totalSold) + ". on " +
+                           + string.Format("{0:0,0.00}", totalSold) + ". on " +
                            Convert.ToDateTime(row["date"]).ToString("yy-MM-dd");
                 richTextBox2.AppendText(line + Environment.NewLine);
                 total += totalSold;
             }
-            textBox3.Text = string.Format("{0:0.00}", total);
+            textBox3.Text = string.Format("{0:0,0.00}", total);
         }
 
         private void DisplaySelectedWeek()
@@ -1389,14 +1451,14 @@ namespace COTS_Sales_And_Inventory_System
             foreach (DataRow row in dt.Rows)
             {
                 var totalSold = Convert.ToDouble(row["count"])*Convert.ToDouble(row["price"]);
-                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0.00}", row["price"]) +
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0,0.00}", row["price"]) +
                            " with a quantity of " + row["count"] + " is sold for "
-                           + string.Format("{0:0.00}", totalSold) + ". on " +
+                           + string.Format("{0:0,0.00}", totalSold) + ". on " +
                            Convert.ToDateTime(row["date"]).ToString("yy-MM-dd");
                 richTextBox2.AppendText(line + Environment.NewLine);
                 total += totalSold;
             }
-            textBox3.Text = string.Format("{0:0.00}", total);
+            textBox3.Text = string.Format("{0:0,0.00}", total);
         }
 
         private void DisplaySelectedDaySale()
@@ -1413,13 +1475,13 @@ namespace COTS_Sales_And_Inventory_System
             foreach (DataRow row in dt.Rows)
             {
                 var totalSold = Convert.ToDouble(row["count"])*Convert.ToDouble(row["price"]);
-                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0.00}", row["price"]) +
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0,0.00}", row["price"]) +
                            " with a quantity of " + row["count"] + " is sold for "
-                           + string.Format("{0:0.00}", totalSold) + ".";
+                           + string.Format("{0:0,0.00}", totalSold) + ".";
                 richTextBox2.AppendText(line + Environment.NewLine);
                 total += totalSold;
             }
-            textBox3.Text = string.Format("{0:0.00}", total);
+            textBox3.Text = string.Format("{0:0,0.00}", total);
         }
 
         private void DisplayCurrentDaySales()
@@ -1436,19 +1498,19 @@ namespace COTS_Sales_And_Inventory_System
             foreach (DataRow row in dt.Rows)
             {
                 var totalSold = Convert.ToDouble(row["count"])*Convert.ToDouble(row["price"]);
-                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0.00}", row["price"]) +
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0,0.00}", row["price"]) +
                            " with a quantity of " + row["count"] + " is sold for "
-                           + string.Format("{0:0.00}", totalSold) + ".";
+                           + string.Format("{0:0,0.00}", totalSold) + ".";
                 richTextBox2.AppendText(line + Environment.NewLine);
                 total += totalSold;
             }
-            textBox3.Text = string.Format("{0:0.00}", total);
+            textBox3.Text = string.Format("{0:0,0.00}", total);
         }
 
         private void DisplayCurrentSales()
         {
             richTextBox2.Text = rtextboxData;
-            textBox3.Text = (string.Format("{0:0.00}", totalSold));
+            textBox3.Text = (string.Format("{0:0,0.00}", totalSold));
         }
 
         private void summaryDatePicker_ValueChanged(object sender, EventArgs e)
@@ -1542,9 +1604,9 @@ namespace COTS_Sales_And_Inventory_System
                 {
                     x /= 100.00;
                     total *= x;
-                    var stringTotal = (string.Format("{0:0.00}", total));
+                    var stringTotal = (string.Format("{0:0,0.00}", total));
                     cueTextBox3.Text = stringTotal;
-                    textBox6.Text = (string.Format("{0:0.00}", _totalPayment - total));
+                    textBox6.Text = (string.Format("{0:0,0.00}", _totalPayment - total));
                 }
             }
             catch (Exception e)
@@ -1589,6 +1651,19 @@ namespace COTS_Sales_And_Inventory_System
             {
                 Console.WriteLine(exception);
             }
+        }
+
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (Settings.Default.EmailSendMessage)
+            {
+                SendReportToEmail();
+            }
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GetDistrosInformation();
         }
     }
 }
