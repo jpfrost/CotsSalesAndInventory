@@ -102,6 +102,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void LoadAccounts()
         {
+            listBox1.Items.Clear();
             foreach (DataRow accountRow in accountTable.Rows)
             {
                 if (!listBox1.Items.Contains(accountRow["AccountName"].ToString()))
@@ -118,12 +119,19 @@ namespace COTS_Sales_And_Inventory_System
 
         private void DisplayAccountInfo()
         {
-            var found = accountTable.Select("accountName ='"
-                                            + listBox1.SelectedItem + "'");
-            cueTextBox1.Text = found[0]["accountName"].ToString();
-            cueTextBox2.Text = found[0]["accountPassword"].ToString();
-            cueTextBox3.Text = found[0]["accountPassword"].ToString();
-            comboBox1.SelectedIndex = Convert.ToInt32(found[0]["accounttype"]) - 1;
+            try
+            {
+                var found = accountTable.Select("accountName ='"
+                                                + listBox1.SelectedItem + "'");
+                cueTextBox1.Text = found[0]["accountName"].ToString();
+                cueTextBox2.Text = found[0]["accountPassword"].ToString();
+                cueTextBox3.Text = found[0]["accountPassword"].ToString();
+                comboBox1.SelectedIndex = Convert.ToInt32(found[0]["accounttype"]) - 1;
+            }
+            catch (Exception C)
+            {
+                Console.WriteLine(C);
+            }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -143,11 +151,22 @@ namespace COTS_Sales_And_Inventory_System
                 DatabaseConnection.UploadChanges();
                 listBox1.Items.Clear();
                 LoadAccounts();
+                MessageBox.Show(cueTextBox1.Text + " has been updated");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                MessageBox.Show("Error updating account");
             }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            var found = DatabaseConnection.DatabaseRecord.Tables["account"].Select("AccountName ='"+cueTextBox1.Text+"'");
+            found[0].Delete();
+            DatabaseConnection.UploadChanges();
+            MessageBox.Show("Account: "+cueTextBox1.Text+" has been remove...");
+            LoadAccounts();
+            ClearField();
         }
     }
 }

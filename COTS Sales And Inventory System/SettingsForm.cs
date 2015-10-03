@@ -29,6 +29,9 @@ namespace COTS_Sales_And_Inventory_System
             LoadInventorySettings();
             LoadSummarySettings();
             LoadStoreInfo();
+            button2.Enabled = false;
+            emailSendReport.Enabled = false;
+            emailSendReport.Checked = false;
         }
 
         private void LoadSecret()
@@ -111,16 +114,16 @@ namespace COTS_Sales_And_Inventory_System
                 Properties.Settings.Default.Save();
             }
             var dialog = MessageBox.Show("Do you want to save settings?", "Save Settings?", MessageBoxButtons.YesNo,
-                MessageBoxIcon.Hand);
+                MessageBoxIcon.Question);
             if (dialog == DialogResult.Yes)
             {
                 SaveSettings();
                 var result = MessageBox.Show("Settings have been change\n " +
-                                             "do you want to restart the application?", "Restart now"
+                                             "Please Close the application and Open Again?", "Close now"
                     , MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    Application.Restart();
+                    Application.Exit();
                 }
             }
             Dispose();
@@ -294,7 +297,7 @@ namespace COTS_Sales_And_Inventory_System
         private void ResetSystem()
         {
             var dialog = MessageBox.Show("This will restore the system to its default values", "System Reset",
-                MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (dialog == DialogResult.OK)
             {
                 Properties.Settings.Default.DefaultAdminAccount = "admin";
@@ -318,6 +321,36 @@ namespace COTS_Sales_And_Inventory_System
             if (dialog == DialogResult.OK)
             {
                 DatabaseConnection.TruncateDatabase();
+            }
+        }
+
+        private void emailSendReport_Click(object sender, EventArgs e)
+        {
+
+            /*if ((!ownerEmail.Text.Equals("") || !ownerEmailPassword.Text.Equals("")) && emailSendReport.Checked == false)
+            {
+                emailSendReport.Checked = true;
+            }
+            else
+            {
+                emailSendReport.Checked = false;
+                MessageBox.Show("Please Enter an Gmail Account and Password\nBefore you could send an Email");
+            }*/
+        }
+
+        private void ownerEmail_TextChanged(object sender, EventArgs e)
+        {
+            if (!ownerEmail.Text.Equals("") && !ownerEmailPassword.Text.Equals(""))
+            {
+                button2.Enabled = true;
+                emailSendReport.Enabled = true;
+            }
+            else
+            {
+                
+                button2.Enabled = false;
+                emailSendReport.Enabled = false;
+                emailSendReport.Checked = false;
             }
         }
     }

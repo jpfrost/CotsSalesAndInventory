@@ -193,6 +193,7 @@
             this.emailSendReport.Text = "Send Email Before Exit/Logout?";
             this.emailSendReport.UseVisualStyleBackColor = true;
             this.emailSendReport.CheckedChanged += new System.EventHandler(this.emailSendReport_CheckedChanged);
+            this.emailSendReport.Click += new System.EventHandler(this.emailSendReport_Click);
             // 
             // ownerEmailPassword
             // 
@@ -202,6 +203,7 @@
             this.ownerEmailPassword.PasswordChar = '*';
             this.ownerEmailPassword.Size = new System.Drawing.Size(199, 22);
             this.ownerEmailPassword.TabIndex = 1;
+            this.ownerEmailPassword.TextChanged += new System.EventHandler(this.ownerEmail_TextChanged);
             // 
             // ownerEmail
             // 
@@ -210,6 +212,7 @@
             this.ownerEmail.Name = "ownerEmail";
             this.ownerEmail.Size = new System.Drawing.Size(199, 22);
             this.ownerEmail.TabIndex = 0;
+            this.ownerEmail.TextChanged += new System.EventHandler(this.ownerEmail_TextChanged);
             // 
             // groupBox2
             // 
@@ -505,7 +508,7 @@
             this.button4.UseVisualStyleBackColor = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // Settings
+            // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -521,7 +524,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.adminGroupBox);
-            this.Name = "Settings";
+            this.Name = "SettingsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Settings";
             this.Load += new System.EventHandler(this.Settings_Load);

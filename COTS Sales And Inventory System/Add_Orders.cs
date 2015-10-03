@@ -215,19 +215,28 @@ namespace COTS_Sales_And_Inventory_System
             var x = GetCurrentCount("items_seq", "id");
             var newitemSeqRow = DatabaseConnection.DatabaseRecord.Tables["items_seq"].NewRow();
             newitemSeqRow["id"] = x;
+            DatabaseConnection.DatabaseRecord.Tables["items_seq"].Rows.Add(newitemSeqRow);
             return "MANUAL" + x;
         }
 
         private void CreateSize(string productName, string productSize)
         {
-            var sizeRow = DatabaseConnection.DatabaseRecord.Tables["Size"].NewRow();
-            var ItemID = DatabaseConnection.DatabaseRecord.Tables["items"].Select("Item_name ='"
-                                                                                  + productName + "'");
-            sizeRow["sizeID"] = GetCurrentCount("size", "SizeId");
-            sizeRow["Size"] = productSize;
-            sizeRow["itemID"] = ItemID[0]["ItemID"];
-            DatabaseConnection.DatabaseRecord.Tables["size"].Rows.Add(sizeRow);
-            DatabaseConnection.UploadChanges();
+            try
+            {
+                var sizeRow = DatabaseConnection.DatabaseRecord.Tables["Size"].NewRow();
+                var ItemID = DatabaseConnection.DatabaseRecord.Tables["items"].Select("Item_name ='"
+                                                                                      + productName + "'");
+                sizeRow["sizeID"] = GetCurrentCount("size", "SizeId");
+                sizeRow["Size"] = productSize;
+                sizeRow["itemID"] = ItemID[0]["ItemID"];
+                sizeRow["sizeEnable"] = 1;
+                DatabaseConnection.DatabaseRecord.Tables["size"].Rows.Add(sizeRow);
+                DatabaseConnection.UploadChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         private DataRow[] SearchData(string tablename, string query)
@@ -501,8 +510,15 @@ namespace COTS_Sales_And_Inventory_System
 
         private void LoadItemCategory(DataRow[] itemId)
         {
-            var category = DatabaseConnection.DatabaseRecord.Tables["Category"].Select("CategoryID ='"+itemId[0]["CategoryID"]+"'");
-            comboBox3.SelectedItem = category[0]["CategoryName"].ToString();
+            try
+            {
+                var category = DatabaseConnection.DatabaseRecord.Tables["Category"].Select("CategoryID ='"+itemId[0]["CategoryID"]+"'");
+                comboBox3.SelectedItem = category[0]["CategoryName"].ToString();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         private void LoadSize(DataRow[] itemId)

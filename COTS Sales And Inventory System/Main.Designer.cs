@@ -281,6 +281,7 @@
             0,
             0,
             0});
+            this.numericUpDown1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardOnlyDigits);
             // 
             // textBox4
             // 
@@ -306,6 +307,7 @@
             // 
             // comboBox3
             // 
+            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Location = new System.Drawing.Point(104, 86);
             this.comboBox3.Name = "comboBox3";
@@ -682,9 +684,8 @@
             this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label20.Location = new System.Drawing.Point(6, 43);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(59, 16);
+            this.label20.Size = new System.Drawing.Size(0, 16);
             this.label20.TabIndex = 31;
-            this.label20.Text = "label20";
             // 
             // label3
             // 
@@ -692,9 +693,8 @@
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(6, 16);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(51, 16);
+            this.label3.Size = new System.Drawing.Size(0, 16);
             this.label3.TabIndex = 30;
-            this.label3.Text = "label3";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label6

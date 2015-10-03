@@ -394,9 +394,16 @@ namespace COTS_Sales_And_Inventory_System
 
         private void FillForm(DataRow[] itemData, DataRow[] itemSize)
         {
-            cueTextBox2.Text = itemData[0]["Item_Name"].ToString();
-            SelectCategory(itemData);
-            FillSizeSelection(itemSize);
+            try
+            {
+                cueTextBox2.Text = itemData[0]["Item_Name"].ToString();
+                SelectCategory(itemData);
+                FillSizeSelection(itemSize);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         private void FillSizeSelection(DataRow[] itemSize)
@@ -449,6 +456,14 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button3_Click(object sender, EventArgs e)
         {
+            var Item = DatabaseConnection.DatabaseRecord.Tables["items"].Select("item_name ='"+cueTextBox2.Text+"'");
+            var itemID = Item[0]["ItemID"].ToString();
+            var size = DatabaseConnection.DatabaseRecord.Tables["size"].Select("size ='"
+                +comboBox2.Text+"' and itemID ='"+itemID+"'");
+
+            size[0]["sizeEnable"] = 0;
+            DatabaseConnection.UploadChanges();
+            MessageBox.Show("Product has been disabled");
         }
     }
 }

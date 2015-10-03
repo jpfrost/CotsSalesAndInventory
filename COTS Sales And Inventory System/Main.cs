@@ -149,7 +149,7 @@ namespace COTS_Sales_And_Inventory_System
             LoadInventory();
         }
 
-        public void LoadInventory()
+        private void LoadInventory()
         {
             RefreshData();
         }
@@ -191,7 +191,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             var dt =
                 DatabaseConnection.GetCustomTable(
-                    "select Item_Name as 'Product', Size, FORMAT(Price,2) as Price, Quantity, CategoryName as 'Category' from items inner join size on items.ItemID=size.ItemID inner join category on items.CategoryID=category.CategoryID where Quantity > 0 and price <> \"\";"
+                    "select Item_Name as 'Product', Size, FORMAT(Price,2) as Price, Quantity, CategoryName as 'Category' from items inner join size on items.ItemID=size.ItemID inner join category on items.CategoryID=category.CategoryID where sizeEnable ='1' and Quantity > 0 and price <> \"\";"
                     , "SizeAndItemTable");
             dataGridView1.DataSource = dt;
             dataGridView1.Update();
@@ -790,34 +790,43 @@ namespace COTS_Sales_And_Inventory_System
             }
             else
             {
-                try
-                {
-                    var size = FindSizeID(textBox4.Text, comboBox3.Text);
-                    if (Convert.ToInt16(size["Quantity"]) < Convert.ToInt16(numericUpDown1.Text))
+               
+                    try
                     {
-                        MessageBox.Show("quantity exceed stocks", "Oppppps...", MessageBoxButtons.OK,
-                            MessageBoxIcon.Stop);
-                    }
-                    else
-                    {
-                        try
+                        
+
+                        var size = FindSizeID(textBox4.Text, comboBox3.Text);
+                        if (Convert.ToInt16(size["Quantity"]) < Convert.ToInt16(numericUpDown1.Text))
                         {
-                            if (!textBox4.Text.Equals(""))
+                            MessageBox.Show("quantity exceed stocks", "Oppppps...", MessageBoxButtons.OK,
+                                MessageBoxIcon.Stop);
+                        }
+                        else
+                        {
+                            try
                             {
-                                AddItemToGridView();
+                                if (Convert.ToInt16(numericUpDown1.Text) <= 0)
+                                {
+                                    MessageBox.Show("Cannot order 0 or negative quantities");
+                                }
+
+                                if (!textBox4.Text.Equals("") && Convert.ToInt16(numericUpDown1.Text)>0)
+                                {
+                                    AddItemToGridView();
+                                }
+                            }
+                            catch (Exception exception)
+                            {
+                                Console.WriteLine(exception);
                             }
                         }
-                        catch (Exception exception)
-                        {
-                            Console.WriteLine(exception);
-                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine(exception);
                     }
                 }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception);
-                }
-            }
+            
         }
 
         private DataRow FindSizeID(string item, string size)
