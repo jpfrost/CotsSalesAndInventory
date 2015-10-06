@@ -194,6 +194,36 @@ namespace COTS_Sales_And_Inventory_System
             Properties.Settings.Default.DefaultSupplierNo = defaultSupplierNo.Text;
             Properties.Settings.Default.AllowMultiSupplier = supplierAllowMulti.Checked;
             Properties.Settings.Default.Save();
+            ModifydistroDatabase();
+        }
+
+        private void ModifydistroDatabase()
+        {
+            var found = DatabaseConnection.DatabaseRecord.Tables["distributor"].Select("DistroID ='"+1+"'");
+            if (found.Length == 0)
+            {
+                CreateDefaultDistro();
+            }
+            else
+            {
+                found[0]["distroName"] = defaultSupplier.Text;
+                found[0]["DistroAddress"] = defaultSupplierAdd.Text;
+                found[0]["DistroContact"] = defaultSupplierNo.Text;
+                found[0]["distroEnable"] = 1;
+                DatabaseConnection.UploadChanges();
+            }
+        }
+
+        private void CreateDefaultDistro()
+        {
+            var newDistroRow = DatabaseConnection.DatabaseRecord.Tables["distributor"].NewRow();
+            newDistroRow["distroID"] = 1;
+            newDistroRow["distroName"] = defaultSupplier;
+            newDistroRow["DistroAddress"] = defaultSupplierAdd;
+            newDistroRow["DistroContact"] = defaultSupplierNo;
+            newDistroRow["distroEnable"] = 1;
+            DatabaseConnection.DatabaseRecord.Tables["distributor"].Rows.Add(newDistroRow);
+            DatabaseConnection.UploadChanges();
         }
 
         private void SaveEmailSettings()
@@ -276,7 +306,7 @@ namespace COTS_Sales_And_Inventory_System
             }
             finally
             {
-                if (conn.State == ConnectionState.Open)
+                if (conn.State.ToString().Equals("Open"))
                 {
                     conn.Close();
                 }
@@ -309,6 +339,9 @@ namespace COTS_Sales_And_Inventory_System
                 Properties.Settings.Default.DefaultSupplierNo = "";
                 Properties.Settings.Default.EmailUser = "";
                 Properties.Settings.Default.EmailPassword = "";
+                Properties.Settings.Default.storeName = "";
+                Properties.Settings.Default.storeAdd = "";
+                Properties.Settings.Default.storeNo = "";
                 Properties.Settings.Default.FirstRun = true;
                 Properties.Settings.Default.Save();
             }
@@ -327,15 +360,7 @@ namespace COTS_Sales_And_Inventory_System
         private void emailSendReport_Click(object sender, EventArgs e)
         {
 
-            /*if ((!ownerEmail.Text.Equals("") || !ownerEmailPassword.Text.Equals("")) && emailSendReport.Checked == false)
-            {
-                emailSendReport.Checked = true;
-            }
-            else
-            {
-                emailSendReport.Checked = false;
-                MessageBox.Show("Please Enter an Gmail Account and Password\nBefore you could send an Email");
-            }*/
+            
         }
 
         private void ownerEmail_TextChanged(object sender, EventArgs e)
@@ -352,6 +377,22 @@ namespace COTS_Sales_And_Inventory_System
                 emailSendReport.Enabled = false;
                 emailSendReport.Checked = false;
             }
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            button5.Enabled = false;
+            var dialog =
+                MessageBox.Show(
+                    "Are you sure you want to remove all data from the database \nThis data cannot be recovered..."
+                    , @"Remove All Data",MessageBoxButtons.YesNo,MessageBoxIcon.Warning);
+
+            if (dialog == DialogResult.Yes)
+            {
+                DatabaseConnection.RecreateMysqlDatabase();
+                MessageBox.Show("Done!");
+            }
+            button5.Enabled = true;
         }
     }
 }

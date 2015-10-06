@@ -30,7 +30,7 @@ namespace COTS_Sales_And_Inventory_System
         private void button1_Click(object sender, EventArgs e)
         {
             var add_Order = new Add_Orders();
-            add_Order.Show();
+            add_Order.ShowDialog();
         }
 
         private void RefreshData_Tick(object sender, EventArgs e)
@@ -198,7 +198,7 @@ namespace COTS_Sales_And_Inventory_System
             ds.Tables.Add(orders);
             ds.WriteXml("order.xml");
             var print = new Print_Orders(ds);
-            print.Show();
+            print.ShowDialog();
         }
 
         private void FilterInvetoryByCategory()

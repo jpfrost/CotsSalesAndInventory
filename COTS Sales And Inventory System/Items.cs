@@ -24,11 +24,6 @@ namespace COTS_Sales_And_Inventory_System
         private void LoadAllComboBoxData()
         {
             LoadComboBox("category", "categoryName", comboBox1);
-            var found = DatabaseConnection.DatabaseRecord.Tables["distributor"].Select("distroEnable ='" + 1 + "'");
-            foreach (DataRow row in found)
-            {
-                comboBox3.Items.Add(row["distroName"]);
-            }
         }
 
         private void LoadComboBox(string table, string columb, ComboBox comboBox)
@@ -48,7 +43,14 @@ namespace COTS_Sales_And_Inventory_System
 
         private void LoadDefaults()
         {
-            cueTextBox3.Enabled = Properties.Settings.Default.quantMod;
+            radioButton1.Checked = true;
+            if (!Properties.Settings.Default.quantMod)
+            {
+                cueTextBox5.Enabled = false;
+                radioButton1.Enabled = false;
+                radioButton2.Enabled = false;
+                button1.Enabled = false;
+            }
             cueTextBox4.Enabled = Properties.Settings.Default.priceMod;
             if (!Properties.Settings.Default.EnableOrdering)
             {
@@ -131,6 +133,7 @@ namespace COTS_Sales_And_Inventory_System
             if (cueTextBox1.Text.Equals("")) GetItemID();
             newRow["ItemID"] = cueTextBox1.Text;
             newRow["Size"] = comboBox2.Text;
+            newRow["sizeEnable"] = 1;
             if (cueTextBox3.Text != "") newRow["Quantity"] = Convert.ToInt32(cueTextBox3.Text);
             if (cueTextBox4.Text != "") newRow["Price"] = Convert.ToDouble(cueTextBox4.Text);
             DatabaseConnection.DatabaseRecord.Tables["size"].Rows.Add(newRow);
@@ -155,6 +158,11 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button4_Click(object sender, EventArgs e)
         {
+            if (cueTextBox2.Text.Equals("") || comboBox1.Text.Equals("") || comboBox2.Text.Equals(""))
+            {
+                MessageBox.Show("Please enter required inputs");
+                return;
+            }
             if (ProductExist())
             {
                 EditProduct();
@@ -226,15 +234,28 @@ namespace COTS_Sales_And_Inventory_System
                 newProdCode = cueTextBox1.Text;
                 newItem["itemID"] = newProdCode;
             }
+            else
+            {
+                newItem["itemID"] = CreateNewProductID();
+            }
 
             newItem["item_Name"] = cueTextBox2.Text;
-            if (comboBox1.SelectedItem != null) newItem["CategoryID"] = FindCategoryId();
+            if (comboBox1.Text != null) newItem["CategoryID"] = FindCategoryId();
             DatabaseConnection.DatabaseRecord.Tables["items"].Rows.Add(newItem);
             DatabaseConnection.UploadChanges();
             DatabaseConnection.DatabaseRecord.Tables.Remove("items");
             DatabaseConnection.DatabaseRecord.Tables.Add(
                 DatabaseConnection.GetCustomTable(
                     DatabaseConnection.CreateSelectStatement("items"), "items"));
+        }
+
+        private string CreateNewProductID()
+        {
+            var x = GetCurrentCount("items_seq", "id");
+            var newitemSeqRow = DatabaseConnection.DatabaseRecord.Tables["items_seq"].NewRow();
+            newitemSeqRow["id"] = x;
+            DatabaseConnection.DatabaseRecord.Tables["items_seq"].Rows.Add(newitemSeqRow);
+            return "MANUAL" + x;
         }
 
         private int GetCurrentCount(string tableName, string columbName)
@@ -254,8 +275,27 @@ namespace COTS_Sales_And_Inventory_System
         {
             var found = DatabaseConnection.DatabaseRecord.Tables["category"].Select("CategoryName ='"
                                                                                     + comboBox1.Text + "'");
+            var catID = 0;
+            if (found.Length == 0)
+            {
+                catID = CreateNewCategory();
+            }
+            else
+            {
+                Convert.ToInt32(found[0]["CategoryID"].ToString());
+            }
 
-            return Convert.ToInt32(found[0]["CategoryID"].ToString());
+            return catID;
+        }
+
+        private int CreateNewCategory()
+        {
+            var newCategoryRow = DatabaseConnection.DatabaseRecord.Tables["category"].NewRow();
+            newCategoryRow["CategoryID"] = GetCurrentCount("category", "categoryID");
+            newCategoryRow["CategoryName"] = comboBox1.Text;
+            DatabaseConnection.DatabaseRecord.Tables["category"].Rows.Add(newCategoryRow);
+
+            return Convert.ToInt32(newCategoryRow["CategoryID"]);
         }
 
         private void ProductNameKeyDownEnter(object sender, KeyEventArgs e)
@@ -464,6 +504,39 @@ namespace COTS_Sales_And_Inventory_System
             size[0]["sizeEnable"] = 0;
             DatabaseConnection.UploadChanges();
             MessageBox.Show("Product has been disabled");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var dialog = MessageBox.Show("Are you sure you want to edit items quantity", "Edit Quantity",MessageBoxButtons.YesNo,MessageBoxIcon.Information);
+            if (dialog != DialogResult.Yes) return;
+            var x = 0;
+            try
+            {
+                x = Convert.ToInt32(cueTextBox3.Text);
+            }
+            catch (Exception a)
+            {
+                // ignored
+            }
+            var y = Convert.ToInt32(cueTextBox5.Text);
+
+            if (radioButton1.Checked)
+            {
+                cueTextBox3.Text = (x + y).ToString();
+            }
+            else
+            {
+                if ((x - y) < 0)
+                {
+                    MessageBox.Show("Can't be negative value");
+                }
+                else
+                {
+                    cueTextBox3.Text = (x - y).ToString();
+                }
+            }
+            cueTextBox5.Clear();
         }
     }
 }

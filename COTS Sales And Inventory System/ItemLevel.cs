@@ -17,6 +17,7 @@ namespace COTS_Sales_And_Inventory_System
 
         public ItemLevel()
         {
+
         }
 
         public void InsertCriticalLevel()

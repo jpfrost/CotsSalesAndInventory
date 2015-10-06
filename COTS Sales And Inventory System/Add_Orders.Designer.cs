@@ -257,7 +257,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 16);
             this.label3.TabIndex = 12;
-            this.label3.Text = "Qauntity:";
+            this.label3.Text = "Quantity:";
             // 
             // label4
             // 

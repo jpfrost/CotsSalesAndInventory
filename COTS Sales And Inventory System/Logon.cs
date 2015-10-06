@@ -108,8 +108,11 @@ namespace COTS_Sales_And_Inventory_System
         {
             Hide();
             var main = new Main(this, username, accounttype);
+            cueTextBox1.Clear();
+            cueTextBox2.Clear();
             main.Show();
         }
+
 
         private void lnkForget_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {

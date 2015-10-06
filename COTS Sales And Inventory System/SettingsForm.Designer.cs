@@ -67,6 +67,7 @@
             this.txtMySqlUser = new CueTextBox();
             this.txtmySqlServer = new CueTextBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.adminGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -357,7 +358,7 @@
             this.groupBox5.Size = new System.Drawing.Size(225, 145);
             this.groupBox5.TabIndex = 6;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Program Defaults";
+            this.groupBox5.Text = "Supplier Defaults";
             this.groupBox5.Enter += new System.EventHandler(this.groupBox5_Enter);
             // 
             // supplierAllowMulti
@@ -487,14 +488,27 @@
             // groupBox8
             // 
             this.groupBox8.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.groupBox8.Controls.Add(this.button5);
             this.groupBox8.Controls.Add(this.button4);
             this.groupBox8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox8.Location = new System.Drawing.Point(513, 286);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(217, 88);
+            this.groupBox8.Size = new System.Drawing.Size(217, 147);
             this.groupBox8.TabIndex = 9;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "System Control (Warning)";
+            // 
+            // button5
+            // 
+            this.button5.BackColor = System.Drawing.Color.Tomato;
+            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button5.Location = new System.Drawing.Point(12, 86);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(199, 55);
+            this.button5.TabIndex = 9;
+            this.button5.Text = "Remove All Data From Database";
+            this.button5.UseVisualStyleBackColor = false;
+            this.button5.Click += new System.EventHandler(this.button5_Click_1);
             // 
             // button4
             // 
@@ -524,9 +538,12 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.adminGroupBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "SettingsForm";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Settings";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.Settings_Load);
             this.adminGroupBox.ResumeLayout(false);
             this.adminGroupBox.PerformLayout();
@@ -592,5 +609,6 @@
         private System.Windows.Forms.CheckBox enOrderMod;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
     }
 }

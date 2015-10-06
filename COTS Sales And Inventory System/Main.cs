@@ -5,10 +5,14 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using COTS_Sales_And_Inventory_System.Properties;
 using CrystalDecisions.CrystalReports.Engine;
+using ListBox = System.Windows.Forms.ListBox;
+using TextBox = System.Windows.Forms.TextBox;
 
 namespace COTS_Sales_And_Inventory_System
 {
@@ -33,35 +37,49 @@ namespace COTS_Sales_And_Inventory_System
 
         public Main(Form loginForm, string username, string accountType)
         {
+            
             _loginForm = loginForm;
             _username = username;
             _accountType = accountType;
             InitializeComponent();
-            Hide();
+     
         }
+
+        
 
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
         {
         }
 
+        private Loading_Screen _loading=new Loading_Screen();
         private void Main_Load(object sender, EventArgs e)
         {
+            Hide();
+            _loading.ShowDialog();
             LoadDummyReport();
+            _loading.timer2.Start();
             toolStripStatusLabel1.Text = "Current User: " + _username;
             toolStripStatusLabel2.Text = "User Rights: " + _accountType;
             _colorlist.Add(Color.Red);
             _colorlist.Add(Color.Black);
+            _loading.timer2.Start();
             var x = Task.Run(() => { LoadData(); });
             x.Wait();
+            _loading.timer2.Start();
             panel1.Controls.Add(_items);
             _items.Hide();
             LoadSettings();
             dateTime.Start();
             timerDataRefresh.Start();
+            _loading.timer2.Start();
             comboBox4.SelectedIndex = 0;
             LoadAccountSettings();
+            _loading.timer2.Start();
+            Thread.Sleep(1000);
             Show();
         }
+
+
 
         private void LoadDummyReport()
         {
@@ -184,7 +202,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void LoadFromDatabase()
         {
-            BeginInvoke(new Action(FillInventory));
+            BeginInvoke(new Action(() => FillInventory()));
         }
 
         private void FillInventory()
@@ -205,23 +223,21 @@ namespace COTS_Sales_And_Inventory_System
             {
                 comboBox1.Items.Add(catName);
             }
-            if (Settings.Default.AllowMultiSupplier)
+            if (!Settings.Default.AllowMultiSupplier) return;
+            foreach (
+                DataRow rows in
+                    DatabaseConnection.DatabaseRecord.Tables["distributor"].Select("distroEnable ='" + 1 + "'"))
             {
-                foreach (
-                    DataRow rows in
-                        DatabaseConnection.DatabaseRecord.Tables["distributor"].Select("distroEnable ='" + 1 + "'"))
+                try
                 {
-                    try
+                    if (!comboBox2.Items.Contains(rows["distroName"]))
                     {
-                        if (!comboBox2.Items.Contains(rows["distroName"]))
-                        {
-                            comboBox2.Items.Add(rows["distroName"]);
-                        }
+                        comboBox2.Items.Add(rows["distroName"]);
                     }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
-                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
                 }
             }
         }
@@ -229,21 +245,26 @@ namespace COTS_Sales_And_Inventory_System
         private void FillCategoryListBox()
         {
             listBox1.BeginUpdate();
+            listBox2.BeginUpdate();
+            listBox2.Items.Clear();
             listBox1.Items.Clear();
             listBox1.Items.Add("All");
+            listBox2.Items.Add("All");
             foreach (DataRow rows in DatabaseConnection.DatabaseRecord.Tables["category"].Rows)
             {
                 if (!listBox1.Items.Contains(rows["categoryName"].ToString()))
                 {
                     listBox1.Items.Add(rows["categoryName"].ToString());
+                    listBox2.Items.Add(rows["categoryName"].ToString());
                 }
             }
             listBox1.EndUpdate();
+            listBox2.EndUpdate();
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
-            if (!comboBox1.Text.Equals(""))
+            if (!comboBox1.Text.Equals("")&& !comboBox1.Text.Equals("All"))
             {
                 AddCategory();
                 LoadData();
@@ -287,9 +308,16 @@ namespace COTS_Sales_And_Inventory_System
 
         private void ClearCategory()
         {
-            listBox1.Items.Clear();
-            comboBox1.Items.Clear();
-            comboBox2.Items.Clear();
+            try
+            {
+                listBox1.Items.Clear();
+                comboBox1.Items.Clear();
+                comboBox2.Items.Clear();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         private int GetCurrentCount(string tableName, string columbName)
@@ -415,7 +443,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void ShowHideInventory(object sender, EventArgs e)
         {
-            if (mainTab.SelectedIndex == 1 || mainTab.SelectedIndex == 0)
+            if (mainTab.SelectedIndex == 1 || mainTab.SelectedIndex == 0 || tabControl2.SelectedIndex==1)
             {
                 ShowInventoryGrid();
             }
@@ -585,20 +613,34 @@ namespace COTS_Sales_And_Inventory_System
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            comboBox1.SelectedItem = listBox1.SelectedItem.ToString();
-            FilterInvetoryByCategory();
+            try
+            {
+                comboBox1.SelectedItem = listBox1.SelectedItem.ToString();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+            FilterInvetoryByCategory(listBox1);
         }
 
-        private void FilterInvetoryByCategory()
+        private void FilterInvetoryByCategory(ListBox listBox)
         {
-            if (!listBox1.SelectedItem.Equals("All"))
+            try
             {
-                ((DataTable) dataGridView1.DataSource).DefaultView.RowFilter = ("Category ='"
-                                                                                + listBox1.SelectedItem + "'");
+                if (!listBox.SelectedItem.Equals("All"))
+                {
+                    ((DataTable) dataGridView1.DataSource).DefaultView.RowFilter = ("Category ='"
+                                                                                    + listBox.SelectedItem + "'");
+                }
+                else
+                {
+                    ((DataTable) dataGridView1.DataSource).DefaultView.RowFilter = string.Empty;
+                }
             }
-            else
+            catch (Exception e)
             {
-                ((DataTable) dataGridView1.DataSource).DefaultView.RowFilter = string.Empty;
+                Console.WriteLine(e);
             }
         }
 
@@ -779,6 +821,8 @@ namespace COTS_Sales_And_Inventory_System
         private void button11_Click(object sender, EventArgs e)
         {
             AddItem();
+            textBox4.Text = "";
+            comboBox3.Items.Clear();
         }
 
         private void AddItem()
@@ -937,14 +981,30 @@ namespace COTS_Sales_And_Inventory_System
                 total += Convert.ToDouble(row.Cells[4].Value);
             }
             _totalPayment = total;
-            textBox6.Text = (string.Format("{0:0,0.00}", total));
+            if (_totalPayment > 10.00)
+            {
+                textBox6.Text = (string.Format("{0:0,0.00}", total));
+            }
+            else
+            {
+                textBox6.Text = (string.Format("{0:0.00}", total));
+            }
         }
 
         private void textBox11_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                textBox11.Text = (string.Format("{0:0,0.00}", Convert.ToDouble(textBox11.Text)));
+                var x = Convert.ToDouble(textBox11.Text);
+
+                if (x > 10.00)
+                {
+                    textBox11.Text = (string.Format("{0:0,0.00}", Convert.ToDouble(x)));
+                }
+                else
+                {
+                    textBox11.Text = (string.Format("{0:0.00}", Convert.ToDouble(x)));
+                }
                 CountChange();
             }
         }
@@ -960,7 +1020,7 @@ namespace COTS_Sales_And_Inventory_System
             }
             else
             {
-                textBox2.Text = (string.Format("{0:0,0.00}", change));
+                textBox2.Text = change > 10.00 ? (string.Format("{0:0,0.00}", change)) : (string.Format("{0:0.00}", change));
             }
         }
 
@@ -970,11 +1030,13 @@ namespace COTS_Sales_And_Inventory_System
             if (textBox11.Text.Equals(""))
             {
                 var dialog = MessageBox.Show("Are you sure you want to proceed \n" +
-                                             "with this transaction?", "Proceed with Transaction",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Hand);
+                                             "with this transaction? \nThis will consider that \n" +
+                                             "the customers paid the exact ammount", "Proceed with Transaction",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialog == DialogResult.No)
                 {
                     MessageBox.Show("Transaction Cancelled");
+                    button12.Enabled = true;
                     return;
                 }
                 textBox11.Text = textBox6.Text;
@@ -1108,7 +1170,7 @@ namespace COTS_Sales_And_Inventory_System
         private void PrintTransaction(DataSet receiptDataset)
         {
             var print = new Print_Receipt(receiptDataset);
-            print.Show();
+            print.ShowDialog();
         }
 
         private void InsertToReceiptDataset(DataSet receiptDataset, DataGridViewRow row)
@@ -1227,7 +1289,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             if (e.RowIndex >= 0)
             {
-                var dialog = MessageBox.Show("Are you sure you want to remove item",
+                var dialog = MessageBox.Show("Are you sure you want to remove selected item",
                     "Remove item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (dialog == DialogResult.Yes)
@@ -1240,7 +1302,7 @@ namespace COTS_Sales_And_Inventory_System
         private void button13_Click(object sender, EventArgs e)
         {
             var manageOrder = new Manage_Orders();
-            manageOrder.Show();
+            manageOrder.ShowDialog();
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -1316,6 +1378,7 @@ namespace COTS_Sales_And_Inventory_System
             textBox4.Clear();
             textBox1.Clear();
             comboBox3.Items.Clear();
+            numericUpDown1.Text = "1";
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -1333,7 +1396,7 @@ namespace COTS_Sales_And_Inventory_System
             if (_accountType.Equals("Admin"))
             {
                 var admin = new FrmAdmin(this);
-                admin.Show();
+                admin.ShowDialog();
             }
             else
             {
@@ -1587,7 +1650,7 @@ namespace COTS_Sales_And_Inventory_System
         private void configToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var settings = new SettingsForm();
-            settings.Show();
+            settings.ShowDialog();
         }
 
         private void cueTextBox5_TextChanged(object sender, EventArgs e)
@@ -1652,6 +1715,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             try
             {
+                label20.Text = "";
                 ChangeItemWithNoPriceText(_itemWithNoPrice.Rows[y]);
                 y++;
                 if (y >= _itemWithNoPrice.Rows.Count) y = 0;
@@ -1673,6 +1737,48 @@ namespace COTS_Sales_And_Inventory_System
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             GetDistrosInformation();
+        }
+
+        private void button1_Click_2(object sender, EventArgs e)
+        {
+            DataSet inventorySet = CreateDatasetInventory();
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                var x= inventorySet.Tables["inventory"].NewRow();
+                x["ItemName"] = row.Cells[0].Value.ToString();
+                x["size"] = row.Cells[1].Value.ToString();
+                x["quantity"] = Convert.ToInt32(row.Cells[3].Value);
+                x["Price"] = Convert.ToDouble(row.Cells[2].Value);
+                inventorySet.Tables["Inventory"].Rows.Add(x);
+
+            }
+            inventorySet.WriteXml("invetory.xml");
+            var printInventory = new Print_Inventory(inventorySet);
+            printInventory.Show();
+        }
+
+        private DataSet CreateDatasetInventory()
+        {
+            var ds = new DataSet();
+            var dt = new DataTable("inventory");
+            dt.Columns.Add("ItemName", typeof (String));
+            dt.Columns.Add("Size", typeof (String));
+            dt.Columns.Add("Quantity", typeof (int));
+            dt.Columns.Add("Price", typeof (Double));
+            ds.Tables.Add(dt);
+            return ds;
+        }
+
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                FilterInvetoryByCategory(listBox2);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
         }
     }
 }

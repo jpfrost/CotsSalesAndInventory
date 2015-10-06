@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using MySql.Data.MySqlClient;
 
@@ -160,6 +161,18 @@ namespace COTS_Sales_And_Inventory_System
             {
                 cmd.ExecuteNonQuery();
             }
+            Connection.Close();
+        }
+
+        public static void RecreateMysqlDatabase()
+        {
+            if (!Connection.State.ToString().Equals("Open"))
+            {
+                Connection.Open();
+            }
+            var mysqlScript = File.ReadAllText(@"mysqlCreatScript.sql");
+            var runScript = new MySqlScript(Connection, mysqlScript);
+            runScript.Execute();
             Connection.Close();
         }
     }

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,8 +14,15 @@ using CrystalDecisions.Windows.Forms;
 
 namespace COTS_Sales_And_Inventory_System
 {
+    
     public partial class Loading_Screen : Form
     {
+
+        public int progressValue
+        {
+            get { return progressBar1.Value; }
+            set { progressBar1.Value = value; }
+        }
         public Loading_Screen()
         {
             InitializeComponent();
@@ -22,25 +30,6 @@ namespace COTS_Sales_And_Inventory_System
 
         private void Loading_Screen_Load(object sender, EventArgs e)
         {
-            timer2.Start();
-            var task = Task.Run(() => LoadCrystal());
-            while (true)
-            {
-                if (task.IsCompleted)
-                {
-                    progressBar1.Value = progressBar1.Maximum;
-                    Dispose();
-                }
-            }
-            
-        }
-
-
-        private void LoadCrystal()
-        {
-            var report = new Print_Orders(new DataSet());
-            report.Show();
-            report.Dispose();
         }
 
         private int _noOfDots;
@@ -49,7 +38,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             _dots += ".";
             
-            label1.Text = "Loading Data Please Wait" + _dots;
+            label1.Text = "Loading Application Please Wait" + _dots;
             label1.Update();
 
             if (_noOfDots >= 3)
@@ -62,11 +51,20 @@ namespace COTS_Sales_And_Inventory_System
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            progressBar1.Increment(1);
-            if (progressBar1.Value == 500)
+            progressBar1.Increment(10);
+            
+            if (progressBar1.Value == 100)
             {
                 timer2.Stop();
+                Thread.Sleep(2000);
+                Close();
             }
         }
+
+        private void progressBar1_Click(object sender, EventArgs e)
+        {
+
+        }
+               
     }
 }
