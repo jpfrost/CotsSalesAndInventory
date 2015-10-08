@@ -213,10 +213,17 @@ namespace COTS_Sales_And_Inventory_System
 
         private void EditSize()
         {
-            var found = FindSize();
-            found[0]["Quantity"] = Convert.ToInt32(cueTextBox3.Text);
-            found[0]["price"] = Convert.ToDouble(cueTextBox4.Text);
-            DatabaseConnection.UploadChanges();
+            try
+            {
+                var found = FindSize();
+                found[0]["Quantity"] = Convert.ToInt32(cueTextBox3.Text);
+                found[0]["price"] = Convert.ToDouble(cueTextBox4.Text);
+                DatabaseConnection.UploadChanges();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         private DataRow[] FindSize()
@@ -462,14 +469,18 @@ namespace COTS_Sales_And_Inventory_System
             ClearSizeSelection();
             foreach (var rowData in itemSize)
             {
-                comboBox2.Items.Add(rowData["Size"]);
+                var x = rowData["size"].ToString().Split(' ');
+                comboBox2.Items.Add(x[1]);
+                comboBox3.Items.Add(x[0]);
             }
             comboBox2.SelectedIndex = 0;
+            comboBox3.SelectedIndex = 0;
         }
 
         private void ClearSizeSelection()
         {
             comboBox2.Items.Clear();
+            comboBox3.Items.Clear();
         }
 
         private void SelectCategory(DataRow[] itemData)

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Data;
 using System.Drawing;
-using System.IO;
+using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using COTS_Sales_And_Inventory_System.Properties;
@@ -54,68 +53,68 @@ namespace COTS_Sales_And_Inventory_System
         {
             try
             {
-                comboBox1.Text = Properties.Settings.Default.DefaultSecretQuest;
+                comboBox1.Text = Settings.Default.DefaultSecretQuest;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
-            cueTextBox2.Text = Properties.Settings.Default.DefaultSecretAnswer;
+            cueTextBox2.Text = Settings.Default.DefaultSecretAnswer;
         }
 
         private void LoadMySqlSettings()
         {
-            txtmySqlServer.Text = Properties.Settings.Default.MysqlServer;
-            txtMySqlUser.Text = Properties.Settings.Default.MysqlUser;
-            txtMySqlPassword.Text = Properties.Settings.Default.MysqlPass;
+            txtmySqlServer.Text = Settings.Default.MysqlServer;
+            txtMySqlUser.Text = Settings.Default.MysqlUser;
+            txtMySqlPassword.Text = Settings.Default.MysqlPass;
         }
 
         private void LoadStoreInfo()
         {
-            txtStoreName.Text = Properties.Settings.Default.storeName;
-            txtStoreAdd.Text = Properties.Settings.Default.storeAdd;
-            txtStoreContact.Text = Properties.Settings.Default.storeNo;
+            txtStoreName.Text = Settings.Default.storeName;
+            txtStoreAdd.Text = Settings.Default.storeAdd;
+            txtStoreContact.Text = Settings.Default.storeNo;
         }
 
         private void LoadSummarySettings()
         {
-            enablePrintSum.Checked = Properties.Settings.Default.printSum;
+            enablePrintSum.Checked = Settings.Default.printSum;
         }
 
         private void LoadInventorySettings()
         {
-            enablePriceMod.Checked = Properties.Settings.Default.priceMod;
-            enableQuanMod.Checked = Properties.Settings.Default.quantMod;
-            enOrderMod.Checked = Properties.Settings.Default.EnableOrdering;
+            enablePriceMod.Checked = Settings.Default.priceMod;
+            enableQuanMod.Checked = Settings.Default.quantMod;
+            enOrderMod.Checked = Settings.Default.EnableOrdering;
         }
 
         private void LoadSalesComputation()
         {
-            numSalesTax.Text = Properties.Settings.Default.SalesTax.ToString();
-            chkPrintReceipt.Checked = Properties.Settings.Default.SalesReceipt;
-            salesEnableDiscount.Checked = Properties.Settings.Default.SalesDiscount;
+            numSalesTax.Text = Settings.Default.SalesTax.ToString();
+            chkPrintReceipt.Checked = Settings.Default.SalesReceipt;
+            salesEnableDiscount.Checked = Settings.Default.SalesDiscount;
         }
 
         private void LoadSupplierSettings()
         {
-            defaultSupplier.Text = Properties.Settings.Default.DefaultSupplier;
-            defaultSupplierAdd.Text = Properties.Settings.Default.DefaultSupplierAddress;
-            defaultSupplierNo.Text = Properties.Settings.Default.DefaultSupplierNo;
-            supplierAllowMulti.Checked = Properties.Settings.Default.AllowMultiSupplier;
+            defaultSupplier.Text = Settings.Default.DefaultSupplier;
+            defaultSupplierAdd.Text = Settings.Default.DefaultSupplierAddress;
+            defaultSupplierNo.Text = Settings.Default.DefaultSupplierNo;
+            supplierAllowMulti.Checked = Settings.Default.AllowMultiSupplier;
         }
 
         private void LoadEmailSettings()
         {
-            ownerEmail.Text = Properties.Settings.Default.EmailUser;
-            ownerEmailPassword.Text = Properties.Settings.Default.EmailPassword;
-            emailSendReport.Checked = Properties.Settings.Default.EmailSendMessage;
+            ownerEmail.Text = Settings.Default.EmailUser;
+            ownerEmailPassword.Text = Settings.Default.EmailPassword;
+            emailSendReport.Checked = Settings.Default.EmailSendMessage;
         }
 
         private void LoadAdminSettings()
         {
-            adminUsername.Text = Properties.Settings.Default.DefaultAdminAccount;
-            adminPassword.Text = Properties.Settings.Default.DefaultAdminPassword;
-            adminPassword2.Text = Properties.Settings.Default.DefaultAdminPassword;
+            adminUsername.Text = Settings.Default.DefaultAdminAccount;
+            adminPassword.Text = Settings.Default.DefaultAdminPassword;
+            adminPassword2.Text = Settings.Default.DefaultAdminPassword;
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
@@ -124,10 +123,10 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (Properties.Settings.Default.FirstRun)
+            if (Settings.Default.FirstRun)
             {
-                Properties.Settings.Default.FirstRun = false;
-                Properties.Settings.Default.Save();
+                Settings.Default.FirstRun = false;
+                Settings.Default.Save();
             }
             var dialog = MessageBox.Show("Do you want to save settings?", "Save Settings?", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
@@ -161,67 +160,67 @@ namespace COTS_Sales_And_Inventory_System
 
         private void SaveLogo()
         {
-            pictureBox1.Image.Save(@"logo.png",System.Drawing.Imaging.ImageFormat.Png);
+            pictureBox1.Image.Save(@"logo.png", ImageFormat.Png);
         }
 
         private void SaveSecret()
         {
-            Properties.Settings.Default.DefaultSecretQuest = comboBox1.Text;
-            Properties.Settings.Default.DefaultSecretAnswer = cueTextBox2.Text;
-            Properties.Settings.Default.Save();
+            Settings.Default.DefaultSecretQuest = comboBox1.Text;
+            Settings.Default.DefaultSecretAnswer = cueTextBox2.Text;
+            Settings.Default.Save();
         }
 
         private void SaveMySqlSettings()
         {
-            Properties.Settings.Default.MysqlServer = txtmySqlServer.Text;
-            Properties.Settings.Default.MysqlUser = txtMySqlUser.Text;
-            Properties.Settings.Default.MysqlPass = txtMySqlPassword.Text;
-            Properties.Settings.Default.Save();
+            Settings.Default.MysqlServer = txtmySqlServer.Text;
+            Settings.Default.MysqlUser = txtMySqlUser.Text;
+            Settings.Default.MysqlPass = txtMySqlPassword.Text;
+            Settings.Default.Save();
         }
 
         private void SaveStoreInfo()
         {
-            Properties.Settings.Default.storeName = txtStoreName.Text;
-            Properties.Settings.Default.storeAdd = txtStoreAdd.Text;
-            Properties.Settings.Default.storeNo = txtStoreContact.Text;
-            Properties.Settings.Default.Save();
+            Settings.Default.storeName = txtStoreName.Text;
+            Settings.Default.storeAdd = txtStoreAdd.Text;
+            Settings.Default.storeNo = txtStoreContact.Text;
+            Settings.Default.Save();
         }
 
         private void SaveSummarySettings()
         {
-            Properties.Settings.Default.printSum = enablePrintSum.Checked;
-            Properties.Settings.Default.Save();
+            Settings.Default.printSum = enablePrintSum.Checked;
+            Settings.Default.Save();
         }
 
         private void SaveInventorySettings()
         {
-            Properties.Settings.Default.priceMod = enablePriceMod.Checked;
-            Properties.Settings.Default.quantMod = enableQuanMod.Checked;
-            Properties.Settings.Default.EnableOrdering = enOrderMod.Checked;
-            Properties.Settings.Default.Save();
+            Settings.Default.priceMod = enablePriceMod.Checked;
+            Settings.Default.quantMod = enableQuanMod.Checked;
+            Settings.Default.EnableOrdering = enOrderMod.Checked;
+            Settings.Default.Save();
         }
 
         private void SaveSalesComputation()
         {
-            Properties.Settings.Default.SalesTax = Convert.ToInt32(numSalesTax.Text);
-            Properties.Settings.Default.SalesReceipt = chkPrintReceipt.Checked;
-            Properties.Settings.Default.SalesDiscount = salesEnableDiscount.Checked;
-            Properties.Settings.Default.Save();
+            Settings.Default.SalesTax = Convert.ToInt32(numSalesTax.Text);
+            Settings.Default.SalesReceipt = chkPrintReceipt.Checked;
+            Settings.Default.SalesDiscount = salesEnableDiscount.Checked;
+            Settings.Default.Save();
         }
 
         private void SaveSupplierSettings()
         {
-            Properties.Settings.Default.DefaultSupplier = defaultSupplier.Text;
-            Properties.Settings.Default.DefaultSupplierAddress = defaultSupplierAdd.Text;
-            Properties.Settings.Default.DefaultSupplierNo = defaultSupplierNo.Text;
-            Properties.Settings.Default.AllowMultiSupplier = supplierAllowMulti.Checked;
-            Properties.Settings.Default.Save();
+            Settings.Default.DefaultSupplier = defaultSupplier.Text;
+            Settings.Default.DefaultSupplierAddress = defaultSupplierAdd.Text;
+            Settings.Default.DefaultSupplierNo = defaultSupplierNo.Text;
+            Settings.Default.AllowMultiSupplier = supplierAllowMulti.Checked;
+            Settings.Default.Save();
             ModifydistroDatabase();
         }
 
         private void ModifydistroDatabase()
         {
-            var found = DatabaseConnection.DatabaseRecord.Tables["distributor"].Select("DistroID ='"+1+"'");
+            var found = DatabaseConnection.DatabaseRecord.Tables["distributor"].Select("DistroID ='" + 1 + "'");
             if (found.Length == 0)
             {
                 CreateDefaultDistro();
@@ -250,18 +249,18 @@ namespace COTS_Sales_And_Inventory_System
 
         private void SaveEmailSettings()
         {
-            Properties.Settings.Default.EmailUser = ownerEmail.Text;
-            Properties.Settings.Default.EmailPassword = ownerEmailPassword.Text;
-            Properties.Settings.Default.EmailSendMessage = emailSendReport.Checked;
-            Properties.Settings.Default.Save();
+            Settings.Default.EmailUser = ownerEmail.Text;
+            Settings.Default.EmailPassword = ownerEmailPassword.Text;
+            Settings.Default.EmailSendMessage = emailSendReport.Checked;
+            Settings.Default.Save();
         }
 
         private void SaveAdminSettings()
         {
-            Properties.Settings.Default.DefaultAdminAccount = adminUsername.Text;
-            Properties.Settings.Default.DefaultAdminPassword = adminPassword.Text;
-            Properties.Settings.Default.DefaultAdminPassword = adminPassword2.Text;
-            Properties.Settings.Default.Save();
+            Settings.Default.DefaultAdminAccount = adminUsername.Text;
+            Settings.Default.DefaultAdminPassword = adminPassword.Text;
+            Settings.Default.DefaultAdminPassword = adminPassword2.Text;
+            Settings.Default.Save();
         }
 
         private void groupBox5_Enter(object sender, EventArgs e)
@@ -337,13 +336,11 @@ namespace COTS_Sales_And_Inventory_System
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             ResetSystem();
-            
         }
 
         private void ResetSystem()
@@ -352,28 +349,26 @@ namespace COTS_Sales_And_Inventory_System
                 MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (dialog == DialogResult.OK)
             {
-                Properties.Settings.Default.DefaultAdminAccount = "admin";
-                Properties.Settings.Default.DefaultAdminPassword = "password";
-                Properties.Settings.Default.DefaultSecretAnswer = "";
-                Properties.Settings.Default.DefaultSecretQuest = "";
-                Properties.Settings.Default.DefaultSupplier = "";
-                Properties.Settings.Default.DefaultSupplierAddress = "";
-                Properties.Settings.Default.DefaultSupplierNo = "";
-                Properties.Settings.Default.EmailUser = "";
-                Properties.Settings.Default.EmailPassword = "";
-                Properties.Settings.Default.storeName = "";
-                Properties.Settings.Default.storeAdd = "";
-                Properties.Settings.Default.storeNo = "";
-                Properties.Settings.Default.FirstRun = true;
-                Properties.Settings.Default.Save();
+                Settings.Default.DefaultAdminAccount = "admin";
+                Settings.Default.DefaultAdminPassword = "password";
+                Settings.Default.DefaultSecretAnswer = "";
+                Settings.Default.DefaultSecretQuest = "";
+                Settings.Default.DefaultSupplier = "";
+                Settings.Default.DefaultSupplierAddress = "";
+                Settings.Default.DefaultSupplierNo = "";
+                Settings.Default.EmailUser = "";
+                Settings.Default.EmailPassword = "";
+                Settings.Default.storeName = "";
+                Settings.Default.storeAdd = "";
+                Settings.Default.storeNo = "";
+                Settings.Default.FirstRun = true;
+                Settings.Default.Save();
                 Application.Exit();
             }
         }
 
         private void emailSendReport_Click(object sender, EventArgs e)
         {
-
-            
         }
 
         private void ownerEmail_TextChanged(object sender, EventArgs e)
@@ -385,7 +380,6 @@ namespace COTS_Sales_And_Inventory_System
             }
             else
             {
-                
                 button2.Enabled = false;
                 emailSendReport.Enabled = false;
                 emailSendReport.Checked = false;
@@ -398,12 +392,13 @@ namespace COTS_Sales_And_Inventory_System
             var dialog =
                 MessageBox.Show(
                     "Are you sure you want to remove all data from the database \nThis data cannot be recovered..."
-                    , @"Remove All Data",MessageBoxButtons.YesNo,MessageBoxIcon.Warning);
+                    , @"Remove All Data", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (dialog == DialogResult.Yes)
             {
                 DatabaseConnection.RecreateMysqlDatabase();
-                MessageBox.Show("All the Data from the Database has been remove","Database Cleared",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                MessageBox.Show("All the Data from the Database has been remove", "Database Cleared",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             button5.Enabled = true;
         }

@@ -475,7 +475,6 @@ namespace COTS_Sales_And_Inventory_System
             var productCode = cueTextBox4.Text;
             InsertProductInfo(productCode);
             LoadItemInfo();
-            cueTextBox4.Text = "";
         }
 
         private void InsertProductInfo(string productCode)
@@ -521,12 +520,20 @@ namespace COTS_Sales_And_Inventory_System
 
         private void LoadItemSize(DataRow[] itemId)
         {
-            comboBox2.Items.Clear();
-            var size = DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemID ='" + itemId[0]["itemID"] + "'");
-            foreach (var row in size)
+            
+            try
             {
-                var split = row["size"].ToString().Split(' ');
-                comboBox2.Items.Add(split[0]);
+                comboBox2.Items.Clear();
+                var size = DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemID ='" + itemId[0]["itemID"] + "'");
+                foreach (var row in size)
+                {
+                    var split = row["size"].ToString().Split(' ');
+                    comboBox2.Items.Add(split[0]);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 

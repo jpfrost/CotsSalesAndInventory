@@ -161,12 +161,19 @@ namespace COTS_Sales_And_Inventory_System
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            var found = DatabaseConnection.DatabaseRecord.Tables["account"].Select("AccountName ='"+cueTextBox1.Text+"'");
-            found[0].Delete();
-            DatabaseConnection.UploadChanges();
-            MessageBox.Show("Account: "+cueTextBox1.Text+" has been remove...");
-            LoadAccounts();
-            ClearField();
+            try
+            {
+                var found = DatabaseConnection.DatabaseRecord.Tables["account"].Select("AccountName ='"+cueTextBox1.Text+"'");
+                found[0].Delete();
+                DatabaseConnection.UploadChanges();
+                MessageBox.Show("Account: "+cueTextBox1.Text+" has been remove...");
+                LoadAccounts();
+                ClearField();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
         }
     }
 }
