@@ -29,8 +29,8 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var add_Order = new Add_Orders();
-            add_Order.ShowDialog();
+            var newOrder = new newOrderDialogDistro();
+            newOrder.ShowDialog();
         }
 
         private void RefreshData_Tick(object sender, EventArgs e)

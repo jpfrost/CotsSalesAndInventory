@@ -56,6 +56,7 @@ namespace COTS_Sales_And_Inventory_System
             {
                 comboBox1.DropDownStyle = ComboBoxStyle.DropDown;
                 comboBox2.DropDownStyle = ComboBoxStyle.DropDown;
+                comboBox3.DropDownStyle=ComboBoxStyle.DropDown;
             }
         }
 
@@ -132,7 +133,7 @@ namespace COTS_Sales_And_Inventory_System
             var newRow = DatabaseConnection.DatabaseRecord.Tables["size"].NewRow();
             if (cueTextBox1.Text.Equals("")) GetItemID();
             newRow["ItemID"] = cueTextBox1.Text;
-            newRow["Size"] = comboBox2.Text;
+            newRow["Size"] = comboBox3.Text+" "+comboBox2.Text;
             newRow["sizeEnable"] = 1;
             if (cueTextBox3.Text != "") newRow["Quantity"] = Convert.ToInt32(cueTextBox3.Text);
             if (cueTextBox4.Text != "") newRow["Price"] = Convert.ToDouble(cueTextBox4.Text);
@@ -151,14 +152,14 @@ namespace COTS_Sales_And_Inventory_System
         private bool FindIfSizeExist()
         {
             var found = DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemID = '"
-                                                                                + cueTextBox1.Text + "' and Size = '"
+                                                                                + cueTextBox1.Text + "' and Size = '"+comboBox3.Text+" "
                                                                                 + comboBox2.Text + "'");
             return found.Length > 0;
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (cueTextBox2.Text.Equals("") || comboBox1.Text.Equals("") || comboBox2.Text.Equals(""))
+            if (cueTextBox2.Text.Equals("") || comboBox1.Text.Equals("") || comboBox2.Text.Equals("") || comboBox3.Text.Equals(""))
             {
                 MessageBox.Show("Please enter required inputs");
                 return;
@@ -221,7 +222,7 @@ namespace COTS_Sales_And_Inventory_System
         private DataRow[] FindSize()
         {
             return DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemID = '"
-                                                                           + cueTextBox1.Text + "' and Size = '"
+                                                                           + cueTextBox1.Text + "' and Size = '"+comboBox3.Text+" "
                                                                            + comboBox2.SelectedItem + "'");
         }
 
@@ -359,10 +360,20 @@ namespace COTS_Sales_And_Inventory_System
                                                                                   + cueTextBox1.Text + "'");
             foreach (var row in sizeRow.Where(row => !comboBox2.Items.Contains(row["Size"])))
             {
-                comboBox2.Items.Add(row["size"]);
+                var x = row["size"].ToString().Split(' ');
+                if (!comboBox2.Items.Contains(x[1]))
+                {
+                    comboBox2.Items.Add(x[1]);
+                }
+                if (!comboBox3.Items.Contains(x[0]))
+                {
+                    comboBox3.Items.Add(x[0]);
+                }
             }
             comboBox2.Refresh();
             comboBox2.SelectedIndex = 0;
+            comboBox3.Refresh();
+            comboBox3.SelectedIndex = 0;
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -414,7 +425,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void KeyboardOnlyDecimals(object sender, KeyPressEventArgs e)
         {
-            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == (char) Keys.Back || e.KeyChar == '.'))
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == (char) Keys.Back || e.KeyChar == '.' || e.KeyChar!= ' '))
             {
                 e.Handled = true;
             }
@@ -482,16 +493,23 @@ namespace COTS_Sales_And_Inventory_System
 
         private void LoadSizeData(object sender, EventArgs e)
         {
-            var found = FindSizeId();
-            cueTextBox3.Text = found[0]["Quantity"].ToString();
-            cueTextBox4.Text = found[0]["Price"].ToString();
+            try
+            {
+                var found = FindSizeId();
+                cueTextBox3.Text = found[0]["Quantity"].ToString();
+                cueTextBox4.Text = found[0]["Price"].ToString();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
         }
 
         private DataRow[] FindSizeId()
         {
             return DatabaseConnection.DatabaseRecord.Tables["size"].Select("ItemID ='"
-                                                                           + cueTextBox1.Text + "' and Size ='" +
-                                                                           comboBox2.SelectedItem + "'");
+                                                                           + cueTextBox1.Text + "' and Size ='" +comboBox3.Text+" "+
+                                                                           comboBox2.Text + "'");
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -537,6 +555,16 @@ namespace COTS_Sales_And_Inventory_System
                 }
             }
             cueTextBox5.Clear();
+        }
+
+        private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
+        {
+            LoadSizeForCategory();
+        }
+
+        private void LoadSizeForCategory()
+        {
+            var x = comboBox1.Text;
         }
     }
 }

@@ -84,3 +84,5 @@ C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory S
 C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS Sales And Inventory System.exe.manifest
 C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS Sales And Inventory System.application
 C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.Print_Inventory.resources
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.CategoryUnits.resources
+C:\Users\jasper\Documents\Visual Studio 2013\Projects\COTS Sales And Inventory System\COTS Sales And Inventory System\obj\Debug\COTS_Sales_And_Inventory_System.newOrderDialogDistro.resources

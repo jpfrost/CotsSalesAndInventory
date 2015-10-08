@@ -51,14 +51,26 @@ namespace COTS_Sales_And_Inventory_System
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            progressBar1.Increment(10);
+            /*progressBar1.Increment(5);
             
             if (progressBar1.Value == 100)
             {
                 timer2.Stop();
                 Thread.Sleep(2000);
                 Close();
+            }*/
+        }
+
+        public void UpdateProgressBar(int value)
+        {
+            progressBar1.Value = value;
+            progressBar1.Refresh();
+            Thread.Sleep(300);
+            if (value == 100)
+            {
+                Close();
             }
+            
         }
 
         private void progressBar1_Click(object sender, EventArgs e)

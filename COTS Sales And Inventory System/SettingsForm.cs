@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using COTS_Sales_And_Inventory_System.Properties;
 using MySql.Data.MySqlClient;
 
 namespace COTS_Sales_And_Inventory_System
@@ -29,9 +32,22 @@ namespace COTS_Sales_And_Inventory_System
             LoadInventorySettings();
             LoadSummarySettings();
             LoadStoreInfo();
+            LoadLogo();
             button2.Enabled = false;
             emailSendReport.Enabled = false;
             emailSendReport.Checked = false;
+        }
+
+        private void LoadLogo()
+        {
+            try
+            {
+                pictureBox1.ImageLocation = @"logo.png";
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
         }
 
         private void LoadSecret()
@@ -140,6 +156,12 @@ namespace COTS_Sales_And_Inventory_System
             SaveInventorySettings();
             SaveSummarySettings();
             SaveStoreInfo();
+            SaveLogo();
+        }
+
+        private void SaveLogo()
+        {
+            pictureBox1.Image.Save(@"logo.png",System.Drawing.Imaging.ImageFormat.Png);
         }
 
         private void SaveSecret()
@@ -218,9 +240,9 @@ namespace COTS_Sales_And_Inventory_System
         {
             var newDistroRow = DatabaseConnection.DatabaseRecord.Tables["distributor"].NewRow();
             newDistroRow["distroID"] = 1;
-            newDistroRow["distroName"] = defaultSupplier;
-            newDistroRow["DistroAddress"] = defaultSupplierAdd;
-            newDistroRow["DistroContact"] = defaultSupplierNo;
+            newDistroRow["distroName"] = defaultSupplier.Text;
+            newDistroRow["DistroAddress"] = defaultSupplierAdd.Text;
+            newDistroRow["DistroContact"] = defaultSupplierNo.Text;
             newDistroRow["distroEnable"] = 1;
             DatabaseConnection.DatabaseRecord.Tables["distributor"].Rows.Add(newDistroRow);
             DatabaseConnection.UploadChanges();
@@ -321,7 +343,7 @@ namespace COTS_Sales_And_Inventory_System
         private void button4_Click(object sender, EventArgs e)
         {
             ResetSystem();
-            Application.Exit();
+            
         }
 
         private void ResetSystem()
@@ -344,16 +366,7 @@ namespace COTS_Sales_And_Inventory_System
                 Properties.Settings.Default.storeNo = "";
                 Properties.Settings.Default.FirstRun = true;
                 Properties.Settings.Default.Save();
-            }
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            var dialog = MessageBox.Show("This will remove all data from the database", "Database Reset",
-                MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-            if (dialog == DialogResult.OK)
-            {
-                DatabaseConnection.TruncateDatabase();
+                Application.Exit();
             }
         }
 
@@ -390,9 +403,23 @@ namespace COTS_Sales_And_Inventory_System
             if (dialog == DialogResult.Yes)
             {
                 DatabaseConnection.RecreateMysqlDatabase();
-                MessageBox.Show("Done!");
+                MessageBox.Show("All the Data from the Database has been remove","Database Cleared",MessageBoxButtons.OK,MessageBoxIcon.Information);
             }
             button5.Enabled = true;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            BrowseAndChangeImage();
+        }
+
+        private void BrowseAndChangeImage()
+        {
+            var image = new OpenFileDialog();
+            image.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp; *.png)|*.jpg; *.jpeg; *.gif; *.bmp; *.png";
+            if (image.ShowDialog() != DialogResult.OK) return;
+            var img = new Bitmap(image.OpenFile());
+            pictureBox1.Image = img;
         }
     }
 }

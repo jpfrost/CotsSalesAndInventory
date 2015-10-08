@@ -77,5 +77,23 @@
     <Setting Name="EnableOrdering" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="CategoryUnits" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;ml&lt;/string&gt;
+  &lt;string&gt;L&lt;/string&gt;
+  &lt;string&gt;mm&lt;/string&gt;
+  &lt;string&gt;cm&lt;/string&gt;
+  &lt;string&gt;M&lt;/string&gt;
+  &lt;string&gt;ft&lt;/string&gt;
+  &lt;string&gt;lb&lt;/string&gt;
+  &lt;string&gt;mg&lt;/string&gt;
+  &lt;string&gt;g&lt;/string&gt;
+  &lt;string&gt;kg&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="CompanyLogo" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

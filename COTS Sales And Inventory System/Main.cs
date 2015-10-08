@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -55,28 +56,8 @@ namespace COTS_Sales_And_Inventory_System
         private void Main_Load(object sender, EventArgs e)
         {
             Hide();
+            backgroundLoadingScreen.RunWorkerAsync();
             _loading.ShowDialog();
-            LoadDummyReport();
-            _loading.timer2.Start();
-            toolStripStatusLabel1.Text = "Current User: " + _username;
-            toolStripStatusLabel2.Text = "User Rights: " + _accountType;
-            _colorlist.Add(Color.Red);
-            _colorlist.Add(Color.Black);
-            _loading.timer2.Start();
-            var x = Task.Run(() => { LoadData(); });
-            x.Wait();
-            _loading.timer2.Start();
-            panel1.Controls.Add(_items);
-            _items.Hide();
-            LoadSettings();
-            dateTime.Start();
-            timerDataRefresh.Start();
-            _loading.timer2.Start();
-            comboBox4.SelectedIndex = 0;
-            LoadAccountSettings();
-            _loading.timer2.Start();
-            Thread.Sleep(1000);
-            Show();
         }
 
 
@@ -121,10 +102,18 @@ namespace COTS_Sales_And_Inventory_System
             comboBox2.Text = Settings.Default.DefaultSupplier;
             textBox10.Text = Settings.Default.DefaultSupplierNo;
             textBox9.Text = Settings.Default.DefaultSupplierAddress;
-            cueTextBox5.Enabled = Settings.Default.SalesDiscount;
+            cueTxtDiscount.Enabled = Settings.Default.SalesDiscount;
             button13.Enabled = Settings.Default.EnableOrdering;
             button10.Enabled = Settings.Default.AllowMultiSupplier;
             button8.Enabled = Settings.Default.AllowMultiSupplier;
+            try
+            {
+                pictureBox1.ImageLocation = @"logo.png";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             if (!Settings.Default.AllowMultiSupplier)
             {
                 comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -211,9 +200,9 @@ namespace COTS_Sales_And_Inventory_System
                 DatabaseConnection.GetCustomTable(
                     "select Item_Name as 'Product', Size, FORMAT(Price,2) as Price, Quantity, CategoryName as 'Category' from items inner join size on items.ItemID=size.ItemID inner join category on items.CategoryID=category.CategoryID where sizeEnable ='1' and Quantity > 0 and price <> \"\";"
                     , "SizeAndItemTable");
-            dataGridView1.DataSource = dt;
-            dataGridView1.Update();
-            dataGridView1.Refresh();
+            invetoryGridView.DataSource = dt;
+            invetoryGridView.Update();
+            invetoryGridView.Refresh();
             AddAutoCompleteForSalesTextBox();
         }
 
@@ -264,7 +253,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button9_Click(object sender, EventArgs e)
         {
-            if (!comboBox1.Text.Equals("")&& !comboBox1.Text.Equals("All"))
+            if (!comboBox1.Text.Equals("")&& !comboBox1.Text.Equals("All") && !String.IsNullOrWhiteSpace(comboBox1.Text))
             {
                 AddCategory();
                 LoadData();
@@ -277,17 +266,27 @@ namespace COTS_Sales_And_Inventory_System
 
         private void AddCategory()
         {
+            var newCategory = false;
             var catPk = GetCurrentCount("category", "CategoryID");
             var catName = comboBox1.Text;
             var found = FindRow("category", "categoryName = '" + catName + "'");
-            if (found.Length > 0)
-            {
-                MessageBox.Show(@"Category Exist this category will not be created", @"Category Exist");
-            }
-            else
+            if (found.Length == 0)
             {
                 InsertNewCategory(catPk, catName);
+                newCategory = true;
             }
+            var dialog = new CategoryUnits(comboBox1.Text);
+            if (dialog.ShowDialog() == DialogResult.OK && newCategory==false)
+            {
+                MessageBox.Show(catName + " has been modified", "Category Modified", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            if (newCategory)
+            {
+                MessageBox.Show("Added Category " + catName, "Category Added", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            comboBox1.Text = "";
         }
 
         private DataRow[] FindRow(string tablename, string query)
@@ -303,7 +302,6 @@ namespace COTS_Sales_And_Inventory_System
             DatabaseConnection.DatabaseRecord.Tables["category"].Rows.Add(newCategory);
             DatabaseConnection.UploadChanges();
             RefreshData();
-            MessageBox.Show(@"Category Added");
         }
 
         private void ClearCategory()
@@ -455,16 +453,14 @@ namespace COTS_Sales_And_Inventory_System
 
         private void HideInventoryGrid()
         {
-            if (!label11.Visible && !dataGridView1.Visible) return;
-            label11.Visible = false;
-            dataGridView1.Visible = false;
+            if (!invetoryGridView.Visible) return;
+            invetoryGridView.Visible = false;
         }
 
         private void ShowInventoryGrid()
         {
-            if (label11.Visible && dataGridView1.Visible) return;
-            label11.Visible = true;
-            dataGridView1.Visible = true;
+            if (invetoryGridView.Visible) return;
+            invetoryGridView.Visible = true;
         }
 
         private void TxtboxSearchEnter(object sender, EventArgs e)
@@ -572,9 +568,9 @@ namespace COTS_Sales_And_Inventory_System
         private void AddAutoCompleteForSalesTextBox()
         {
             var autoCompleteCollectionProductName = new AutoCompleteStringCollection();
-            for (var x = 0; x < dataGridView1.Rows.Count; x++)
+            for (var x = 0; x < invetoryGridView.Rows.Count; x++)
             {
-                var itemName = dataGridView1.Rows[x].Cells[0].Value.ToString();
+                var itemName = invetoryGridView.Rows[x].Cells[0].Value.ToString();
                 if (!autoCompleteCollectionProductName.Contains(itemName))
                 {
                     autoCompleteCollectionProductName.Add(itemName);
@@ -585,8 +581,8 @@ namespace COTS_Sales_And_Inventory_System
             {
                 autoCompleteCollectionProductName.Add(dr["Item_Name"].ToString());
             }*/
-            textBox4.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            textBox4.AutoCompleteCustomSource = autoCompleteCollectionProductName;
+            txtBoxProductName.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            txtBoxProductName.AutoCompleteCustomSource = autoCompleteCollectionProductName;
             cueTextBox2.AutoCompleteSource = AutoCompleteSource.CustomSource;
             cueTextBox2.AutoCompleteCustomSource = autoCompleteCollectionProductName;
         }
@@ -630,12 +626,12 @@ namespace COTS_Sales_And_Inventory_System
             {
                 if (!listBox.SelectedItem.Equals("All"))
                 {
-                    ((DataTable) dataGridView1.DataSource).DefaultView.RowFilter = ("Category ='"
+                    ((DataTable) invetoryGridView.DataSource).DefaultView.RowFilter = ("Category ='"
                                                                                     + listBox.SelectedItem + "'");
                 }
                 else
                 {
-                    ((DataTable) dataGridView1.DataSource).DefaultView.RowFilter = string.Empty;
+                    ((DataTable) invetoryGridView.DataSource).DefaultView.RowFilter = string.Empty;
                 }
             }
             catch (Exception e)
@@ -659,7 +655,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void MouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            dataGridView1.DoDragDrop(dataGridView1.CurrentCell.Value.ToString(), DragDropEffects.Copy);
+            invetoryGridView.DoDragDrop(invetoryGridView.CurrentCell.Value.ToString(), DragDropEffects.Copy);
         }
 
         private void DragEnter(object sender, DragEventArgs e)
@@ -669,7 +665,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void DragDrop(object sender, DragEventArgs e)
         {
-            textBox4.Text = e.Data.GetData(DataFormats.Text) as string;
+            txtBoxProductName.Text = e.Data.GetData(DataFormats.Text) as string;
         }
 
         private void cueTextBox6_KeyDown(object sender, KeyEventArgs e)
@@ -693,9 +689,9 @@ namespace COTS_Sales_And_Inventory_System
             try
             {
                 var found = DatabaseConnection.DatabaseRecord.Tables["items"].Select("ItemID ='"
-                                                                                     + cueTextBox6.Text + "'");
-                textBox4.Text = found[0]["Item_Name"].ToString();
-                cueTextBox6.Text = "";
+                                                                                     + cuetxtBoxProductCode.Text + "'");
+                txtBoxProductName.Text = found[0]["Item_Name"].ToString();
+                cuetxtBoxProductCode.Text = "";
             }
             catch (Exception e)
             {
@@ -727,16 +723,16 @@ namespace COTS_Sales_And_Inventory_System
 
         private void InsertToProductCode()
         {
-            if (timer.ElapsedMilliseconds <= 70 && !textBox4.Text.Equals(""))
+            if (timer.ElapsedMilliseconds <= 70 && !txtBoxProductName.Text.Equals(""))
             {
                 try
                 {
-                    cueTextBox6.Text = recordedInput;
+                    cuetxtBoxProductCode.Text = recordedInput;
                     FindProductName();
                     LoadProductInfo();
                     AddItemToGridView();
-                    textBox4.Clear();
-                    comboBox3.Items.Clear();
+                    txtBoxProductName.Clear();
+                    cBoxSize.Items.Clear();
                 }
                 catch (Exception e)
                 {
@@ -766,7 +762,7 @@ namespace COTS_Sales_And_Inventory_System
             if (e.KeyCode == Keys.Enter)
             {
                 LoadProductInfo();
-                button11.Focus();
+                btnAdd.Focus();
             }
         }
 
@@ -775,7 +771,7 @@ namespace COTS_Sales_And_Inventory_System
             try
             {
                 var tablename = "items";
-                var query = "Item_Name ='" + textBox4.Text + "'";
+                var query = "Item_Name ='" + txtBoxProductName.Text + "'";
                 var foundItemData = FindData(tablename, query);
                 var itemID = foundItemData[0]["ItemID"].ToString();
                 var foundItemSize = FindData("size", "itemID ='" + itemID + "'");
@@ -789,12 +785,12 @@ namespace COTS_Sales_And_Inventory_System
 
         private void InsertSizeListSalesComboBox(DataRow[] foundItemData)
         {
-            comboBox3.Items.Clear();
+            cBoxSize.Items.Clear();
             foreach (var row in foundItemData)
             {
-                comboBox3.Items.Add(row["Size"]);
+                cBoxSize.Items.Add(row["Size"]);
             }
-            comboBox3.SelectedIndex = 0;
+            cBoxSize.SelectedIndex = 0;
         }
 
         private DataRow[] FindData(string tablename, string query)
@@ -812,8 +808,8 @@ namespace COTS_Sales_And_Inventory_System
             var query =
                 "select Price from Size inner join Items on " +
                 "Size.ItemID=items.ItemID where Item_Name ='" +
-                textBox4.Text + "' and Size='" +
-                comboBox3.SelectedItem + "'";
+                txtBoxProductName.Text + "' and Size='" +
+                cBoxSize.SelectedItem + "'";
             var productPrice = DatabaseConnection.GetCustomTable(query, "productPrice");
             textBox1.Text = productPrice.Rows[0][0].ToString();
         }
@@ -821,13 +817,13 @@ namespace COTS_Sales_And_Inventory_System
         private void button11_Click(object sender, EventArgs e)
         {
             AddItem();
-            textBox4.Text = "";
-            comboBox3.Items.Clear();
+            txtBoxProductName.Text = "";
+            cBoxSize.Items.Clear();
         }
 
         private void AddItem()
         {
-            if (textBox4.Text == "" && comboBox3.Text == "")
+            if (txtBoxProductName.Text == "" && cBoxSize.Text == "")
             {
                 MessageBox.Show("Please fill out all the Product Information", "Warning", MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
@@ -839,8 +835,8 @@ namespace COTS_Sales_And_Inventory_System
                     {
                         
 
-                        var size = FindSizeID(textBox4.Text, comboBox3.Text);
-                        if (Convert.ToInt16(size["Quantity"]) < Convert.ToInt16(numericUpDown1.Text))
+                        var size = FindSizeID(txtBoxProductName.Text, cBoxSize.Text);
+                        if (Convert.ToInt16(size["Quantity"]) < Convert.ToInt16(numUpQuantity.Text))
                         {
                             MessageBox.Show("quantity exceed stocks", "Oppppps...", MessageBoxButtons.OK,
                                 MessageBoxIcon.Stop);
@@ -849,14 +845,22 @@ namespace COTS_Sales_And_Inventory_System
                         {
                             try
                             {
-                                if (Convert.ToInt16(numericUpDown1.Text) <= 0)
+                                if (textBox11.Text.Equals("0.00") || textBox11.Text.Equals(""))
                                 {
-                                    MessageBox.Show("Cannot order 0 or negative quantities");
-                                }
+                                    if (Convert.ToInt16(numUpQuantity.Text) <= 0)
+                                    {
+                                        MessageBox.Show("Cannot order 0 or negative quantities");
+                                    }
 
-                                if (!textBox4.Text.Equals("") && Convert.ToInt16(numericUpDown1.Text)>0)
+                                    if (!txtBoxProductName.Text.Equals("") && Convert.ToInt16(numUpQuantity.Text) > 0)
+                                    {
+                                        AddItemToGridView();
+                                    }
+                                }
+                                else
                                 {
-                                    AddItemToGridView();
+                                    MessageBox.Show(
+                                        @"You cannot add more items until you complete the previous transaction...",@"Unable to add Item",MessageBoxButtons.OK,MessageBoxIcon.Warning);
                                 }
                             }
                             catch (Exception exception)
@@ -888,15 +892,15 @@ namespace COTS_Sales_And_Inventory_System
         {
             var row = FindifProductExistForSale() ?? dataGridView2.Rows.Add();
             var purchaseQuantity = Convert.ToInt32(dataGridView2.Rows[row].Cells[3].Value) +
-                                   Convert.ToInt32(numericUpDown1.Text);
+                                   Convert.ToInt32(numUpQuantity.Text);
             var stockQuantity = FindStockQuantity();
             if (purchaseQuantity <= stockQuantity)
             {
-                dataGridView2.Rows[row].Cells[0].Value = textBox4.Text;
-                dataGridView2.Rows[row].Cells[1].Value = comboBox3.SelectedItem;
+                dataGridView2.Rows[row].Cells[0].Value = txtBoxProductName.Text;
+                dataGridView2.Rows[row].Cells[1].Value = cBoxSize.SelectedItem;
                 dataGridView2.Rows[row].Cells[2].Value = textBox1.Text;
                 dataGridView2.Rows[row].Cells[3].Value = Convert.ToInt32(dataGridView2.Rows[row].Cells[3].Value)
-                                                         + Convert.ToInt32(numericUpDown1.Text);
+                                                         + Convert.ToInt32(numUpQuantity.Text);
                 dataGridView2.Rows[row].Cells[4].Value = CountTotal(dataGridView2.Rows[row]);
             }
             else
@@ -910,8 +914,8 @@ namespace COTS_Sales_And_Inventory_System
         {
             foreach (DataGridViewRow row in dataGridView2.Rows)
             {
-                if (row.Cells[0].Value != null && row.Cells[0].Value.Equals(textBox4.Text)
-                    && row.Cells[1].Value != null && row.Cells[1].Value.Equals(comboBox3.SelectedItem))
+                if (row.Cells[0].Value != null && row.Cells[0].Value.Equals(txtBoxProductName.Text)
+                    && row.Cells[1].Value != null && row.Cells[1].Value.Equals(cBoxSize.SelectedItem))
                 {
                     return row.Index;
                 }
@@ -922,10 +926,10 @@ namespace COTS_Sales_And_Inventory_System
         private int FindStockQuantity()
         {
             var itemID = DatabaseConnection.DatabaseRecord.Tables["items"].Select("item_name ='"
-                                                                                  + textBox4.Text + "'");
+                                                                                  + txtBoxProductName.Text + "'");
             var size = DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemid ='"
                                                                                + itemID[0]["itemId"] + "' and size ='" +
-                                                                               comboBox3.Text + "'");
+                                                                               cBoxSize.Text + "'");
             var x = Convert.ToInt32(size[0]["Quantity"]);
             return x;
         }
@@ -941,22 +945,22 @@ namespace COTS_Sales_And_Inventory_System
         {
             if (keyData == Keys.F1)
             {
-                cueTextBox6.Focus();
+                cuetxtBoxProductCode.Focus();
                 return true;
             }
             if (keyData == Keys.F2)
             {
-                textBox4.Focus();
+                txtBoxProductName.Focus();
                 return true;
             }
             if (keyData == Keys.F3)
             {
-                numericUpDown1.Focus();
+                numUpQuantity.Focus();
                 return true;
             }
             if (keyData == Keys.F6)
             {
-                cueTextBox5.Focus();
+                cueTxtDiscount.Focus();
                 return true;
             }
             if (keyData == Keys.F5)
@@ -970,6 +974,14 @@ namespace COTS_Sales_And_Inventory_System
         private void CountTotal(object sender, DataGridViewCellEventArgs e)
         {
             CountOverAllTotal();
+            if (dataGridView2.Rows.Count == 0)
+            {
+                textBox11.Enabled = false;
+            }
+            else
+            {
+                textBox11.Enabled = true;
+            }
         }
 
         private void CountOverAllTotal()
@@ -995,59 +1007,73 @@ namespace COTS_Sales_And_Inventory_System
         {
             if (e.KeyCode == Keys.Enter)
             {
-                var x = Convert.ToDouble(textBox11.Text);
+                try
+                {
+                    var x = Convert.ToDouble(textBox11.Text);
 
-                if (x > 10.00)
-                {
-                    textBox11.Text = (string.Format("{0:0,0.00}", Convert.ToDouble(x)));
+                    if (x > 10.00)
+                    {
+                        textBox11.Text = (string.Format("{0:0,0.00}", Convert.ToDouble(x)));
+                    }
+                    else
+                    {
+                        textBox11.Text = (string.Format("{0:0.00}", Convert.ToDouble(x)));
+                    }
+                    CountChange();
                 }
-                else
+                catch (Exception exception)
                 {
-                    textBox11.Text = (string.Format("{0:0.00}", Convert.ToDouble(x)));
+                    Console.WriteLine(exception);
                 }
-                CountChange();
             }
         }
 
         private void CountChange()
         {
-            var total = Convert.ToDouble(textBox6.Text);
-            var payment = Convert.ToDouble(textBox11.Text);
-            var change = payment - total;
-            if (change < 0)
+            try
             {
-                MessageBox.Show("Insufficient Payment");
+                var total = Convert.ToDouble(textBox6.Text);
+                var payment = Convert.ToDouble(textBox11.Text);
+                var change = payment - total;
+                if (change < 0)
+                {
+                    MessageBox.Show("Insufficient Payment");
+                }
+                else
+                {
+                    textBox2.Text = change > 10.00 ? (string.Format("{0:0,0.00}", change)) : (string.Format("{0:0.00}", change));
+                }
             }
-            else
+            catch (Exception e)
             {
-                textBox2.Text = change > 10.00 ? (string.Format("{0:0,0.00}", change)) : (string.Format("{0:0.00}", change));
+                Console.WriteLine(e);
             }
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
-            button12.Enabled = false;
+            btnSell.Enabled = false;
             if (textBox11.Text.Equals(""))
             {
                 var dialog = MessageBox.Show("Are you sure you want to proceed \n" +
                                              "with this transaction? \nThis will consider that \n" +
-                                             "the customers paid the exact ammount", "Proceed with Transaction",
+                                             "the customers paid the exact amount", "Proceed with Transaction",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (dialog == DialogResult.No)
                 {
                     MessageBox.Show("Transaction Cancelled");
-                    button12.Enabled = true;
+                    btnSell.Enabled = true;
                     return;
                 }
                 textBox11.Text = textBox6.Text;
             }
-            if (textBox2.Text.Equals(""))
+            CountChange();
+            if (!textBox2.Text.Equals(""))
             {
-                CountChange();
+                SellItems();
+                ClearSellDatagrid();
             }
-            SellItems();
-            ClearSellDatagrid();
-            button12.Enabled = true;
+            btnSell.Enabled = true;
         }
 
         private void ClearSellDatagrid()
@@ -1375,10 +1401,10 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button4_Click(object sender, EventArgs e)
         {
-            textBox4.Clear();
+            txtBoxProductName.Clear();
             textBox1.Clear();
-            comboBox3.Items.Clear();
-            numericUpDown1.Text = "1";
+            cBoxSize.Items.Clear();
+            numUpQuantity.Text = "1";
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -1669,7 +1695,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             try
             {
-                var x = Convert.ToDouble(cueTextBox5.Text);
+                var x = Convert.ToDouble(cueTxtDiscount.Text);
                 var total = _totalPayment;
 
                 if (x < 100.00)
@@ -1742,7 +1768,7 @@ namespace COTS_Sales_And_Inventory_System
         private void button1_Click_2(object sender, EventArgs e)
         {
             DataSet inventorySet = CreateDatasetInventory();
-            foreach (DataGridViewRow row in dataGridView1.Rows)
+            foreach (DataGridViewRow row in invetoryGridView.Rows)
             {
                 var x= inventorySet.Tables["inventory"].NewRow();
                 x["ItemName"] = row.Cells[0].Value.ToString();
@@ -1778,6 +1804,53 @@ namespace COTS_Sales_And_Inventory_System
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
+            }
+        }
+
+        private void backgroundLoadingScreen_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BeginInvoke(new Action(() =>
+            {
+                LoadDummyReport();
+                _loading.UpdateProgressBar(20);
+                toolStripStatusLabel1.Text = "Current User: " + _username;
+                toolStripStatusLabel2.Text = "User Rights: " + _accountType;
+                _colorlist.Add(Color.Red);
+                _colorlist.Add(Color.Black);
+                _loading.UpdateProgressBar(40);
+                var x = Task.Run(() => { LoadData(); });
+                x.Wait();
+                _loading.UpdateProgressBar(60);
+                panel1.Controls.Add(_items);
+                _items.Hide();
+                LoadSettings();
+                _loading.UpdateProgressBar(80);
+                dateTime.Start();
+                timerDataRefresh.Start();
+                comboBox4.SelectedIndex = 0;
+                LoadAccountSettings();
+                _loading.UpdateProgressBar(99);
+                Thread.Sleep(3000);
+                _loading.UpdateProgressBar(100);
+                Show();
+            }));
+        }
+
+        private void dataGridView2_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            
+        }
+
+        private void dataGridView2_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            CountOverAllTotal();
+            if (dataGridView2.Rows.Count == 0)
+            {
+                textBox11.Enabled = false;
+            }
+            else
+            {
+                textBox11.Enabled = true;
             }
         }
     }

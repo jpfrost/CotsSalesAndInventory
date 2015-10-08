@@ -322,5 +322,41 @@ namespace COTS_Sales_And_Inventory_System.Properties {
                 this["EnableOrdering"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <string>ml</string>
+  <string>L</string>
+  <string>mm</string>
+  <string>cm</string>
+  <string>M</string>
+  <string>ft</string>
+  <string>lb</string>
+  <string>mg</string>
+  <string>g</string>
+  <string>kg</string>
+</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection CategoryUnits {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["CategoryUnits"]));
+            }
+            set {
+                this["CategoryUnits"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CompanyLogo {
+            get {
+                return ((string)(this["CompanyLogo"]));
+            }
+            set {
+                this["CompanyLogo"] = value;
+            }
+        }
     }
 }

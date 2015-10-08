@@ -9,8 +9,16 @@ namespace COTS_Sales_And_Inventory_System
 {
     public partial class Add_Orders : Form
     {
+        private readonly string _distro;
+
         public Add_Orders()
         {
+            InitializeComponent();
+        }
+
+        public Add_Orders(string distro)
+        {
+            _distro = distro;
             InitializeComponent();
         }
 
@@ -271,7 +279,7 @@ namespace COTS_Sales_And_Inventory_System
         private void AddItemToDataGrid()
         {
             
-                if (cueTextBox3.Text != "" && comboBox1.Text != "" && comboBox2.Text != "" && comboBox3.Text != "")
+                if (cueTextBox3.Text != "" && comboBox1.Text != "" && textBox1.Text != "" && comboBox3.Text != "" &&comboBox2.Text !="")
                 {
                     if (radioButton2.Checked)
                     {
@@ -332,13 +340,13 @@ namespace COTS_Sales_And_Inventory_System
         {
             var newOrder = FindifProductExistForSale() ?? dataGridView1.Rows.Add();
             dataGridView1.Rows[newOrder].Cells[0].Value = cueTextBox3.Text; //product name
-            dataGridView1.Rows[newOrder].Cells[1].Value = comboBox1.Text; // product size
+            dataGridView1.Rows[newOrder].Cells[1].Value = comboBox2.Text+" "+comboBox1.Text; // product size
             dataGridView1.Rows[newOrder].Cells[2].Value = numericUpDown1.Text; //quantity
-            dataGridView1.Rows[newOrder].Cells[3].Value = comboBox2.Text; //distro
+            dataGridView1.Rows[newOrder].Cells[3].Value = textBox1.Text; //distro
             dataGridView1.Rows[newOrder].Cells[4].Value = comboBox3.Text; //category
             dataGridView1.Rows[newOrder].Cells[5].Value = cueTextBox4.Text;//productID
             ClearFields();
-            LoadDistros();
+            //LoadDistros();
             LoadCategory();
         }
 
@@ -385,7 +393,8 @@ namespace COTS_Sales_And_Inventory_System
 
         private void Add_Orders_Load(object sender, EventArgs e)
         {
-            LoadDistros();
+            //LoadDistros();
+            textBox1.Text = _distro;
             LoadCategory();
             AutoCompleteItemName();
             radioButton1.Checked = true;
@@ -435,7 +444,7 @@ namespace COTS_Sales_And_Inventory_System
             cueTextBox3.AutoCompleteCustomSource = autoCompleteCollectionProductName;
         }
 
-        private void LoadDistros()
+        /*private void LoadDistros()
         {
             comboBox2.Items.Clear();
             comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -450,7 +459,7 @@ namespace COTS_Sales_And_Inventory_System
             }
             comboBox2.Refresh();
             comboBox2.SelectedIndex = 0;
-        }
+        }*/
 
         private void cueTextBox4_KeyDown(object sender, KeyEventArgs e)
         {
@@ -482,14 +491,14 @@ namespace COTS_Sales_And_Inventory_System
                 cueTextBox3.Text = found[0]["Item_Name"].ToString();
             }
         }
-
+        
         private void button2_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show("Are you sure you want to remove this item(s)", "Confirmation",
                 MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                
+                dataGridView1.Rows.Clear();
             }
         }
 
@@ -504,8 +513,21 @@ namespace COTS_Sales_And_Inventory_System
         private void LoadItemInfo()
         {
             var itemID = FindItemID();
-            LoadSize(itemID);
+            //LoadSize(itemID);
             LoadItemCategory(itemID);
+            LoadItemSize(itemID);
+
+        }
+
+        private void LoadItemSize(DataRow[] itemId)
+        {
+            comboBox2.Items.Clear();
+            var size = DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemID ='" + itemId[0]["itemID"] + "'");
+            foreach (var row in size)
+            {
+                var split = row["size"].ToString().Split(' ');
+                comboBox2.Items.Add(split[0]);
+            }
         }
 
         private void LoadItemCategory(DataRow[] itemId)
@@ -521,7 +543,7 @@ namespace COTS_Sales_And_Inventory_System
             }
         }
 
-        private void LoadSize(DataRow[] itemId)
+        /*private void LoadSize(DataRow[] itemId)
         {
             comboBox1.Items.Clear();
             var size = DatabaseConnection.DatabaseRecord.Tables["size"].Select("itemID ='"+itemId[0]["itemID"]+"'");
@@ -530,7 +552,7 @@ namespace COTS_Sales_And_Inventory_System
                 comboBox1.Items.Add(row["Size"]);
             }
             comboBox1.SelectedIndex = 0;
-        }
+        }*/
 
         private DataRow[] FindItemID()
         {
@@ -596,6 +618,49 @@ namespace COTS_Sales_And_Inventory_System
                 {
                     button.Checked = false;
                 }
+            }
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GetAllUnitsFromCategory();
+        }
+
+        private void GetAllUnitsFromCategory()
+        {
+            var x = DatabaseConnection.DatabaseRecord.Tables["tblsizes"].Select("categoryID ='"+GetCategoryID(comboBox3.Text)+"'");
+            comboBox1.Items.Clear();
+            foreach (var row in x)
+            {
+                comboBox1.Items.Add(row["sizesName"].ToString());
+            }
+            comboBox1.SelectedIndex = 0;
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cueTextBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cueTextBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void KeyOnlyDigits(object sender, KeyPressEventArgs e)
+        {
+            if (Char.IsDigit(e.KeyChar) || (e.KeyChar == '\b'))
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
             }
         }
     }
