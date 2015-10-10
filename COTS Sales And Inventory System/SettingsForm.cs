@@ -32,9 +32,21 @@ namespace COTS_Sales_And_Inventory_System
             LoadSummarySettings();
             LoadStoreInfo();
             LoadLogo();
+            LoadCritLevel();
             button2.Enabled = false;
             emailSendReport.Enabled = false;
             emailSendReport.Checked = false;
+        }
+
+        private void LoadCritLevel()
+        {
+            cueTxtQuanMedian.Text = Settings.Default.CritMedian.ToString();
+            trackLowQuanItem.Value = Convert.ToInt32(Settings.Default.critLowLevel);
+            trackHighLevelQuan.Value = Convert.ToInt32(Settings.Default.critHighLevel);
+            numericUpDown1.Value = Convert.ToInt32(Settings.Default.critLowLevel);
+            numericUpDown2.Value = Convert.ToInt32(Settings.Default.critHighLevel);
+            trackLowQuanItem.Refresh();
+            trackHighLevelQuan.Refresh();
         }
 
         private void LoadLogo()
@@ -42,6 +54,7 @@ namespace COTS_Sales_And_Inventory_System
             try
             {
                 pictureBox1.ImageLocation = @"logo.png";
+                checkBox1.Checked = Settings.Default.EnCompanyLogo;
             }
             catch (Exception e)
             {
@@ -156,11 +169,29 @@ namespace COTS_Sales_And_Inventory_System
             SaveSummarySettings();
             SaveStoreInfo();
             SaveLogo();
+            SaveCritLevel();
+        }
+
+        private void SaveCritLevel()
+        {
+            try
+            {
+                Settings.Default.CritMedian = Convert.ToInt32(cueTxtQuanMedian.Text);
+                Settings.Default.critLowLevel = Convert.ToInt32(trackLowQuanItem.Value);
+                Settings.Default.critHighLevel = Convert.ToInt32(trackHighLevelQuan.Value);
+                Settings.Default.Save();
+            }
+            catch (Exception e)
+            {
+                //ignored
+            }
         }
 
         private void SaveLogo()
         {
             pictureBox1.Image.Save(@"logo.png", ImageFormat.Png);
+            Settings.Default.EnCompanyLogo = checkBox1.Checked;
+            Settings.Default.Save();
         }
 
         private void SaveSecret()
@@ -416,5 +447,86 @@ namespace COTS_Sales_And_Inventory_System
             var img = new Bitmap(image.OpenFile());
             pictureBox1.Image = img;
         }
+
+        private void cueTxtQuanMedian_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar=='\b'))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void trackLowQuanItem_Scroll(object sender, EventArgs e)
+        {
+        }
+
+        private void trackLowQuanItem_Scroll_1(object sender, EventArgs e)
+        {
+            ChangeCueTextValue(trackLowQuanItem, numericUpDown1);
+        }
+
+        private void ChangeCueTextValue(TrackBar trackBar, NumericUpDown numeric)
+        {
+            numeric.Text = trackBar.Value.ToString();
+        }
+
+        private void trackHighLevelQuan_Scroll(object sender, EventArgs e)
+        {
+            ChangeCueTextValue(trackHighLevelQuan,numericUpDown2);
+        }
+
+        private void NumTextToTrack(NumericUpDown numeric, TrackBar trackBar)
+        {
+            try
+            {
+                trackBar.Value = Convert.ToInt32(numeric.Text);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        private void numericUpDown1_ValueChanged_1(object sender, EventArgs e)
+        {
+            NumTextToTrack(numericUpDown1,trackLowQuanItem);
+        }
+
+        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        {
+            NumTextToTrack(numericUpDown2,trackHighLevelQuan);
+        }
+
+        private void numericUpDown2_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                NumTextToTrack(numericUpDown2, trackHighLevelQuan);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+        }
+
+        private void numericUpDown1_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                NumTextToTrack(numericUpDown1, trackLowQuanItem);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            var dialog = new CategoryUnitEdit();
+            dialog.ShowDialog();
+        }
+
+
     }
 }

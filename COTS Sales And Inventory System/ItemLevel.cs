@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Linq;
+using COTS_Sales_And_Inventory_System.Properties;
 
 namespace COTS_Sales_And_Inventory_System
 {
@@ -22,31 +23,48 @@ namespace COTS_Sales_And_Inventory_System
 
         public void InsertCriticalLevel()
         {
-            var found = DatabaseConnection.DatabaseRecord.Tables["itemLevel"].Select("sizeID='"
-                                                                                     + _sizeId + "'");
-            if (found.Length >= 0)
+            try
             {
-                var itemLevelId = GetCurrentCount("itemlevel", "itemLevelId");
-                var minLevel = FindMinCriticalLevel();
-                var newLevel = DatabaseConnection.DatabaseRecord.Tables["itemLevel"].NewRow();
-                newLevel["itemLevelId"] = itemLevelId;
-                newLevel["SizeID"] = _sizeId;
-                newLevel["itemMinLevel"] = minLevel;
-                newLevel["itemMaxLevel"] = _orderQty;
-                DatabaseConnection.DatabaseRecord.Tables["itemlevel"].Rows.Add(newLevel);
-                DatabaseConnection.UploadChanges();
+                var found = DatabaseConnection.DatabaseRecord.Tables["itemLevel"].Select("sizeID='"
+                                                                                         + _sizeId + "'");
+                if (found.Length >= 0)
+                {
+                    var itemLevelId = GetCurrentCount("itemlevel", "itemLevelId");
+                    var minLevel = FindMinCriticalLevel();
+                    var newLevel = DatabaseConnection.DatabaseRecord.Tables["itemLevel"].NewRow();
+                    newLevel["itemLevelId"] = itemLevelId;
+                    newLevel["SizeID"] = _sizeId;
+                    newLevel["itemMinLevel"] = minLevel;
+                    newLevel["itemMaxLevel"] = _orderQty;
+                    DatabaseConnection.DatabaseRecord.Tables["itemlevel"].Rows.Add(newLevel);
+                    DatabaseConnection.UploadChanges();
+                }
+                else
+                {
+                    found[0]["itemMinLevel"] = FindMinCriticalLevel();
+                    found[0]["itemMaxLevel"] = _orderQty;
+                    DatabaseConnection.UploadChanges();
+                }
             }
-            else
+            catch (Exception e)
             {
-                found[0]["itemMinLevel"] = FindMinCriticalLevel();
-                found[0]["itemMaxLevel"] = _orderQty;
-                DatabaseConnection.UploadChanges();
+                Console.WriteLine(e);
             }
         }
 
-        private int FindMinCriticalLevel()
+        private int? FindMinCriticalLevel()
         {
-            return _orderQty < 20 ? Convert.ToInt32(_orderQty*.2) : Convert.ToInt32(_orderQty*.1);
+            try
+            {
+                var x = Convert.ToDouble(Settings.Default.critLowLevel/100);
+                var y = Convert.ToDouble(Settings.Default.critHighLevel/100);
+                return _orderQty < Settings.Default.CritMedian ? Convert.ToInt32(_orderQty*x) : Convert.ToInt32(_orderQty*y);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return null;
         }
 
         private int GetCurrentCount(string tableName, string columbName)

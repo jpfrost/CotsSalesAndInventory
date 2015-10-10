@@ -151,6 +151,7 @@ namespace COTS_Sales_And_Inventory_System
                 DatabaseConnection.UploadChanges();
                 listBox1.Items.Clear();
                 LoadAccounts();
+                listBox1.Items.Clear();
                 MessageBox.Show(cueTextBox1.Text + " has been updated");
             }
             catch (Exception e)
@@ -161,6 +162,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(cueTextBox1.Text)) return;
             try
             {
                 var found = DatabaseConnection.DatabaseRecord.Tables["account"].Select("AccountName ='"+cueTextBox1.Text+"'");
@@ -169,6 +171,7 @@ namespace COTS_Sales_And_Inventory_System
                 MessageBox.Show("Account: "+cueTextBox1.Text+" has been remove...");
                 LoadAccounts();
                 ClearField();
+                listBox1.Refresh();
             }
             catch (Exception exception)
             {

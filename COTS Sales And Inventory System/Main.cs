@@ -6,12 +6,15 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using COTS_Sales_And_Inventory_System.Properties;
 using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared;
+using CrystalDecisions.Windows.Forms;
 using ListBox = System.Windows.Forms.ListBox;
 using TextBox = System.Windows.Forms.TextBox;
 
@@ -36,14 +39,21 @@ namespace COTS_Sales_And_Inventory_System
         private int x;
         private int y;
 
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams handleParam = base.CreateParams;
+                handleParam.ExStyle |= 0x02000000;   // WS_EX_COMPOSITED       
+                return handleParam;
+            }
+        }
         public Main(Form loginForm, string username, string accountType)
         {
-            
             _loginForm = loginForm;
             _username = username;
             _accountType = accountType;
             InitializeComponent();
-     
         }
 
         
@@ -106,13 +116,16 @@ namespace COTS_Sales_And_Inventory_System
             button13.Enabled = Settings.Default.EnableOrdering;
             button10.Enabled = Settings.Default.AllowMultiSupplier;
             button8.Enabled = Settings.Default.AllowMultiSupplier;
-            try
+            if (Settings.Default.EnCompanyLogo)
             {
-                pictureBox1.ImageLocation = @"logo.png";
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
+                try
+                {
+                    pictureBox1.ImageLocation = @"logo.png";
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
             if (!Settings.Default.AllowMultiSupplier)
             {
@@ -132,23 +145,26 @@ namespace COTS_Sales_And_Inventory_System
         {
             label3.Text = dataRow["product"] + " " + dataRow["size"] + " only have " + dataRow["quantity"]
                           + " left please order immediately";
-            InsertToSummary(label3.Text);
+            InsertToSummary(label3.Text,richTextBox1);
         }
 
         private void ChangeItemWithNoPriceText(DataRow dataRow)
         {
             label20.Text = dataRow["item_Name"] + " " +
                            dataRow["size"] + " has no price yet...";
-            InsertToSummary(label20.Text);
+            InsertToSummary(label20.Text,richTextBox3);
         }
 
-        private void InsertToSummary(string text)
+        private void InsertToSummary(string text,RichTextBox richtext)
         {
-            var index = richTextBox1.Find(text);
-            if (index == -1)
+            BeginInvoke(new Action(() =>
             {
-                richTextBox1.AppendText(text + Environment.NewLine);
-            }
+                var index = richtext.Find(text);
+                if (index == -1)
+                {
+                    richtext.AppendText(text + Environment.NewLine);
+                }
+            }));
         }
 
         private void LoadData()
@@ -169,7 +185,26 @@ namespace COTS_Sales_And_Inventory_System
             LoadFromDatabase();
             LoadCriticalLevel();
             LoadItemWithNoPrice();
+            FillSummary();
             CriticalItemShow();
+        }
+
+        private void FillSummary()
+        {
+            richTextBox1.Clear();
+            richTextBox3.Clear();
+            foreach (DataRow row in _criticalTable.Rows)
+            {
+               var x= row["product"] + " " + row["size"] + " only have " + row["quantity"]
+                          + " left please order immediately";
+               InsertToSummary(x,richTextBox1);
+            }
+            foreach (DataRow row in _itemWithNoPrice.Rows)
+            {
+                var x = row["item_Name"] + " " +
+                           row["size"] + " has no price yet...";
+                InsertToSummary(x, richTextBox3);
+            }
         }
 
         private void LoadItemWithNoPrice()
@@ -601,10 +636,50 @@ namespace COTS_Sales_And_Inventory_System
         {
             var emailAcc = Settings.Default.EmailUser;
             var emailPass = Settings.Default.EmailPassword;
-            var subject = "Session Report";
-            var body = "";
+            var subject = "Session Report/Total Sales";
+            var body = CreateEmailReportBody();
             var email = new Email(emailAcc, emailPass, subject, body);
             email.Send();
+        }
+
+        private string CreateEmailReportBody()
+        {
+            var body = new StringBuilder();
+            body.Append(richTextBox2.Text);
+            body.Append("\n\n\n");
+            body.Append(@"Total Cash: "+textBox3.Text);
+
+            return body.ToString();
+        }
+
+        private string ConvertReportToPDF()
+        {
+            var summaryReport = CreateSummarySalesReport();
+            InsertSummaryData(summaryReport);
+            summaryReport.WriteXml("summaryReport.xml");
+            var saleSum = new SalesSummary();
+            saleSum.SetDataSource(summaryReport);
+            try
+            {
+                ExportOptions crOptions;
+                DiskFileDestinationOptions crDestinationOptions=new DiskFileDestinationOptions();
+                PdfRtfWordFormatOptions pdfRtf=new PdfRtfWordFormatOptions();
+                crDestinationOptions.DiskFileName = @"saleSummary.pdf";
+                crOptions = saleSum.ExportOptions;
+                {
+                    crOptions.ExportDestinationType = ExportDestinationType.DiskFile;
+                    crOptions.ExportFormatType = ExportFormatType.PortableDocFormat;
+                    crOptions.DestinationOptions = crDestinationOptions;
+                    crOptions.FormatOptions = pdfRtf;
+                }
+                saleSum.Export();
+                return @"saleSummary.pdf";
+            }
+            catch (Exception e)
+            {
+                //ignore
+            }
+            return null;
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -1439,31 +1514,136 @@ namespace COTS_Sales_And_Inventory_System
         {
             richTextBox2.Text = "";
             textBox3.Text = "0.00";
-            switch (comboBox4.SelectedIndex)
+            if (checkBox1.Checked)
             {
-                case 0:
-                    DisplayCurrentSales();
-                    break;
-                case 1:
-                    DisplayCurrentDaySales();
-                    break;
-                case 2:
-                    DisplaySelectedDaySale();
-                    break;
-                case 3:
-                    DisplaySelectedWeek();
-                    break;
-                case 4:
-                    DisplaySelectedMonth();
-                    break;
-                case 5:
-                    DisplaySelectedYear();
-                    break;
-                case 6:
-                    DisplayAllSales();
-                    break;
+                switch (comboBox4.SelectedIndex)
+                {
+                    case 0:
+                        DisplayCurrentSales();
+                        break;
+                    case 1:
+                        DisplayCurrentDaySalesGroupBy();
+                        break;
+                    case 2:
+                        DisplaySelectedDaySaleGroupBy();
+                        break;
+                    case 3:
+                        DisplaySelectedWeekGroupBy();
+                        break;
+                    case 4:
+                        DisplaySelectedMonth();
+                        break;
+                    case 5:
+                        DisplaySelectedYear();
+                        break;
+                    case 6:
+                        DisplayAllSales();
+                        break;
+                }
+            }
+            else
+            {
+                switch (comboBox4.SelectedIndex)
+                {
+                    case 0:
+                        DisplayCurrentSales();
+                        break;
+                    case 1:
+                        DisplayCurrentDaySales();
+                        break;
+                    case 2:
+                        DisplaySelectedDaySale();
+                        break;
+                    case 3:
+                        DisplaySelectedWeek();
+                        break;
+                    case 4:
+                        DisplaySelectedMonth();
+                        break;
+                    case 5:
+                        DisplaySelectedYear();
+                        break;
+                    case 6:
+                        DisplayAllSales();
+                        break;
+                }
             }
         }
+
+        private void DisplaySelectedWeekGroupBy()
+        {
+
+            var dateselected = summaryDatePicker.Value.ToString("yy-MM-dd");
+            var query = ("select Item_Name,size,sum(count) as count,price,date " +
+                         "from date inner join receiptid on date.DateID=receiptid.DateID " +
+                         "inner join sale on sale.receiptid=receiptid.receiptid " +
+                         "inner join size on sale.SizeID=size.SizeID " +
+                         "inner join items on size.ItemID=items.ItemID " +
+                         "WHERE date > DATE_SUB('" + dateselected + "', INTERVAL 1 WEEK)  " + "group by Size.SizeID");
+            var dt = DatabaseConnection.GetCustomTable(query, "summaryQuery");
+            var total = 0.00;
+            foreach (DataRow row in dt.Rows)
+            {
+                var totalSold = Convert.ToDouble(row["count"]) * Convert.ToDouble(row["price"]);
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0,0.00}", row["price"]) +
+                           " with a quantity of " + row["count"] + " is sold for "
+                           + string.Format("{0:0,0.00}", totalSold) + ". on " +
+                           Convert.ToDateTime(row["date"]).ToString("yy-MM-dd");
+                richTextBox2.AppendText(line + Environment.NewLine);
+                total += totalSold;
+            }
+            textBox3.Text = string.Format("{0:0,0.00}", total);
+        }
+
+        private void DisplaySelectedDaySaleGroupBy()
+        {
+
+            var dateToday = summaryDatePicker.Value.ToString("yy-MM-dd");
+            var query = ("select Item_Name,size,sum(count) as count,price,date " +
+                         "from date inner join receiptid on date.DateID=receiptid.DateID " +
+                         "inner join sale on sale.receiptid=receiptid.receiptid " +
+                         "inner join size on sale.SizeID=size.SizeID " +
+                         "inner join items on size.ItemID=items.ItemID " +
+                         "where date like '%" + dateToday + "%' " + "group by Size.SizeID;");
+            var dt = DatabaseConnection.GetCustomTable(query, "summaryQuery");
+            var total = 0.00;
+            foreach (DataRow row in dt.Rows)
+            {
+                var totalSold = Convert.ToDouble(row["count"]) * Convert.ToDouble(row["price"]);
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0,0.00}", row["price"]) +
+                           " with a quantity of " + row["count"] + " is sold for "
+                           + string.Format("{0:0,0.00}", totalSold) + ".";
+                richTextBox2.AppendText(line + Environment.NewLine);
+                total += totalSold;
+            }
+            textBox3.Text = string.Format("{0:0,0.00}", total);
+        }
+
+        private void DisplayCurrentDaySalesGroupBy()
+        {
+            var dateToday = DateTime.Now.ToString("yy-MM-dd");
+            var query = ("select Item_Name,size,sum(count) as count, price,date " +
+                         "from date inner join receiptid on date.DateID=receiptid.DateID " +
+                         "inner join sale on sale.receiptid=receiptid.receiptid " +
+                         "inner join size on sale.SizeID=size.SizeID " +
+                         "inner join items on size.ItemID=items.ItemID " +
+                         "where date like '%" + dateToday + "%' " +
+                         "group by Size.SizeID;");
+            var dt = DatabaseConnection.GetCustomTable(query, "summaryQuery");
+            var total = 0.00;
+            foreach (DataRow row in dt.Rows)
+            {
+                var totalSold = Convert.ToDouble(row["count"]) * Convert.ToDouble(row["price"]);
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0,0.00}", row["price"]) +
+                           " with a quantity of " + row["count"] + " is sold for "
+                           + string.Format("{0:0,0.00}", totalSold) + ".";
+                richTextBox2.AppendText(line + Environment.NewLine);
+                total += totalSold;
+            }
+            textBox3.Text = string.Format("{0:0,0.00}", total);
+        }
+
+
 
         private void DisplayAllSales()
         {

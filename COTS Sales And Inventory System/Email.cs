@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.Net;
 using System.Net.Mail;
 
 namespace COTS_Sales_And_Inventory_System
@@ -22,6 +23,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             var fromAddress = new MailAddress(_sender, "Cots Sales Inveotry");
             var toAddress = new MailAddress(_sender, "Admin/Owner");
+            
             var smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",
@@ -34,11 +36,12 @@ namespace COTS_Sales_And_Inventory_System
             using (var message = new MailMessage(fromAddress, toAddress)
             {
                 Subject = subject,
-                Body = body
+                Body = body,
             })
             {
                 smtp.Send(message);
             }
         }
+
     }
 }

@@ -37,7 +37,7 @@
             // 
             this.button1.BackColor = System.Drawing.Color.Tomato;
             this.button1.Location = new System.Drawing.Point(13, 73);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(375, 44);
             this.button1.TabIndex = 0;
@@ -49,7 +49,7 @@
             // 
             this.cueTextBox1.Cue = "Secret Question";
             this.cueTextBox1.Location = new System.Drawing.Point(16, 13);
-            this.cueTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cueTextBox1.Margin = new System.Windows.Forms.Padding(4);
             this.cueTextBox1.Name = "cueTextBox1";
             this.cueTextBox1.ReadOnly = true;
             this.cueTextBox1.Size = new System.Drawing.Size(373, 22);
@@ -59,7 +59,7 @@
             // 
             this.cueTextBox2.Cue = "Secret Answer";
             this.cueTextBox2.Location = new System.Drawing.Point(16, 43);
-            this.cueTextBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cueTextBox2.Margin = new System.Windows.Forms.Padding(4);
             this.cueTextBox2.Name = "cueTextBox2";
             this.cueTextBox2.Size = new System.Drawing.Size(373, 22);
             this.cueTextBox2.TabIndex = 2;
@@ -69,13 +69,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.BackColor = System.Drawing.Color.Lavender;
             this.ClientSize = new System.Drawing.Size(407, 130);
             this.Controls.Add(this.cueTextBox2);
             this.Controls.Add(this.cueTextBox1);
             this.Controls.Add(this.button1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ForgotPass";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Forgot Password";

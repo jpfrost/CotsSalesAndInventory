@@ -70,8 +70,19 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button6 = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.gpCritControl = new System.Windows.Forms.GroupBox();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.trackHighLevelQuan = new System.Windows.Forms.TrackBar();
+            this.cueTxtQuanMedian = new CueTextBox();
+            this.trackLowQuanItem = new System.Windows.Forms.TrackBar();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.button7 = new System.Windows.Forms.Button();
             this.adminGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -84,6 +95,12 @@
             this.groupBox8.SuspendLayout();
             this.groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.gpCritControl.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackHighLevelQuan)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackLowQuanItem)).BeginInit();
+            this.groupBox10.SuspendLayout();
             this.SuspendLayout();
             // 
             // adminGroupBox
@@ -321,9 +338,9 @@
             this.groupBox4.BackColor = System.Drawing.Color.WhiteSmoke;
             this.groupBox4.Controls.Add(this.enablePrintSum);
             this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox4.Location = new System.Drawing.Point(513, 433);
+            this.groupBox4.Location = new System.Drawing.Point(509, 433);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(213, 61);
+            this.groupBox4.Size = new System.Drawing.Size(221, 61);
             this.groupBox4.TabIndex = 4;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Summary Control";
@@ -342,7 +359,7 @@
             // 
             this.button1.BackColor = System.Drawing.Color.Tomato;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(739, 439);
+            this.button1.Location = new System.Drawing.Point(739, 444);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(217, 55);
             this.button1.TabIndex = 5;
@@ -360,7 +377,7 @@
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox5.Location = new System.Drawing.Point(513, 282);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(213, 145);
+            this.groupBox5.Size = new System.Drawing.Size(220, 145);
             this.groupBox5.TabIndex = 6;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Supplier Defaults";
@@ -409,7 +426,7 @@
             this.groupBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox6.Location = new System.Drawing.Point(513, 182);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(217, 98);
+            this.groupBox6.Size = new System.Drawing.Size(220, 98);
             this.groupBox6.TabIndex = 7;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Store Information";
@@ -496,7 +513,7 @@
             this.groupBox8.Controls.Add(this.button5);
             this.groupBox8.Controls.Add(this.button4);
             this.groupBox8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox8.Location = new System.Drawing.Point(736, 286);
+            this.groupBox8.Location = new System.Drawing.Point(739, 253);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(217, 147);
             this.groupBox8.TabIndex = 9;
@@ -532,12 +549,24 @@
             this.groupBox9.BackColor = System.Drawing.Color.WhiteSmoke;
             this.groupBox9.Controls.Add(this.button6);
             this.groupBox9.Controls.Add(this.pictureBox1);
+            this.groupBox9.Controls.Add(this.checkBox1);
             this.groupBox9.Location = new System.Drawing.Point(736, 30);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(220, 157);
+            this.groupBox9.Size = new System.Drawing.Size(220, 204);
             this.groupBox9.TabIndex = 10;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Logo";
+            // 
+            // button6
+            // 
+            this.button6.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button6.Location = new System.Drawing.Point(3, 161);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(214, 23);
+            this.button6.TabIndex = 1;
+            this.button6.Text = "Browse Image";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // pictureBox1
             // 
@@ -546,28 +575,136 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.Location = new System.Drawing.Point(3, 16);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(214, 118);
+            this.pictureBox1.Size = new System.Drawing.Size(214, 165);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // button6
+            // checkBox1
             // 
-            this.button6.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button6.Location = new System.Drawing.Point(3, 131);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(214, 23);
-            this.button6.TabIndex = 1;
-            this.button6.Text = "Browse Image";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.checkBox1.Location = new System.Drawing.Point(3, 184);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(214, 17);
+            this.checkBox1.TabIndex = 2;
+            this.checkBox1.Text = "Enable Logo Display";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // gpCritControl
+            // 
+            this.gpCritControl.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.gpCritControl.Controls.Add(this.numericUpDown2);
+            this.gpCritControl.Controls.Add(this.numericUpDown1);
+            this.gpCritControl.Controls.Add(this.label4);
+            this.gpCritControl.Controls.Add(this.label3);
+            this.gpCritControl.Controls.Add(this.trackHighLevelQuan);
+            this.gpCritControl.Controls.Add(this.cueTxtQuanMedian);
+            this.gpCritControl.Controls.Add(this.trackLowQuanItem);
+            this.gpCritControl.Location = new System.Drawing.Point(282, 287);
+            this.gpCritControl.Name = "gpCritControl";
+            this.gpCritControl.Size = new System.Drawing.Size(221, 140);
+            this.gpCritControl.TabIndex = 11;
+            this.gpCritControl.TabStop = false;
+            this.gpCritControl.Text = "Critical Level Control";
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(157, 104);
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(61, 20);
+            this.numericUpDown2.TabIndex = 8;
+            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
+            this.numericUpDown2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.numericUpDown2_KeyDown);
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(157, 55);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(61, 20);
+            this.numericUpDown1.TabIndex = 7;
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged_1);
+            this.numericUpDown1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.numericUpDown1_KeyDown);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(19, 88);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(177, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "High Quantity Critical Warning Level";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(19, 39);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(175, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Low Quantity Critical Warning Level";
+            // 
+            // trackHighLevelQuan
+            // 
+            this.trackHighLevelQuan.Location = new System.Drawing.Point(3, 104);
+            this.trackHighLevelQuan.Maximum = 100;
+            this.trackHighLevelQuan.Name = "trackHighLevelQuan";
+            this.trackHighLevelQuan.Size = new System.Drawing.Size(155, 42);
+            this.trackHighLevelQuan.TabIndex = 1;
+            this.trackHighLevelQuan.Scroll += new System.EventHandler(this.trackHighLevelQuan_Scroll);
+            // 
+            // cueTxtQuanMedian
+            // 
+            this.cueTxtQuanMedian.Cue = "Enter The Median Quantity for Items";
+            this.cueTxtQuanMedian.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cueTxtQuanMedian.Location = new System.Drawing.Point(3, 16);
+            this.cueTxtQuanMedian.MaxLength = 9;
+            this.cueTxtQuanMedian.Name = "cueTxtQuanMedian";
+            this.cueTxtQuanMedian.Size = new System.Drawing.Size(215, 20);
+            this.cueTxtQuanMedian.TabIndex = 2;
+            this.cueTxtQuanMedian.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cueTxtQuanMedian_KeyPress);
+            // 
+            // trackLowQuanItem
+            // 
+            this.trackLowQuanItem.Location = new System.Drawing.Point(0, 52);
+            this.trackLowQuanItem.Maximum = 100;
+            this.trackLowQuanItem.Name = "trackLowQuanItem";
+            this.trackLowQuanItem.Size = new System.Drawing.Size(158, 42);
+            this.trackLowQuanItem.TabIndex = 0;
+            this.trackLowQuanItem.Scroll += new System.EventHandler(this.trackLowQuanItem_Scroll_1);
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.groupBox10.Controls.Add(this.button7);
+            this.groupBox10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox10.Location = new System.Drawing.Point(281, 433);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(222, 61);
+            this.groupBox10.TabIndex = 12;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "Category Unit";
+            // 
+            // button7
+            // 
+            this.button7.BackColor = System.Drawing.Color.Tomato;
+            this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button7.Location = new System.Drawing.Point(21, 20);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(172, 35);
+            this.button7.TabIndex = 6;
+            this.button7.Text = "Modify Category Units";
+            this.button7.UseVisualStyleBackColor = false;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.BackColor = System.Drawing.Color.Lavender;
             this.ClientSize = new System.Drawing.Size(964, 506);
+            this.Controls.Add(this.groupBox10);
+            this.Controls.Add(this.gpCritControl);
             this.Controls.Add(this.groupBox9);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.groupBox7);
@@ -604,7 +741,15 @@
             this.groupBox7.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.gpCritControl.ResumeLayout(false);
+            this.gpCritControl.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackHighLevelQuan)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackLowQuanItem)).EndInit();
+            this.groupBox10.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -655,5 +800,16 @@
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.GroupBox gpCritControl;
+        private System.Windows.Forms.TrackBar trackHighLevelQuan;
+        private CueTextBox cueTxtQuanMedian;
+        private System.Windows.Forms.TrackBar trackLowQuanItem;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.Button button7;
     }
 }

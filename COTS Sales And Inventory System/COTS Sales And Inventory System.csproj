@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>be7f54b2</NuGetPackageImportStamp>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Users\jasper\Documents\Cots\</PublishUrl>
+    <PublishUrl>C:\Cots\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -23,7 +23,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>9</ApplicationRevision>
+    <ApplicationRevision>16</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -167,6 +167,12 @@
     <Compile Include="Administrators.Designer.cs">
       <DependentUpon>Administrators.cs</DependentUpon>
     </Compile>
+    <Compile Include="CategoryUnitEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CategoryUnitEdit.Designer.cs">
+      <DependentUpon>CategoryUnitEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="CategoryUnits.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -303,6 +309,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Administrators.resx">
       <DependentUpon>Administrators.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CategoryUnitEdit.resx">
+      <DependentUpon>CategoryUnitEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CategoryUnits.resx">
       <DependentUpon>CategoryUnits.cs</DependentUpon>
@@ -452,6 +461,23 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+    <BootstrapperPackage Include="SAP.CrystalReports14.NET.2.0">
+      <Visible>False</Visible>
+      <ProductName>SAP Crystal Reports Runtime Engine for .NET Framework</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="MySql.Data">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

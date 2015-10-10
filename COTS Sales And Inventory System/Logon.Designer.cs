@@ -35,8 +35,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.cueTextBox1 = new CueTextBox();
             this.cueTextBox2 = new CueTextBox();
+            this.cueTextBox1 = new CueTextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -115,16 +115,6 @@
             this.label4.Text = "Login";
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
-            // cueTextBox1
-            // 
-            this.cueTextBox1.Cue = "Username";
-            this.cueTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F);
-            this.cueTextBox1.Location = new System.Drawing.Point(61, 148);
-            this.cueTextBox1.Name = "cueTextBox1";
-            this.cueTextBox1.Size = new System.Drawing.Size(274, 47);
-            this.cueTextBox1.TabIndex = 0;
-            this.cueTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LoginKeyDown);
-            // 
             // cueTextBox2
             // 
             this.cueTextBox2.Cue = "Password";
@@ -136,12 +126,22 @@
             this.cueTextBox2.TabIndex = 1;
             this.cueTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LoginKeyDown);
             // 
+            // cueTextBox1
+            // 
+            this.cueTextBox1.Cue = "Username";
+            this.cueTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F);
+            this.cueTextBox1.Location = new System.Drawing.Point(61, 148);
+            this.cueTextBox1.Name = "cueTextBox1";
+            this.cueTextBox1.Size = new System.Drawing.Size(274, 47);
+            this.cueTextBox1.TabIndex = 0;
+            this.cueTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LoginKeyDown);
+            // 
             // Logon
             // 
             this.AcceptButton = this.btnLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.BackColor = System.Drawing.Color.Lavender;
             this.ClientSize = new System.Drawing.Size(393, 446);
             this.Controls.Add(this.cueTextBox2);
             this.Controls.Add(this.cueTextBox1);

@@ -349,13 +349,49 @@ namespace COTS_Sales_And_Inventory_System.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string CompanyLogo {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool EnCompanyLogo {
             get {
-                return ((string)(this["CompanyLogo"]));
+                return ((bool)(this["EnCompanyLogo"]));
             }
             set {
-                this["CompanyLogo"] = value;
+                this["EnCompanyLogo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int CritMedian {
+            get {
+                return ((int)(this["CritMedian"]));
+            }
+            set {
+                this["CritMedian"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int critLowLevel {
+            get {
+                return ((int)(this["critLowLevel"]));
+            }
+            set {
+                this["critLowLevel"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int critHighLevel {
+            get {
+                return ((int)(this["critHighLevel"]));
+            }
+            set {
+                this["critHighLevel"] = value;
             }
         }
     }
