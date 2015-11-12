@@ -71,29 +71,6 @@ namespace COTS_Sales_And_Inventory_System
             cueTextBox2.AutoCompleteCustomSource = autoCompleteCollectionProductName;
         }
 
-        private void button6_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (ProductExist())
-                {
-                    var prodId = GetProductId();
-                    cueTextBox1.Text = prodId;
-                }
-                AddEditItemSize();
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception);
-            }
-        }
-
-        private String GetProductId()
-        {
-            var found = FindProductId();
-            return found[0]["itemID"].ToString();
-        }
-
         private Boolean ProductExist()
         {
             var found = FindProductId();
@@ -105,27 +82,6 @@ namespace COTS_Sales_And_Inventory_System
         {
             return DatabaseConnection.DatabaseRecord.Tables["items"].Select("Item_Name ='"
                                                                             + cueTextBox2.Text + "'");
-        }
-
-        private void AddEditItemSize()
-        {
-            var exist = FindIfSizeExist();
-            if (exist)
-            {
-                var foundSize = FindSize();
-                foreach (var row in foundSize)
-                {
-                    row["Price"] = cueTextBox4.Text;
-                    row["Quantity"] = cueTextBox3.Text;
-                    DatabaseConnection.UploadChanges();
-                }
-                MessageBox.Show("Item Edit Successful");
-            }
-            else
-            {
-                CreateNewSize();
-                MessageBox.Show("Item  new Size Created");
-            }
         }
 
         private void CreateNewSize()
@@ -218,6 +174,7 @@ namespace COTS_Sales_And_Inventory_System
                 var found = FindSize();
                 found[0]["Quantity"] = Convert.ToInt32(cueTextBox3.Text);
                 found[0]["price"] = Convert.ToDouble(cueTextBox4.Text);
+                found[0]["sizeEnable"] = 1;
                 DatabaseConnection.UploadChanges();
             }
             catch (Exception e)
@@ -248,13 +205,13 @@ namespace COTS_Sales_And_Inventory_System
             }
 
             newItem["item_Name"] = cueTextBox2.Text;
-            if (comboBox1.Text != null) newItem["CategoryID"] = FindCategoryId();
+            newItem["CategoryID"] = FindCategoryId();
             DatabaseConnection.DatabaseRecord.Tables["items"].Rows.Add(newItem);
             DatabaseConnection.UploadChanges();
-            DatabaseConnection.DatabaseRecord.Tables.Remove("items");
+            /*DatabaseConnection.DatabaseRecord.Tables.Remove("items");
             DatabaseConnection.DatabaseRecord.Tables.Add(
                 DatabaseConnection.GetCustomTable(
-                    DatabaseConnection.CreateSelectStatement("items"), "items"));
+                    DatabaseConnection.CreateSelectStatement("items"), "items"));*/
         }
 
         private string CreateNewProductID()
@@ -283,15 +240,9 @@ namespace COTS_Sales_And_Inventory_System
         {
             var found = DatabaseConnection.DatabaseRecord.Tables["category"].Select("CategoryName ='"
                                                                                     + comboBox1.Text + "'");
-            var catID = 0;
-            if (found.Length == 0)
-            {
-                catID = CreateNewCategory();
-            }
-            else
-            {
-                Convert.ToInt32(found[0]["CategoryID"].ToString());
-            }
+           
+            var catID=    Convert.ToInt32(found[0]["CategoryID"].ToString());
+            
 
             return catID;
         }
@@ -348,6 +299,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void cueTextBox2_Leave(object sender, EventArgs e)
         {
+            
             try
             {
                 cueTextBox1.Text = (string) FindProductId()[0]["itemID"];
@@ -356,7 +308,7 @@ namespace COTS_Sales_And_Inventory_System
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
+                cueTextBox1.Text="";
             }
         }
 
@@ -381,25 +333,6 @@ namespace COTS_Sales_And_Inventory_System
             comboBox2.SelectedIndex = 0;
             comboBox3.Refresh();
             comboBox3.SelectedIndex = 0;
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            if (FindIfSizeExist())
-            {
-                DeleteItemSize();
-            }
-            MessageBox.Show("Size has been deleted");
-        }
-
-        private void DeleteItemSize()
-        {
-            var found = FindSize();
-            foreach (var dataRow in found)
-            {
-                dataRow.Delete();
-            }
-            DatabaseConnection.UploadChanges();
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -525,14 +458,26 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button3_Click(object sender, EventArgs e)
         {
-            var Item = DatabaseConnection.DatabaseRecord.Tables["items"].Select("item_name ='"+cueTextBox2.Text+"'");
-            var itemID = Item[0]["ItemID"].ToString();
-            var size = DatabaseConnection.DatabaseRecord.Tables["size"].Select("size ='"
-                +comboBox2.Text+"' and itemID ='"+itemID+"'");
+            var itemDisabled = false;
+            try
+            {
+                var Item = DatabaseConnection.DatabaseRecord.Tables["items"].Select("item_name ='"+cueTextBox2.Text+"'");
+                var itemID = Item[0]["ItemID"].ToString();
+                var size = DatabaseConnection.DatabaseRecord.Tables["size"].Select("size ='"
+                                                                                  +comboBox3.Text+" " +comboBox2.Text+"' and itemID ='"+itemID+"'");
 
-            size[0]["sizeEnable"] = 0;
+                size[0]["sizeEnable"] = 0;
+                itemDisabled = true;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
             DatabaseConnection.UploadChanges();
-            MessageBox.Show("Product has been disabled");
+            if (itemDisabled)
+            {
+                MessageBox.Show("Product has been disabled");
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -576,6 +521,20 @@ namespace COTS_Sales_And_Inventory_System
         private void LoadSizeForCategory()
         {
             var x = comboBox1.Text;
+            comboBox2.Items.Clear();
+            var database = DatabaseConnection.GetCustomTable("SELECT * FROM cotsalesinventory.category inner join tblsizes on tblsizes.CategoryID=category.CategoryID where CategoryName='"+x+"';","categoryUnits");
+            foreach (DataRow row in database.Rows)
+            {
+                if (!comboBox2.Items.Contains(row["sizesName"]))
+                {
+                    comboBox2.Items.Add(row["sizesName"]);
+                }
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadSizeForCategory();
         }
     }
 }

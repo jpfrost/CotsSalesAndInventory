@@ -29,17 +29,11 @@
         private void InitializeComponent()
         {
             this.adminGroupBox = new System.Windows.Forms.GroupBox();
-            this.adminPassword2 = new CueTextBox();
-            this.adminPassword = new CueTextBox();
-            this.adminUsername = new CueTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.cueTextBox2 = new CueTextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.emailSendReport = new System.Windows.Forms.CheckBox();
-            this.ownerEmailPassword = new CueTextBox();
-            this.ownerEmail = new CueTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.salesEnableDiscount = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -54,18 +48,9 @@
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.supplierAllowMulti = new System.Windows.Forms.CheckBox();
-            this.defaultSupplierNo = new CueTextBox();
-            this.defaultSupplierAdd = new CueTextBox();
-            this.defaultSupplier = new CueTextBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.txtStoreContact = new CueTextBox();
-            this.txtStoreAdd = new CueTextBox();
-            this.txtStoreName = new CueTextBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.button3 = new System.Windows.Forms.Button();
-            this.txtMySqlPassword = new CueTextBox();
-            this.txtMySqlUser = new CueTextBox();
-            this.txtmySqlServer = new CueTextBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
@@ -79,10 +64,25 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.trackHighLevelQuan = new System.Windows.Forms.TrackBar();
-            this.cueTxtQuanMedian = new CueTextBox();
             this.trackLowQuanItem = new System.Windows.Forms.TrackBar();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.button7 = new System.Windows.Forms.Button();
+            this.cueTxtQuanMedian = new CueTextBox();
+            this.txtMySqlPassword = new CueTextBox();
+            this.txtMySqlUser = new CueTextBox();
+            this.txtmySqlServer = new CueTextBox();
+            this.txtStoreContact = new CueTextBox();
+            this.txtStoreAdd = new CueTextBox();
+            this.txtStoreName = new CueTextBox();
+            this.defaultSupplierNo = new CueTextBox();
+            this.defaultSupplierAdd = new CueTextBox();
+            this.defaultSupplier = new CueTextBox();
+            this.cueTextBox2 = new CueTextBox();
+            this.ownerEmailPassword = new CueTextBox();
+            this.ownerEmail = new CueTextBox();
+            this.adminPassword2 = new CueTextBox();
+            this.adminPassword = new CueTextBox();
+            this.adminUsername = new CueTextBox();
             this.adminGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -117,32 +117,6 @@
             this.adminGroupBox.TabStop = false;
             this.adminGroupBox.Text = "Admin Control";
             // 
-            // adminPassword2
-            // 
-            this.adminPassword2.Cue = "Re Enter Password";
-            this.adminPassword2.Location = new System.Drawing.Point(32, 81);
-            this.adminPassword2.Name = "adminPassword2";
-            this.adminPassword2.PasswordChar = '*';
-            this.adminPassword2.Size = new System.Drawing.Size(186, 22);
-            this.adminPassword2.TabIndex = 2;
-            // 
-            // adminPassword
-            // 
-            this.adminPassword.Cue = "Password";
-            this.adminPassword.Location = new System.Drawing.Point(32, 55);
-            this.adminPassword.Name = "adminPassword";
-            this.adminPassword.PasswordChar = '*';
-            this.adminPassword.Size = new System.Drawing.Size(186, 22);
-            this.adminPassword.TabIndex = 1;
-            // 
-            // adminUsername
-            // 
-            this.adminUsername.Cue = "Username";
-            this.adminUsername.Location = new System.Drawing.Point(32, 29);
-            this.adminUsername.Name = "adminUsername";
-            this.adminUsername.Size = new System.Drawing.Size(186, 22);
-            this.adminUsername.TabIndex = 0;
-            // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -157,7 +131,7 @@
             this.groupBox1.Location = new System.Drawing.Point(282, 27);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(225, 248);
-            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Owner Control";
             // 
@@ -185,15 +159,6 @@
             this.comboBox1.TabIndex = 10;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
-            // cueTextBox2
-            // 
-            this.cueTextBox2.Cue = "Secret Answer";
-            this.cueTextBox2.Location = new System.Drawing.Point(9, 200);
-            this.cueTextBox2.Name = "cueTextBox2";
-            this.cueTextBox2.PasswordChar = '*';
-            this.cueTextBox2.Size = new System.Drawing.Size(198, 22);
-            this.cueTextBox2.TabIndex = 9;
-            // 
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.Tomato;
@@ -218,25 +183,6 @@
             this.emailSendReport.CheckedChanged += new System.EventHandler(this.emailSendReport_CheckedChanged);
             this.emailSendReport.Click += new System.EventHandler(this.emailSendReport_Click);
             // 
-            // ownerEmailPassword
-            // 
-            this.ownerEmailPassword.Cue = "Enter Owner\'s Email Address Password";
-            this.ownerEmailPassword.Location = new System.Drawing.Point(6, 54);
-            this.ownerEmailPassword.Name = "ownerEmailPassword";
-            this.ownerEmailPassword.PasswordChar = '*';
-            this.ownerEmailPassword.Size = new System.Drawing.Size(199, 22);
-            this.ownerEmailPassword.TabIndex = 1;
-            this.ownerEmailPassword.TextChanged += new System.EventHandler(this.ownerEmail_TextChanged);
-            // 
-            // ownerEmail
-            // 
-            this.ownerEmail.Cue = "Enter Owner\'s Email Address (Gmail Only)";
-            this.ownerEmail.Location = new System.Drawing.Point(6, 28);
-            this.ownerEmail.Name = "ownerEmail";
-            this.ownerEmail.Size = new System.Drawing.Size(199, 22);
-            this.ownerEmail.TabIndex = 0;
-            this.ownerEmail.TextChanged += new System.EventHandler(this.ownerEmail_TextChanged);
-            // 
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -248,7 +194,7 @@
             this.groupBox2.Location = new System.Drawing.Point(23, 171);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(250, 164);
-            this.groupBox2.TabIndex = 2;
+            this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Sales Control";
             // 
@@ -299,7 +245,7 @@
             this.groupBox3.Location = new System.Drawing.Point(23, 344);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(250, 150);
-            this.groupBox3.TabIndex = 3;
+            this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Inventory Control";
             // 
@@ -341,7 +287,7 @@
             this.groupBox4.Location = new System.Drawing.Point(509, 433);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(221, 61);
-            this.groupBox4.TabIndex = 4;
+            this.groupBox4.TabIndex = 9;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Summary Control";
             // 
@@ -362,7 +308,7 @@
             this.button1.Location = new System.Drawing.Point(739, 444);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(217, 55);
-            this.button1.TabIndex = 5;
+            this.button1.TabIndex = 12;
             this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -378,7 +324,7 @@
             this.groupBox5.Location = new System.Drawing.Point(513, 282);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(220, 145);
-            this.groupBox5.TabIndex = 6;
+            this.groupBox5.TabIndex = 8;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Supplier Defaults";
             this.groupBox5.Enter += new System.EventHandler(this.groupBox5_Enter);
@@ -392,30 +338,6 @@
             this.supplierAllowMulti.TabIndex = 3;
             this.supplierAllowMulti.Text = "Allow Multiple Supplier";
             this.supplierAllowMulti.UseVisualStyleBackColor = true;
-            // 
-            // defaultSupplierNo
-            // 
-            this.defaultSupplierNo.Cue = "Default Supplier No.";
-            this.defaultSupplierNo.Location = new System.Drawing.Point(6, 80);
-            this.defaultSupplierNo.Name = "defaultSupplierNo";
-            this.defaultSupplierNo.Size = new System.Drawing.Size(205, 22);
-            this.defaultSupplierNo.TabIndex = 2;
-            // 
-            // defaultSupplierAdd
-            // 
-            this.defaultSupplierAdd.Cue = "Default Supplier Address";
-            this.defaultSupplierAdd.Location = new System.Drawing.Point(6, 54);
-            this.defaultSupplierAdd.Name = "defaultSupplierAdd";
-            this.defaultSupplierAdd.Size = new System.Drawing.Size(205, 22);
-            this.defaultSupplierAdd.TabIndex = 1;
-            // 
-            // defaultSupplier
-            // 
-            this.defaultSupplier.Cue = "Default Supplier";
-            this.defaultSupplier.Location = new System.Drawing.Point(6, 28);
-            this.defaultSupplier.Name = "defaultSupplier";
-            this.defaultSupplier.Size = new System.Drawing.Size(205, 22);
-            this.defaultSupplier.TabIndex = 0;
             // 
             // groupBox6
             // 
@@ -431,30 +353,6 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Store Information";
             // 
-            // txtStoreContact
-            // 
-            this.txtStoreContact.Cue = "Store Contact No.";
-            this.txtStoreContact.Location = new System.Drawing.Point(6, 71);
-            this.txtStoreContact.Name = "txtStoreContact";
-            this.txtStoreContact.Size = new System.Drawing.Size(205, 22);
-            this.txtStoreContact.TabIndex = 3;
-            // 
-            // txtStoreAdd
-            // 
-            this.txtStoreAdd.Cue = "Store Address";
-            this.txtStoreAdd.Location = new System.Drawing.Point(6, 45);
-            this.txtStoreAdd.Name = "txtStoreAdd";
-            this.txtStoreAdd.Size = new System.Drawing.Size(205, 22);
-            this.txtStoreAdd.TabIndex = 2;
-            // 
-            // txtStoreName
-            // 
-            this.txtStoreName.Cue = "Store Name";
-            this.txtStoreName.Location = new System.Drawing.Point(6, 19);
-            this.txtStoreName.Name = "txtStoreName";
-            this.txtStoreName.Size = new System.Drawing.Size(205, 22);
-            this.txtStoreName.TabIndex = 1;
-            // 
             // groupBox7
             // 
             this.groupBox7.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -466,7 +364,7 @@
             this.groupBox7.Location = new System.Drawing.Point(513, 29);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(217, 147);
-            this.groupBox7.TabIndex = 8;
+            this.groupBox7.TabIndex = 6;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Mysql Connection";
             // 
@@ -482,31 +380,6 @@
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // txtMySqlPassword
-            // 
-            this.txtMySqlPassword.Cue = "MySql Password";
-            this.txtMySqlPassword.Location = new System.Drawing.Point(6, 78);
-            this.txtMySqlPassword.Name = "txtMySqlPassword";
-            this.txtMySqlPassword.PasswordChar = '*';
-            this.txtMySqlPassword.Size = new System.Drawing.Size(205, 22);
-            this.txtMySqlPassword.TabIndex = 2;
-            // 
-            // txtMySqlUser
-            // 
-            this.txtMySqlUser.Cue = "MySql User";
-            this.txtMySqlUser.Location = new System.Drawing.Point(6, 52);
-            this.txtMySqlUser.Name = "txtMySqlUser";
-            this.txtMySqlUser.Size = new System.Drawing.Size(205, 22);
-            this.txtMySqlUser.TabIndex = 1;
-            // 
-            // txtmySqlServer
-            // 
-            this.txtmySqlServer.Cue = "MySql Server";
-            this.txtmySqlServer.Location = new System.Drawing.Point(6, 26);
-            this.txtmySqlServer.Name = "txtmySqlServer";
-            this.txtmySqlServer.Size = new System.Drawing.Size(205, 22);
-            this.txtmySqlServer.TabIndex = 0;
-            // 
             // groupBox8
             // 
             this.groupBox8.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -516,7 +389,7 @@
             this.groupBox8.Location = new System.Drawing.Point(739, 253);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(217, 147);
-            this.groupBox8.TabIndex = 9;
+            this.groupBox8.TabIndex = 11;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "System Control (Warning)";
             // 
@@ -604,7 +477,7 @@
             this.gpCritControl.Location = new System.Drawing.Point(282, 287);
             this.gpCritControl.Name = "gpCritControl";
             this.gpCritControl.Size = new System.Drawing.Size(221, 140);
-            this.gpCritControl.TabIndex = 11;
+            this.gpCritControl.TabIndex = 4;
             this.gpCritControl.TabStop = false;
             this.gpCritControl.Text = "Critical Level Control";
             // 
@@ -653,17 +526,6 @@
             this.trackHighLevelQuan.TabIndex = 1;
             this.trackHighLevelQuan.Scroll += new System.EventHandler(this.trackHighLevelQuan_Scroll);
             // 
-            // cueTxtQuanMedian
-            // 
-            this.cueTxtQuanMedian.Cue = "Enter The Median Quantity for Items";
-            this.cueTxtQuanMedian.Dock = System.Windows.Forms.DockStyle.Top;
-            this.cueTxtQuanMedian.Location = new System.Drawing.Point(3, 16);
-            this.cueTxtQuanMedian.MaxLength = 9;
-            this.cueTxtQuanMedian.Name = "cueTxtQuanMedian";
-            this.cueTxtQuanMedian.Size = new System.Drawing.Size(215, 20);
-            this.cueTxtQuanMedian.TabIndex = 2;
-            this.cueTxtQuanMedian.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cueTxtQuanMedian_KeyPress);
-            // 
             // trackLowQuanItem
             // 
             this.trackLowQuanItem.Location = new System.Drawing.Point(0, 52);
@@ -681,7 +543,7 @@
             this.groupBox10.Location = new System.Drawing.Point(281, 433);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(222, 61);
-            this.groupBox10.TabIndex = 12;
+            this.groupBox10.TabIndex = 5;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Category Unit";
             // 
@@ -696,6 +558,149 @@
             this.button7.Text = "Modify Category Units";
             this.button7.UseVisualStyleBackColor = false;
             this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // cueTxtQuanMedian
+            // 
+            this.cueTxtQuanMedian.Cue = "Enter The Median Quantity for Items";
+            this.cueTxtQuanMedian.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cueTxtQuanMedian.Location = new System.Drawing.Point(3, 16);
+            this.cueTxtQuanMedian.MaxLength = 9;
+            this.cueTxtQuanMedian.Name = "cueTxtQuanMedian";
+            this.cueTxtQuanMedian.Size = new System.Drawing.Size(215, 20);
+            this.cueTxtQuanMedian.TabIndex = 2;
+            this.cueTxtQuanMedian.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cueTxtQuanMedian_KeyPress);
+            // 
+            // txtMySqlPassword
+            // 
+            this.txtMySqlPassword.Cue = "MySql Password";
+            this.txtMySqlPassword.Location = new System.Drawing.Point(6, 78);
+            this.txtMySqlPassword.Name = "txtMySqlPassword";
+            this.txtMySqlPassword.PasswordChar = '*';
+            this.txtMySqlPassword.Size = new System.Drawing.Size(205, 22);
+            this.txtMySqlPassword.TabIndex = 2;
+            this.txtMySqlPassword.TextChanged += new System.EventHandler(this.txtmySqlServer_TextChanged);
+            // 
+            // txtMySqlUser
+            // 
+            this.txtMySqlUser.Cue = "MySql User";
+            this.txtMySqlUser.Location = new System.Drawing.Point(6, 52);
+            this.txtMySqlUser.Name = "txtMySqlUser";
+            this.txtMySqlUser.Size = new System.Drawing.Size(205, 22);
+            this.txtMySqlUser.TabIndex = 1;
+            this.txtMySqlUser.TextChanged += new System.EventHandler(this.txtmySqlServer_TextChanged);
+            // 
+            // txtmySqlServer
+            // 
+            this.txtmySqlServer.Cue = "MySql Server";
+            this.txtmySqlServer.Location = new System.Drawing.Point(6, 26);
+            this.txtmySqlServer.Name = "txtmySqlServer";
+            this.txtmySqlServer.Size = new System.Drawing.Size(205, 22);
+            this.txtmySqlServer.TabIndex = 0;
+            this.txtmySqlServer.TextChanged += new System.EventHandler(this.txtmySqlServer_TextChanged);
+            // 
+            // txtStoreContact
+            // 
+            this.txtStoreContact.Cue = "Store Contact No.";
+            this.txtStoreContact.Location = new System.Drawing.Point(6, 71);
+            this.txtStoreContact.MaxLength = 20;
+            this.txtStoreContact.Name = "txtStoreContact";
+            this.txtStoreContact.Size = new System.Drawing.Size(205, 22);
+            this.txtStoreContact.TabIndex = 3;
+            this.txtStoreContact.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cueTxtQuanMedian_KeyPress);
+            // 
+            // txtStoreAdd
+            // 
+            this.txtStoreAdd.Cue = "Store Address";
+            this.txtStoreAdd.Location = new System.Drawing.Point(6, 45);
+            this.txtStoreAdd.Name = "txtStoreAdd";
+            this.txtStoreAdd.Size = new System.Drawing.Size(205, 22);
+            this.txtStoreAdd.TabIndex = 2;
+            // 
+            // txtStoreName
+            // 
+            this.txtStoreName.Cue = "Store Name";
+            this.txtStoreName.Location = new System.Drawing.Point(6, 19);
+            this.txtStoreName.Name = "txtStoreName";
+            this.txtStoreName.Size = new System.Drawing.Size(205, 22);
+            this.txtStoreName.TabIndex = 1;
+            // 
+            // defaultSupplierNo
+            // 
+            this.defaultSupplierNo.Cue = "Default Supplier No.";
+            this.defaultSupplierNo.Location = new System.Drawing.Point(6, 80);
+            this.defaultSupplierNo.Name = "defaultSupplierNo";
+            this.defaultSupplierNo.Size = new System.Drawing.Size(205, 22);
+            this.defaultSupplierNo.TabIndex = 2;
+            // 
+            // defaultSupplierAdd
+            // 
+            this.defaultSupplierAdd.Cue = "Default Supplier Address";
+            this.defaultSupplierAdd.Location = new System.Drawing.Point(6, 54);
+            this.defaultSupplierAdd.Name = "defaultSupplierAdd";
+            this.defaultSupplierAdd.Size = new System.Drawing.Size(205, 22);
+            this.defaultSupplierAdd.TabIndex = 1;
+            // 
+            // defaultSupplier
+            // 
+            this.defaultSupplier.Cue = "Default Supplier";
+            this.defaultSupplier.Location = new System.Drawing.Point(6, 28);
+            this.defaultSupplier.Name = "defaultSupplier";
+            this.defaultSupplier.Size = new System.Drawing.Size(205, 22);
+            this.defaultSupplier.TabIndex = 0;
+            // 
+            // cueTextBox2
+            // 
+            this.cueTextBox2.Cue = "Secret Answer";
+            this.cueTextBox2.Location = new System.Drawing.Point(9, 200);
+            this.cueTextBox2.Name = "cueTextBox2";
+            this.cueTextBox2.PasswordChar = '*';
+            this.cueTextBox2.Size = new System.Drawing.Size(198, 22);
+            this.cueTextBox2.TabIndex = 9;
+            // 
+            // ownerEmailPassword
+            // 
+            this.ownerEmailPassword.Cue = "Enter Owner\'s Email Address Password";
+            this.ownerEmailPassword.Location = new System.Drawing.Point(6, 54);
+            this.ownerEmailPassword.Name = "ownerEmailPassword";
+            this.ownerEmailPassword.PasswordChar = '*';
+            this.ownerEmailPassword.Size = new System.Drawing.Size(199, 22);
+            this.ownerEmailPassword.TabIndex = 1;
+            this.ownerEmailPassword.TextChanged += new System.EventHandler(this.ownerEmail_TextChanged);
+            // 
+            // ownerEmail
+            // 
+            this.ownerEmail.Cue = "Enter Owner\'s Email Address (Gmail Only)";
+            this.ownerEmail.Location = new System.Drawing.Point(6, 28);
+            this.ownerEmail.Name = "ownerEmail";
+            this.ownerEmail.Size = new System.Drawing.Size(199, 22);
+            this.ownerEmail.TabIndex = 0;
+            this.ownerEmail.TextChanged += new System.EventHandler(this.ownerEmail_TextChanged);
+            // 
+            // adminPassword2
+            // 
+            this.adminPassword2.Cue = "Re Enter Password";
+            this.adminPassword2.Location = new System.Drawing.Point(32, 81);
+            this.adminPassword2.Name = "adminPassword2";
+            this.adminPassword2.PasswordChar = '*';
+            this.adminPassword2.Size = new System.Drawing.Size(186, 22);
+            this.adminPassword2.TabIndex = 2;
+            // 
+            // adminPassword
+            // 
+            this.adminPassword.Cue = "Password";
+            this.adminPassword.Location = new System.Drawing.Point(32, 55);
+            this.adminPassword.Name = "adminPassword";
+            this.adminPassword.PasswordChar = '*';
+            this.adminPassword.Size = new System.Drawing.Size(186, 22);
+            this.adminPassword.TabIndex = 1;
+            // 
+            // adminUsername
+            // 
+            this.adminUsername.Cue = "Username";
+            this.adminUsername.Location = new System.Drawing.Point(32, 29);
+            this.adminUsername.Name = "adminUsername";
+            this.adminUsername.Size = new System.Drawing.Size(186, 22);
+            this.adminUsername.TabIndex = 0;
             // 
             // SettingsForm
             // 

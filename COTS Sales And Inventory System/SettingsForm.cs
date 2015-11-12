@@ -18,6 +18,7 @@ namespace COTS_Sales_And_Inventory_System
         private void Settings_Load(object sender, EventArgs e)
         {
             LoadSettings();
+            button1.Enabled = true;
         }
 
         private void LoadSettings()
@@ -333,7 +334,9 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button3_Click(object sender, EventArgs e)
         {
+            button3.Enabled = false;
             TestMySqlConnection();
+            button3.Enabled = true;
         }
 
         private void TestMySqlConnection()
@@ -351,9 +354,11 @@ namespace COTS_Sales_And_Inventory_System
                 conn = new MySqlConnection(conString);
                 conn.Open();
                 MessageBox.Show("MySql Connected");
+                button1.Enabled = true;
             }
             catch (Exception e)
             {
+                button1.Enabled = false;
                 MessageBox.Show("Unable to connect to Database");
             }
             finally
@@ -525,6 +530,11 @@ namespace COTS_Sales_And_Inventory_System
         {
             var dialog = new CategoryUnitEdit();
             dialog.ShowDialog();
+        }
+
+        private void txtmySqlServer_TextChanged(object sender, EventArgs e)
+        {
+            button1.Enabled = false;
         }
 
 

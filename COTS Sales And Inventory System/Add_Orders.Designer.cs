@@ -134,7 +134,7 @@
             this.comboBox1.Location = new System.Drawing.Point(106, 162);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(62, 21);
-            this.comboBox1.TabIndex = 3;
+            this.comboBox1.TabIndex = 4;
             // 
             // button1
             // 
@@ -188,7 +188,7 @@
             0});
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(156, 20);
-            this.numericUpDown1.TabIndex = 4;
+            this.numericUpDown1.TabIndex = 5;
             this.numericUpDown1.Value = new decimal(new int[] {
             1,
             0,
@@ -311,7 +311,7 @@
             this.comboBox2.Location = new System.Drawing.Point(12, 163);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(88, 21);
-            this.comboBox2.TabIndex = 17;
+            this.comboBox2.TabIndex = 3;
             this.comboBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyOnlyDigits);
             // 
             // Add_Orders

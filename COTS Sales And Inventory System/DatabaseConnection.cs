@@ -170,8 +170,7 @@ namespace COTS_Sales_And_Inventory_System
             {
                 Connection.Open();
             }
-            var mysqlScript = File.ReadAllText(@"mysqlCreatScript.sql");
-            var runScript = new MySqlScript(Connection, mysqlScript);
+            var runScript = new MySqlScript(Connection, Properties.Settings.Default.WipeDatabase);
             runScript.Execute();
             Connection.Close();
         }

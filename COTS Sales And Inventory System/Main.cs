@@ -425,27 +425,37 @@ namespace COTS_Sales_And_Inventory_System
 
         private void AddDistributor()
         {
-            var distroId = GetCurrentCount("distributor", "DistroID");
-            var distroName = comboBox2.Text;
-            var distroEmail = textBox9.Text;
-            var distroNumber = textBox10.Text;
-            var found = FindRow("distributor", "DistroName = '" + distroName + "'");
-            if (found.Length > 0)
+
+            if (!(comboBox2.Text.Equals("") || textBox10.Text.Equals("") || textBox9.Text.Equals("") ||
+                  string.IsNullOrWhiteSpace(comboBox2.Text) || string.IsNullOrWhiteSpace(textBox10.Text) ||
+                  string.IsNullOrWhiteSpace(textBox9.Text)))
             {
-                if (found[0]["distroEnable"] == DBNull.Value||Convert.ToInt32(found[0]["distroEnable"]) == 0)
+                var distroId = GetCurrentCount("distributor", "DistroID");
+                var distroName = comboBox2.Text;
+                var distroEmail = textBox9.Text;
+                var distroNumber = textBox10.Text;
+                var found = FindRow("distributor", "DistroName = '" + distroName + "'");
+                if (found.Length > 0)
                 {
-                    found[0]["distroEnable"] = 1;
-                    DatabaseConnection.UploadChanges();
-                    MessageBox.Show("Found Existing Distributor It will be Enabled");
+                    if (found[0]["distroEnable"] == DBNull.Value || Convert.ToInt32(found[0]["distroEnable"]) == 0)
+                    {
+                        found[0]["distroEnable"] = 1;
+                        DatabaseConnection.UploadChanges();
+                        MessageBox.Show("Found Existing Distributor It will be Enabled");
+                    }
+                    else
+                    {
+                        MessageBox.Show(@"Distro Exist this distributor will not be created", @"Distributor Exist");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show(@"Distro Exist this distributor will not be created", @"Distributor Exist");
+                    InsertNewDistro(distroId, distroName, distroEmail, distroNumber);
                 }
             }
             else
             {
-                InsertNewDistro(distroId, distroName, distroEmail, distroNumber);
+                MessageBox.Show("Please Fill a the suppliers form","Enter Required field",MessageBoxButtons.OK,MessageBoxIcon.Information);
             }
         }
 
@@ -644,6 +654,15 @@ namespace COTS_Sales_And_Inventory_System
 
         private string CreateEmailReportBody()
         {
+            try
+            {
+                comboBox4.SelectedIndex = 0;
+                checkBox1.Checked = true;
+            }
+            catch (Exception e)
+            {
+                //ignored
+            }
             var body = new StringBuilder();
             body.Append(richTextBox2.Text);
             body.Append("\n\n\n");
@@ -1507,7 +1526,16 @@ namespace COTS_Sales_And_Inventory_System
 
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
+            
             ChangeSalesSummaryDisplay();
+            if (comboBox4.SelectedIndex < 2)
+            {
+                summaryDatePicker.Enabled = false;
+            }
+            else
+            {
+                summaryDatePicker.Enabled = true;
+            }
         }
 
         private void ChangeSalesSummaryDisplay()
@@ -1531,13 +1559,13 @@ namespace COTS_Sales_And_Inventory_System
                         DisplaySelectedWeekGroupBy();
                         break;
                     case 4:
-                        DisplaySelectedMonth();
+                        DisplaySelectedMonthGroupBy();
                         break;
                     case 5:
-                        DisplaySelectedYear();
+                        DisplaySelectedYearGroupBy();
                         break;
                     case 6:
-                        DisplayAllSales();
+                        DisplayAllSalesGroupBy();
                         break;
                 }
             }
@@ -1568,6 +1596,81 @@ namespace COTS_Sales_And_Inventory_System
                         break;
                 }
             }
+        }
+
+        private void DisplayAllSalesGroupBy()
+        {
+            
+            var dateselected = summaryDatePicker.Value.ToString("yy-MM-dd");
+            var query = ("select Item_Name,size,sum(count) as count,price,date " +
+                         "from date inner join receiptid on date.DateID=receiptid.DateID " +
+                         "inner join sale on sale.receiptid=receiptid.receiptid " +
+                         "inner join size on sale.SizeID=size.SizeID " +
+                         "inner join items on size.ItemID=items.ItemID " +
+                         "WHERE date > DATE_SUB('" + dateselected + "', INTERVAL 1 WEEK)  " + "group by Size.sizeID");
+            var dt = DatabaseConnection.GetCustomTable(query, "summaryQuery");
+            var total = 0.00;
+            foreach (DataRow row in dt.Rows)
+            {
+                var totalSold = Convert.ToDouble(row["count"])*Convert.ToDouble(row["price"]);
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0,0.00}", row["price"]) +
+                           " with a quantity of " + row["count"] + " is sold for "
+                           + string.Format("{0:0,0.00}", totalSold) + ". on " +
+                           Convert.ToDateTime(row["date"]).ToString("yy-MM-dd");
+                richTextBox2.AppendText(line + Environment.NewLine);
+                total += totalSold;
+            }
+            textBox3.Text = string.Format("{0:0,0.00}", total);
+        }
+
+        private void DisplaySelectedYearGroupBy()
+        {
+
+            var dateselected = summaryDatePicker.Value.ToString("yy-MM-dd");
+            var query = ("select Item_Name,size,sum(count) as count,price,date " +
+                         "from date inner join receiptid on date.DateID=receiptid.DateID " +
+                         "inner join sale on sale.receiptid=receiptid.receiptid " +
+                         "inner join size on sale.SizeID=size.SizeID " +
+                         "inner join items on size.ItemID=items.ItemID " +
+                         "WHERE date > DATE_SUB('" + dateselected + "', INTERVAL 1 WEEK)  " + "group by Size.sizeID");
+            var dt = DatabaseConnection.GetCustomTable(query, "summaryQuery");
+            var total = 0.00;
+            foreach (DataRow row in dt.Rows)
+            {
+                var totalSold = Convert.ToDouble(row["count"]) * Convert.ToDouble(row["price"]);
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0,0.00}", row["price"]) +
+                           " with a quantity of " + row["count"] + " is sold for "
+                           + string.Format("{0:0,0.00}", totalSold) + ". on " +
+                           Convert.ToDateTime(row["date"]).ToString("yy-MM-dd");
+                richTextBox2.AppendText(line + Environment.NewLine);
+                total += totalSold;
+            }
+            textBox3.Text = string.Format("{0:0,0.00}", total);
+        }
+
+        private void DisplaySelectedMonthGroupBy()
+        {
+
+            var dateselected = summaryDatePicker.Value.ToString("yy-MM-dd");
+            var query = ("select Item_Name,size,sum(count) as count,price,date " +
+                         "from date inner join receiptid on date.DateID=receiptid.DateID " +
+                         "inner join sale on sale.receiptid=receiptid.receiptid " +
+                         "inner join size on sale.SizeID=size.SizeID " +
+                         "inner join items on size.ItemID=items.ItemID " +
+                         "WHERE date > DATE_SUB('" + dateselected + "', INTERVAL 1 WEEK)  " + "group by Size.sizeID");
+            var dt = DatabaseConnection.GetCustomTable(query, "summaryQuery");
+            var total = 0.00;
+            foreach (DataRow row in dt.Rows)
+            {
+                var totalSold = Convert.ToDouble(row["count"]) * Convert.ToDouble(row["price"]);
+                var line = row["item_name"] + " " + row["size"] + " price @ " + string.Format("{0:0,0.00}", row["price"]) +
+                           " with a quantity of " + row["count"] + " is sold for "
+                           + string.Format("{0:0,0.00}", totalSold) + ". on " +
+                           Convert.ToDateTime(row["date"]).ToString("yy-MM-dd");
+                richTextBox2.AppendText(line + Environment.NewLine);
+                total += totalSold;
+            }
+            textBox3.Text = string.Format("{0:0,0.00}", total);
         }
 
         private void DisplaySelectedWeekGroupBy()
@@ -1843,14 +1946,7 @@ namespace COTS_Sales_And_Inventory_System
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox1.Checked)
-            {
-                groupQuery = "";
-            }
-            else
-            {
-                groupQuery = "";
-            }
+            ChangeSalesSummaryDisplay();
         }
 
         private void configToolStripMenuItem_Click(object sender, EventArgs e)

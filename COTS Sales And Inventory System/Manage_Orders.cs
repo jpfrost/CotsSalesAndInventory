@@ -166,17 +166,19 @@ namespace COTS_Sales_And_Inventory_System
 
         private void button4_Click(object sender, EventArgs e)
         {
+            button4.Enabled = false;
             try
             {
-                button4.Enabled = false;
+                
                 PrintOrder();
-                button4.Enabled = true;
+                
             }
             catch (Exception exception)
             {
                 MessageBox.Show("Please select and order number", "Warning", MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
             }
+            button4.Enabled = true;
         }
 
         private void PrintOrder()

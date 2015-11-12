@@ -595,7 +595,7 @@ namespace COTS_Sales_And_Inventory_System
             var radiobutton = (RadioButton)sender;
             if (!radiobutton.Checked)
             {
-                var dialogResult = MessageBox.Show("are you sure?", "Change Order", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var dialogResult = MessageBox.Show("Are you sure you want to change order type\nData in The gridbox will be remove...", "Change Order", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
 
                 if (dialogResult == DialogResult.Yes)

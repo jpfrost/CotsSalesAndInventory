@@ -394,5 +394,193 @@ namespace COTS_Sales_And_Inventory_System.Properties {
                 this["critHighLevel"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-- MySQL Workbench Forward Engineering\r\n\r\nSET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS," +
+            " UNIQUE_CHECKS=0;\r\nSET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY" +
+            "_CHECKS=0;\r\nSET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE=\'TRADITIONAL,ALLOW_INVALID_DA" +
+            "TES\';\r\n\r\n-- -----------------------------------------------------\r\n-- Schema myd" +
+            "b\r\n-- -----------------------------------------------------\r\nSHOW WARNINGS;\r\n-- " +
+            "-----------------------------------------------------\r\n-- Schema cotsalesinvento" +
+            "ry\r\n-- -----------------------------------------------------\r\nDROP SCHEMA IF EXI" +
+            "STS `cotsalesinventory` ;\r\n\r\n-- ------------------------------------------------" +
+            "-----\r\n-- Schema cotsalesinventory\r\n-- -----------------------------------------" +
+            "------------\r\nCREATE SCHEMA IF NOT EXISTS `cotsalesinventory` DEFAULT CHARACTER " +
+            "SET utf8 ;\r\nSHOW WARNINGS;\r\nUSE `cotsalesinventory` ;\r\n\r\n-- --------------------" +
+            "---------------------------------\r\n-- Table `account`\r\n-- ----------------------" +
+            "-------------------------------\r\nDROP TABLE IF EXISTS `account` ;\r\n\r\nSHOW WARNIN" +
+            "GS;\r\nCREATE TABLE IF NOT EXISTS `account` (\r\n  `AccountID` INT(11) NOT NULL AUTO" +
+            "_INCREMENT COMMENT \'\',\r\n  `AccountName` VARCHAR(45) NULL DEFAULT NULL COMMENT \'\'" +
+            ",\r\n  `AccountPassword` VARCHAR(45) NULL DEFAULT NULL COMMENT \'\',\r\n  `AccountType" +
+            "` INT(11) NULL DEFAULT NULL COMMENT \'\',\r\n  PRIMARY KEY (`AccountID`)  COMMENT \'\'" +
+            ")\r\nENGINE = InnoDB\r\nDEFAULT CHARACTER SET = utf8;\r\n\r\nSHOW WARNINGS;\r\n\r\n-- ------" +
+            "-----------------------------------------------\r\n-- Table `date`\r\n-- -----------" +
+            "------------------------------------------\r\nDROP TABLE IF EXISTS `date` ;\r\n\r\nSHO" +
+            "W WARNINGS;\r\nCREATE TABLE IF NOT EXISTS `date` (\r\n  `DateID` INT(11) NOT NULL CO" +
+            "MMENT \'\',\r\n  `Date` DATETIME NULL DEFAULT NULL COMMENT \'\',\r\n  PRIMARY KEY (`Date" +
+            "ID`)  COMMENT \'\')\r\nENGINE = InnoDB\r\nDEFAULT CHARACTER SET = utf8;\r\n\r\nSHOW WARNIN" +
+            "GS;\r\n\r\n-- -----------------------------------------------------\r\n-- Table `categ" +
+            "ory`\r\n-- -----------------------------------------------------\r\nDROP TABLE IF EX" +
+            "ISTS `category` ;\r\n\r\nSHOW WARNINGS;\r\nCREATE TABLE IF NOT EXISTS `category` (\r\n  " +
+            "`CategoryID` INT(11) NOT NULL COMMENT \'\',\r\n  `CategoryName` VARCHAR(45) NULL DEF" +
+            "AULT NULL COMMENT \'\',\r\n  PRIMARY KEY (`CategoryID`)  COMMENT \'\')\r\nENGINE = InnoD" +
+            "B\r\nDEFAULT CHARACTER SET = utf8;\r\n\r\nSHOW WARNINGS;\r\n\r\n-- -----------------------" +
+            "------------------------------\r\n-- Table `items`\r\n-- ---------------------------" +
+            "--------------------------\r\nDROP TABLE IF EXISTS `items` ;\r\n\r\nSHOW WARNINGS;\r\nCR" +
+            "EATE TABLE IF NOT EXISTS `items` (\r\n  `ItemID` VARCHAR(15) NOT NULL DEFAULT \'0\' " +
+            "COMMENT \'\',\r\n  `CategoryID` INT(11) NULL DEFAULT NULL COMMENT \'\',\r\n  `Item_Name`" +
+            " VARCHAR(45) NULL DEFAULT NULL COMMENT \'\',\r\n  PRIMARY KEY (`ItemID`)  COMMENT \'\'" +
+            ",\r\n  INDEX `fk_Inventory_Category1_idx` (`CategoryID` ASC)  COMMENT \'\',\r\n  CONST" +
+            "RAINT `fk_Inventory_Category1`\r\n    FOREIGN KEY (`CategoryID`)\r\n    REFERENCES `" +
+            "category` (`CategoryID`)\r\n    ON DELETE NO ACTION\r\n    ON UPDATE NO ACTION)\r\nENG" +
+            "INE = InnoDB\r\nDEFAULT CHARACTER SET = utf8;\r\n\r\nSHOW WARNINGS;\r\n\r\n-- ------------" +
+            "-----------------------------------------\r\n-- Table `backorder`\r\n-- ------------" +
+            "-----------------------------------------\r\nDROP TABLE IF EXISTS `backorder` ;\r\n\r" +
+            "\nSHOW WARNINGS;\r\nCREATE TABLE IF NOT EXISTS `backorder` (\r\n  `BackOrderID` INT(1" +
+            "1) NOT NULL COMMENT \'\',\r\n  `ItemID` VARCHAR(15) NOT NULL COMMENT \'\',\r\n  `Date_Da" +
+            "teID` INT(11) NOT NULL COMMENT \'\',\r\n  PRIMARY KEY (`BackOrderID`)  COMMENT \'\',\r\n" +
+            "  INDEX `fk_BackOrder_Inventory1_idx` (`ItemID` ASC)  COMMENT \'\',\r\n  INDEX `fk_B" +
+            "ackOrder_Date1_idx` (`Date_DateID` ASC)  COMMENT \'\',\r\n  CONSTRAINT `fk_BackOrder" +
+            "_Date1`\r\n    FOREIGN KEY (`Date_DateID`)\r\n    REFERENCES `date` (`DateID`)\r\n    " +
+            "ON DELETE NO ACTION\r\n    ON UPDATE NO ACTION,\r\n  CONSTRAINT `fk_BackOrder_Invent" +
+            "ory1`\r\n    FOREIGN KEY (`ItemID`)\r\n    REFERENCES `items` (`ItemID`)\r\n    ON DEL" +
+            "ETE NO ACTION\r\n    ON UPDATE NO ACTION)\r\nENGINE = InnoDB\r\nDEFAULT CHARACTER SET " +
+            "= utf8;\r\n\r\nSHOW WARNINGS;\r\n\r\n-- ------------------------------------------------" +
+            "-----\r\n-- Table `customer`\r\n-- -------------------------------------------------" +
+            "----\r\nDROP TABLE IF EXISTS `customer` ;\r\n\r\nSHOW WARNINGS;\r\nCREATE TABLE IF NOT E" +
+            "XISTS `customer` (\r\n  `custID` INT(11) NOT NULL COMMENT \'\',\r\n  `custName` VARCHA" +
+            "R(45) NULL DEFAULT NULL COMMENT \'\',\r\n  `custEmail` VARCHAR(45) NULL DEFAULT NULL" +
+            " COMMENT \'\',\r\n  PRIMARY KEY (`custID`)  COMMENT \'\')\r\nENGINE = InnoDB\r\nDEFAULT CH" +
+            "ARACTER SET = utf8;\r\n\r\nSHOW WARNINGS;\r\n\r\n-- ------------------------------------" +
+            "-----------------\r\n-- Table `distributor`\r\n-- ----------------------------------" +
+            "-------------------\r\nDROP TABLE IF EXISTS `distributor` ;\r\n\r\nSHOW WARNINGS;\r\nCRE" +
+            "ATE TABLE IF NOT EXISTS `distributor` (\r\n  `DistroID` INT(11) NOT NULL COMMENT \'" +
+            "\',\r\n  `DistroName` VARCHAR(45) NULL DEFAULT NULL COMMENT \'\',\r\n  `DistroAddress` " +
+            "VARCHAR(45) NULL DEFAULT NULL COMMENT \'\',\r\n  `DistroContact` VARCHAR(45) NULL DE" +
+            "FAULT NULL COMMENT \'\',\r\n  `distroEnable` INT(11) NULL DEFAULT NULL COMMENT \'\',\r\n" +
+            "  PRIMARY KEY (`DistroID`)  COMMENT \'\')\r\nENGINE = InnoDB\r\nDEFAULT CHARACTER SET " +
+            "= utf8;\r\n\r\nSHOW WARNINGS;\r\n\r\n-- ------------------------------------------------" +
+            "-----\r\n-- Table `size`\r\n-- -----------------------------------------------------" +
+            "\r\nDROP TABLE IF EXISTS `size` ;\r\n\r\nSHOW WARNINGS;\r\nCREATE TABLE IF NOT EXISTS `s" +
+            "ize` (\r\n  `SizeID` INT(11) NOT NULL AUTO_INCREMENT COMMENT \'\',\r\n  `ItemID` VARCH" +
+            "AR(15) NOT NULL COMMENT \'\',\r\n  `Size` VARCHAR(45) NULL DEFAULT NULL COMMENT \'\',\r" +
+            "\n  `Price` DOUBLE NULL DEFAULT NULL COMMENT \'\',\r\n  `Quantity` INT(11) NULL DEFAU" +
+            "LT NULL COMMENT \'\',\r\n  `sizeEnable` INT(11) NULL DEFAULT \'1\' COMMENT \'\',\r\n  PRIM" +
+            "ARY KEY (`SizeID`)  COMMENT \'\',\r\n  INDEX `fk_Size_Items1_idx` (`ItemID` ASC)  CO" +
+            "MMENT \'\',\r\n  CONSTRAINT `fk_Size_Items1`\r\n    FOREIGN KEY (`ItemID`)\r\n    REFERE" +
+            "NCES `items` (`ItemID`)\r\n    ON DELETE NO ACTION\r\n    ON UPDATE NO ACTION)\r\nENGI" +
+            "NE = InnoDB\r\nDEFAULT CHARACTER SET = utf8;\r\n\r\nSHOW WARNINGS;\r\n\r\n-- -------------" +
+            "----------------------------------------\r\n-- Table `itemlevel`\r\n-- -------------" +
+            "----------------------------------------\r\nDROP TABLE IF EXISTS `itemlevel` ;\r\n\r\n" +
+            "SHOW WARNINGS;\r\nCREATE TABLE IF NOT EXISTS `itemlevel` (\r\n  `itemLevelId` INT(11" +
+            ") NOT NULL COMMENT \'\',\r\n  `SizeID` INT(11) NULL DEFAULT NULL COMMENT \'\',\r\n  `ite" +
+            "mMinLevel` INT(11) NULL DEFAULT NULL COMMENT \'\',\r\n  `itemMaxLevel` INT(11) NULL " +
+            "DEFAULT NULL COMMENT \'\',\r\n  PRIMARY KEY (`itemLevelId`)  COMMENT \'\',\r\n  INDEX `f" +
+            "k_itemlevel_size1_idx` (`SizeID` ASC)  COMMENT \'\',\r\n  CONSTRAINT `fk_itemlevel_s" +
+            "ize1`\r\n    FOREIGN KEY (`SizeID`)\r\n    REFERENCES `size` (`SizeID`)\r\n    ON DELE" +
+            "TE NO ACTION\r\n    ON UPDATE NO ACTION)\r\nENGINE = InnoDB\r\nDEFAULT CHARACTER SET =" +
+            " utf8;\r\n\r\nSHOW WARNINGS;\r\n\r\n-- -------------------------------------------------" +
+            "----\r\n-- Table `items_seq`\r\n-- -------------------------------------------------" +
+            "----\r\nDROP TABLE IF EXISTS `items_seq` ;\r\n\r\nSHOW WARNINGS;\r\nCREATE TABLE IF NOT " +
+            "EXISTS `items_seq` (\r\n  `id` INT(11) NOT NULL COMMENT \'\',\r\n  PRIMARY KEY (`id`) " +
+            " COMMENT \'\')\r\nENGINE = InnoDB\r\nDEFAULT CHARACTER SET = utf8;\r\n\r\nSHOW WARNINGS;\r\n" +
+            "\r\n-- -----------------------------------------------------\r\n-- Table `orderlist`" +
+            "\r\n-- -----------------------------------------------------\r\nDROP TABLE IF EXISTS" +
+            " `orderlist` ;\r\n\r\nSHOW WARNINGS;\r\nCREATE TABLE IF NOT EXISTS `orderlist` (\r\n  `i" +
+            "dorderList` INT(11) NOT NULL COMMENT \'\',\r\n  `orderdesc` VARCHAR(45) NULL DEFAULT" +
+            " NULL COMMENT \'\',\r\n  `orderDelivered` INT(11) NULL DEFAULT NULL COMMENT \'\',\r\n  P" +
+            "RIMARY KEY (`idorderList`)  COMMENT \'\')\r\nENGINE = InnoDB\r\nDEFAULT CHARACTER SET " +
+            "= utf8;\r\n\r\nSHOW WARNINGS;\r\n\r\n-- ------------------------------------------------" +
+            "-----\r\n-- Table `orders`\r\n-- ---------------------------------------------------" +
+            "--\r\nDROP TABLE IF EXISTS `orders` ;\r\n\r\nSHOW WARNINGS;\r\nCREATE TABLE IF NOT EXIST" +
+            "S `orders` (\r\n  `OrderID` INT(11) NOT NULL COMMENT \'\',\r\n  `DateID` INT(11) NOT N" +
+            "ULL COMMENT \'\',\r\n  `DistroID` INT(11) NOT NULL COMMENT \'\',\r\n  `AccountID` INT(11" +
+            ") NULL DEFAULT NULL COMMENT \'\',\r\n  `OrderQty` VARCHAR(45) NULL DEFAULT NULL COMM" +
+            "ENT \'\',\r\n  `idorderList` INT(11) NOT NULL COMMENT \'\',\r\n  `SizeID` INT(11) NOT NU" +
+            "LL COMMENT \'\',\r\n  PRIMARY KEY (`OrderID`)  COMMENT \'\',\r\n  INDEX `fk_tblOrder_dat" +
+            "e1_idx` (`DateID` ASC)  COMMENT \'\',\r\n  INDEX `fk_tblOrder_distributor1_idx` (`Di" +
+            "stroID` ASC)  COMMENT \'\',\r\n  INDEX `fk_orderlist_account1_idx` (`AccountID` ASC)" +
+            "  COMMENT \'\',\r\n  INDEX `fk_orders_orderList1_idx` (`idorderList` ASC)  COMMENT \'" +
+            "\',\r\n  INDEX `fk_orders_size1_idx` (`SizeID` ASC)  COMMENT \'\',\r\n  CONSTRAINT `fk_" +
+            "orderlist_account1`\r\n    FOREIGN KEY (`AccountID`)\r\n    REFERENCES `account` (`A" +
+            "ccountID`)\r\n    ON DELETE NO ACTION\r\n    ON UPDATE NO ACTION,\r\n  CONSTRAINT `fk_" +
+            "orders_orderList1`\r\n    FOREIGN KEY (`idorderList`)\r\n    REFERENCES `orderlist` " +
+            "(`idorderList`)\r\n    ON DELETE NO ACTION\r\n    ON UPDATE NO ACTION,\r\n  CONSTRAINT" +
+            " `fk_orders_size1`\r\n    FOREIGN KEY (`SizeID`)\r\n    REFERENCES `size` (`SizeID`)" +
+            "\r\n    ON DELETE NO ACTION\r\n    ON UPDATE NO ACTION,\r\n  CONSTRAINT `fk_tblOrder_d" +
+            "ate1`\r\n    FOREIGN KEY (`DateID`)\r\n    REFERENCES `date` (`DateID`)\r\n    ON DELE" +
+            "TE NO ACTION\r\n    ON UPDATE NO ACTION,\r\n  CONSTRAINT `fk_tblOrder_distributor1`\r" +
+            "\n    FOREIGN KEY (`DistroID`)\r\n    REFERENCES `distributor` (`DistroID`)\r\n    ON" +
+            " DELETE NO ACTION\r\n    ON UPDATE NO ACTION)\r\nENGINE = InnoDB\r\nDEFAULT CHARACTER " +
+            "SET = utf8;\r\n\r\nSHOW WARNINGS;\r\n\r\n-- --------------------------------------------" +
+            "---------\r\n-- Table `orderlistitems`\r\n-- ---------------------------------------" +
+            "--------------\r\nDROP TABLE IF EXISTS `orderlistitems` ;\r\n\r\nSHOW WARNINGS;\r\nCREAT" +
+            "E TABLE IF NOT EXISTS `orderlistitems` (\r\n  `OrderID` INT(11) NOT NULL COMMENT \'" +
+            "\',\r\n  `ItemID` VARCHAR(15) NOT NULL COMMENT \'\',\r\n  PRIMARY KEY (`OrderID`, `Item" +
+            "ID`)  COMMENT \'\',\r\n  INDEX `fk_OrderList_has_Items_Items1_idx` (`ItemID` ASC)  C" +
+            "OMMENT \'\',\r\n  INDEX `fk_OrderList_has_Items_OrderList1_idx` (`OrderID` ASC)  COM" +
+            "MENT \'\',\r\n  CONSTRAINT `fk_OrderList_has_Items_Items1`\r\n    FOREIGN KEY (`ItemID" +
+            "`)\r\n    REFERENCES `items` (`ItemID`)\r\n    ON DELETE NO ACTION\r\n    ON UPDATE NO" +
+            " ACTION,\r\n  CONSTRAINT `fk_OrderList_has_Items_OrderList1`\r\n    FOREIGN KEY (`Or" +
+            "derID`)\r\n    REFERENCES `orders` (`OrderID`)\r\n    ON DELETE NO ACTION\r\n    ON UP" +
+            "DATE NO ACTION)\r\nENGINE = InnoDB\r\nDEFAULT CHARACTER SET = utf8;\r\n\r\nSHOW WARNINGS" +
+            ";\r\n\r\n-- -----------------------------------------------------\r\n-- Table `receipt" +
+            "id`\r\n-- -----------------------------------------------------\r\nDROP TABLE IF EXI" +
+            "STS `receiptid` ;\r\n\r\nSHOW WARNINGS;\r\nCREATE TABLE IF NOT EXISTS `receiptid` (\r\n " +
+            " `ReceiptID` INT(11) NOT NULL COMMENT \'\',\r\n  `AccountID` INT(11) NULL DEFAULT NU" +
+            "LL COMMENT \'\',\r\n  `DateID` INT(11) NULL DEFAULT NULL COMMENT \'\',\r\n  `customer_cu" +
+            "stID` INT(11) NULL DEFAULT NULL COMMENT \'\',\r\n  PRIMARY KEY (`ReceiptID`)  COMMEN" +
+            "T \'\',\r\n  INDEX `fk_ReceiptID_Account_idx` (`AccountID` ASC)  COMMENT \'\',\r\n  INDE" +
+            "X `fk_ReceiptID_Date1_idx` (`DateID` ASC)  COMMENT \'\',\r\n  INDEX `fk_receiptid_cu" +
+            "stomer1_idx` (`customer_custID` ASC)  COMMENT \'\',\r\n  CONSTRAINT `fk_ReceiptID_Ac" +
+            "count`\r\n    FOREIGN KEY (`AccountID`)\r\n    REFERENCES `account` (`AccountID`)\r\n " +
+            "   ON DELETE NO ACTION\r\n    ON UPDATE NO ACTION,\r\n  CONSTRAINT `fk_ReceiptID_Dat" +
+            "e1`\r\n    FOREIGN KEY (`DateID`)\r\n    REFERENCES `date` (`DateID`)\r\n    ON DELETE" +
+            " NO ACTION\r\n    ON UPDATE NO ACTION,\r\n  CONSTRAINT `fk_receiptid_customer1`\r\n   " +
+            " FOREIGN KEY (`customer_custID`)\r\n    REFERENCES `customer` (`custID`)\r\n    ON D" +
+            "ELETE NO ACTION\r\n    ON UPDATE NO ACTION)\r\nENGINE = InnoDB\r\nDEFAULT CHARACTER SE" +
+            "T = utf8;\r\n\r\nSHOW WARNINGS;\r\n\r\n-- ----------------------------------------------" +
+            "-------\r\n-- Table `sale`\r\n-- ---------------------------------------------------" +
+            "--\r\nDROP TABLE IF EXISTS `sale` ;\r\n\r\nSHOW WARNINGS;\r\nCREATE TABLE IF NOT EXISTS " +
+            "`sale` (\r\n  `SaleID` INT(11) NOT NULL COMMENT \'\',\r\n  `ReceiptID` INT(11) NOT NUL" +
+            "L COMMENT \'\',\r\n  `Count` INT(11) NULL DEFAULT NULL COMMENT \'\',\r\n  `SizeID` INT(1" +
+            "1) NOT NULL COMMENT \'\',\r\n  PRIMARY KEY (`SaleID`)  COMMENT \'\',\r\n  INDEX `fk_Sale" +
+            "_ReceiptID1_idx` (`ReceiptID` ASC)  COMMENT \'\',\r\n  INDEX `fk_sale_Size1_idx` (`S" +
+            "izeID` ASC)  COMMENT \'\',\r\n  CONSTRAINT `fk_Sale_ReceiptID1`\r\n    FOREIGN KEY (`R" +
+            "eceiptID`)\r\n    REFERENCES `receiptid` (`ReceiptID`)\r\n    ON DELETE NO ACTION\r\n " +
+            "   ON UPDATE NO ACTION,\r\n  CONSTRAINT `fk_sale_Size1`\r\n    FOREIGN KEY (`SizeID`" +
+            ")\r\n    REFERENCES `size` (`SizeID`)\r\n    ON DELETE NO ACTION\r\n    ON UPDATE NO A" +
+            "CTION)\r\nENGINE = InnoDB\r\nDEFAULT CHARACTER SET = utf8;\r\n\r\nSHOW WARNINGS;\r\n\r\n-- -" +
+            "----------------------------------------------------\r\n-- Table `tblconvert`\r\n-- " +
+            "-----------------------------------------------------\r\nDROP TABLE IF EXISTS `tbl" +
+            "convert` ;\r\n\r\nSHOW WARNINGS;\r\nCREATE TABLE IF NOT EXISTS `tblconvert` (\r\n  `conv" +
+            "ertID` INT(11) NOT NULL COMMENT \'\',\r\n  `InitialSize` INT(11) NOT NULL COMMENT \'\'" +
+            ",\r\n  `convertSize` INT(11) NOT NULL COMMENT \'\',\r\n  `convertQuantity` INT(11) NOT" +
+            " NULL COMMENT \'\',\r\n  PRIMARY KEY (`convertID`)  COMMENT \'\',\r\n  INDEX `fk_convert" +
+            "_Size1_idx` (`InitialSize` ASC)  COMMENT \'\',\r\n  INDEX `fk_convert_Size2_idx` (`c" +
+            "onvertSize` ASC)  COMMENT \'\',\r\n  CONSTRAINT `fk_convert_Size1`\r\n    FOREIGN KEY " +
+            "(`InitialSize`)\r\n    REFERENCES `size` (`SizeID`)\r\n    ON DELETE NO ACTION\r\n    " +
+            "ON UPDATE NO ACTION,\r\n  CONSTRAINT `fk_convert_Size2`\r\n    FOREIGN KEY (`convert" +
+            "Size`)\r\n    REFERENCES `size` (`SizeID`)\r\n    ON DELETE NO ACTION\r\n    ON UPDATE" +
+            " NO ACTION)\r\nENGINE = InnoDB\r\nDEFAULT CHARACTER SET = utf8;\r\n\r\nSHOW WARNINGS;\r\n\r" +
+            "\n-- -----------------------------------------------------\r\n-- Table `tblsizes`\r\n" +
+            "-- -----------------------------------------------------\r\nDROP TABLE IF EXISTS `" +
+            "tblsizes` ;\r\n\r\nSHOW WARNINGS;\r\nCREATE TABLE IF NOT EXISTS `tblsizes` (\r\n  `sizes" +
+            "ID` INT NOT NULL COMMENT \'\',\r\n  `sizesName` VARCHAR(45) NULL COMMENT \'\',\r\n  `Cat" +
+            "egoryID` INT(11) NULL COMMENT \'\',\r\n  PRIMARY KEY (`sizesID`)  COMMENT \'\',\r\n  IND" +
+            "EX `fk_tblsizes_category1_idx` (`CategoryID` ASC)  COMMENT \'\',\r\n  CONSTRAINT `fk" +
+            "_tblsizes_category1`\r\n    FOREIGN KEY (`CategoryID`)\r\n    REFERENCES `category` " +
+            "(`CategoryID`)\r\n    ON DELETE NO ACTION\r\n    ON UPDATE NO ACTION)\r\nENGINE = Inno" +
+            "DB;\r\n\r\nSHOW WARNINGS;\r\n\r\nSET SQL_MODE=@OLD_SQL_MODE;\r\nSET FOREIGN_KEY_CHECKS=@OL" +
+            "D_FOREIGN_KEY_CHECKS;\r\nSET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;\r\n")]
+        public string WipeDatabase {
+            get {
+                return ((string)(this["WipeDatabase"]));
+            }
+            set {
+                this["WipeDatabase"] = value;
+            }
+        }
     }
 }

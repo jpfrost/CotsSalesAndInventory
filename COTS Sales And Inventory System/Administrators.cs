@@ -8,7 +8,7 @@ namespace COTS_Sales_And_Inventory_System
     public partial class FrmAdmin : Form
     {
         private readonly Main _main;
-        private readonly DataTable accountTable = DatabaseConnection.DatabaseRecord.Tables["account"];
+        private DataTable _dataaccountTable = DatabaseConnection.DatabaseRecord.Tables["account"];
 
         public FrmAdmin(Main main)
         {
@@ -22,33 +22,45 @@ namespace COTS_Sales_And_Inventory_System
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            var foundAccount = accountTable.Select("AccountName ='" + cueTextBox1.Text + "'");
-            if (foundAccount.Length == 0)
+            if (
+                !(string.IsNullOrWhiteSpace(cueTextBox1.Text) || string.IsNullOrWhiteSpace(cueTextBox2.Text) ||
+                  string.IsNullOrWhiteSpace(cueTextBox3.Text)))
             {
-                if (cueTextBox2.Text.Equals(cueTextBox3.Text))
+                var foundAccount = _dataaccountTable.Select("AccountName ='" + cueTextBox1.Text + "'");
+                if (foundAccount.Length == 0)
                 {
-                    var newAccountRow = accountTable.NewRow();
-                    newAccountRow["accountName"] = cueTextBox1.Text;
-                    newAccountRow["accountPassword"] = cueTextBox2.Text;
-                    newAccountRow["AccountType"] = SetAccountInt(comboBox1.Text);
-                    DatabaseConnection.DatabaseRecord.Tables["account"].Rows.Add(newAccountRow);
-                    DatabaseConnection.UploadChanges();
-                    MessageBox.Show("Account has been created", "Account Created"
-                        , MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadAccounts();
-                    ClearField();
+                    if (cueTextBox2.Text.Equals(cueTextBox3.Text))
+                    {
+                        var newAccountRow = _dataaccountTable.NewRow();
+                        newAccountRow["accountName"] = cueTextBox1.Text;
+                        newAccountRow["accountPassword"] = cueTextBox2.Text;
+                        newAccountRow["AccountType"] = SetAccountInt(comboBox1.Text);
+                        DatabaseConnection.DatabaseRecord.Tables["account"].Rows.Add(newAccountRow);
+                        DatabaseConnection.UploadChanges();
+                        MessageBox.Show("Account has been created", "Account Created"
+                            , MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadAccounts();
+                        ClearField();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please ReEnter Password", "Password Mismatch"
+                            , MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Please ReEnter Password", "Password Mismatch"
+                    MessageBox.Show("Account already exist", "Account Exist!!!"
                         , MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             else
             {
-                MessageBox.Show("Account already exist", "Account Exist!!!"
-                    , MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please enter the required Inputs","Missing Fields",MessageBoxButtons.OK,MessageBoxIcon.Information);
             }
+            LoadAccounts();
+            listBox1.Update();
+            listBox1.Refresh();
         }
 
         private void ClearField()
@@ -100,16 +112,29 @@ namespace COTS_Sales_And_Inventory_System
             comboBox1.SelectedIndex = 0;
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+       
+            if (keyData == Keys.F5)
+            {
+                LoadAccounts();
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         private void LoadAccounts()
         {
+            var found = DatabaseConnection.DatabaseRecord.Tables["account"];
             listBox1.Items.Clear();
-            foreach (DataRow accountRow in accountTable.Rows)
+            foreach (DataRow accountRow in found.Rows)
             {
                 if (!listBox1.Items.Contains(accountRow["AccountName"].ToString()))
                 {
                     listBox1.Items.Add(accountRow["AccountName"].ToString());
                 }
             }
+            listBox1.Update();
+            listBox1.Refresh();
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -121,7 +146,7 @@ namespace COTS_Sales_And_Inventory_System
         {
             try
             {
-                var found = accountTable.Select("accountName ='"
+                var found = _dataaccountTable.Select("accountName ='"
                                                 + listBox1.SelectedItem + "'");
                 cueTextBox1.Text = found[0]["accountName"].ToString();
                 cueTextBox2.Text = found[0]["accountPassword"].ToString();
@@ -137,46 +162,76 @@ namespace COTS_Sales_And_Inventory_System
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             UpdateAccount();
+            listBox1.Update();
+            listBox1.Refresh();
         }
 
         private void UpdateAccount()
         {
-            var found = accountTable.Select("accountName ='"
-                                            + listBox1.SelectedItem + "'");
-            try
+            if (!(string.IsNullOrWhiteSpace(cueTextBox1.Text) || string.IsNullOrWhiteSpace(cueTextBox2.Text) ||
+                  string.IsNullOrWhiteSpace(cueTextBox3.Text)))
             {
-                found[0]["accountName"] = cueTextBox1.Text;
-                found[0]["accountPassword"] = cueTextBox2.Text;
-                found[0]["AccountType"] = SetAccountInt(comboBox1.Text);
-                DatabaseConnection.UploadChanges();
-                listBox1.Items.Clear();
-                LoadAccounts();
-                listBox1.Items.Clear();
-                MessageBox.Show(cueTextBox1.Text + " has been updated");
+                var found = _dataaccountTable.Select("accountName ='"
+                                                + listBox1.SelectedItem + "'");
+
+                if (found.Length > 0)
+                {
+                    try
+                    {
+                        found[0]["accountName"] = cueTextBox1.Text;
+                        found[0]["accountPassword"] = cueTextBox2.Text;
+                        found[0]["AccountType"] = SetAccountInt(comboBox1.Text);
+                        DatabaseConnection.UploadChanges();
+                        listBox1.Items.Clear();
+                        LoadAccounts();
+                        listBox1.Items.Clear();
+                        MessageBox.Show(cueTextBox1.Text + " has been updated");
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show("Error updating account");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Error in Updating Account", "Updating Account Failed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           
+                }
             }
-            catch (Exception e)
+            else
             {
-                MessageBox.Show("Error updating account");
+                MessageBox.Show("Please enter the required Inputs", "Missing Fields", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(cueTextBox1.Text)) return;
-            try
+            if (string.IsNullOrWhiteSpace(cueTextBox1.Text))
             {
-                var found = DatabaseConnection.DatabaseRecord.Tables["account"].Select("AccountName ='"+cueTextBox1.Text+"'");
-                found[0].Delete();
-                DatabaseConnection.UploadChanges();
-                MessageBox.Show("Account: "+cueTextBox1.Text+" has been remove...");
-                LoadAccounts();
-                ClearField();
-                listBox1.Refresh();
+                try
+                {
+                    var found =
+                        DatabaseConnection.DatabaseRecord.Tables["account"].Select("AccountName ='" + cueTextBox1.Text +
+                                                                                   "'");
+                    found[0].Delete();
+                    DatabaseConnection.UploadChanges();
+                    MessageBox.Show("Account: " + cueTextBox1.Text + " has been remove...");
+                    LoadAccounts();
+                    ClearField();
+                    listBox1.Refresh();
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                }
             }
-            catch (Exception exception)
+            else
             {
-                Console.WriteLine(exception);
+                MessageBox.Show("Account Deletion Failed", "Problem with Account Deletion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           
             }
+            listBox1.Update();
+            listBox1.Refresh();
         }
     }
 }

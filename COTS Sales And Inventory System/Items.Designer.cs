@@ -79,6 +79,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(290, 21);
             this.comboBox1.TabIndex = 2;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.comboBox1.SelectedValueChanged += new System.EventHandler(this.comboBox1_SelectedValueChanged);
             this.comboBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardValidInputs);
             // 
@@ -89,7 +90,7 @@
             this.comboBox2.Location = new System.Drawing.Point(169, 230);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(133, 21);
-            this.comboBox2.TabIndex = 3;
+            this.comboBox2.TabIndex = 4;
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.LoadSizeData);
             this.comboBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardValidInputs);
             // 
@@ -100,7 +101,7 @@
             this.button3.Location = new System.Drawing.Point(12, 395);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(290, 35);
-            this.button3.TabIndex = 8;
+            this.button3.TabIndex = 10;
             this.button3.Text = "Disable Product";
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -112,7 +113,7 @@
             this.button4.Location = new System.Drawing.Point(12, 354);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(290, 35);
-            this.button4.TabIndex = 7;
+            this.button4.TabIndex = 9;
             this.button4.Text = "Add/Edit Item";
             this.button4.UseVisualStyleBackColor = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
@@ -176,7 +177,7 @@
             this.button1.Location = new System.Drawing.Point(222, 297);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(80, 26);
-            this.button1.TabIndex = 17;
+            this.button1.TabIndex = 7;
             this.button1.Text = "Edit";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -188,7 +189,7 @@
             this.comboBox3.Location = new System.Drawing.Point(13, 230);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(150, 21);
-            this.comboBox3.TabIndex = 18;
+            this.comboBox3.TabIndex = 3;
             this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.LoadSizeData);
             // 
             // cueTextBox5
@@ -197,7 +198,7 @@
             this.cueTextBox5.Location = new System.Drawing.Point(12, 302);
             this.cueTextBox5.Name = "cueTextBox5";
             this.cueTextBox5.Size = new System.Drawing.Size(100, 20);
-            this.cueTextBox5.TabIndex = 14;
+            this.cueTextBox5.TabIndex = 6;
             this.cueTextBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardOnlyDigits);
             // 
             // cueTextBox4
@@ -207,7 +208,7 @@
             this.cueTextBox4.MaxLength = 12;
             this.cueTextBox4.Name = "cueTextBox4";
             this.cueTextBox4.Size = new System.Drawing.Size(290, 20);
-            this.cueTextBox4.TabIndex = 5;
+            this.cueTextBox4.TabIndex = 8;
             this.cueTextBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardOnlyDecimals);
             // 
             // cueTextBox3
@@ -218,7 +219,7 @@
             this.cueTextBox3.Name = "cueTextBox3";
             this.cueTextBox3.ReadOnly = true;
             this.cueTextBox3.Size = new System.Drawing.Size(290, 20);
-            this.cueTextBox3.TabIndex = 4;
+            this.cueTextBox3.TabIndex = 5;
             this.cueTextBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardOnlyDigits);
             // 
             // cueTextBox2
@@ -232,7 +233,6 @@
             this.cueTextBox2.TextChanged += new System.EventHandler(this.cueTextBox2_Leave);
             this.cueTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProductNameKeyDownEnter);
             this.cueTextBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyboardValidInputs);
-            this.cueTextBox2.Leave += new System.EventHandler(this.cueTextBox2_Leave);
             // 
             // cueTextBox1
             // 

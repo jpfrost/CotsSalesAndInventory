@@ -31,7 +31,11 @@ namespace COTS_Sales_And_Inventory_System
         {
             foreach (DataRow row in DatabaseConnection.DatabaseRecord.Tables["distributor"].Rows)
             {
-                comboBox1.Items.Add(row["DistroName"].ToString());
+                int x = Convert.ToInt32(row["distroEnable"]);
+                if (x==1)
+                {
+                    comboBox1.Items.Add(row["DistroName"].ToString());
+                }
             }
             try
             {
